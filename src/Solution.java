@@ -1,5 +1,6 @@
 import com.leetcode.tools.ListNode;
 import com.leetcode.tools.MyLinkedList;
+import com.leetcode.tools.TreeNode;
 import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
@@ -456,6 +457,71 @@ public class Solution {
     }
 
     /**
+     * No. 257 二叉树的所有路径
+     *     本题BFS、DFS两种算法均可以取得效果其实现细节，稍有不同。
+     * @param root
+     * @return
+     */
+    public List<String> binaryTreePaths(TreeNode root) {
+        ArrayList<String> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        LinkedList<Object> queue = new LinkedList<>();
+        queue.add(root);
+        queue.add(root.val + "");
+
+        while (!queue.isEmpty()) {
+            // 每次出栈都会记录当栈节点已经走过的路径，和当前栈的值
+            TreeNode node = (TreeNode) queue.poll();
+            String path = (String) queue.poll();
+
+            // 如果当前节点是叶子节点，那么这就是一条完整路径，可以加入到返回值中
+            if (node.left == null && node.right == null) {
+                res.add(path);
+            }
+
+            // 每次进栈，都会记录当前节点已经走过的路径，并追加当前节点的路径
+            if (node.right != null) {
+                queue.add(node.right);
+                queue.add(path + "->" + node.right.val);
+            }
+
+            if (node.left != null) {
+                queue.add(node.left);
+                queue.add(path + "->" + node.left.val);
+            }
+        }
+        return res;
+    }
+    // 递归写法
+    // 如果知道了左子树和右子树的所有路径，那么添加一个root节点，root节点到左右
+    // 子树的路径就是全部路径（遍历添加），递归可以使用这种思想
+    public List<String> binaryTreePathsRec(TreeNode root) {
+        ArrayList<String> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+
+        if (root.left == null && root.right == null) {
+            res.add(root.val + "");
+            return res;
+        }
+
+        // 遍历左子节点的路径
+        for (String path : binaryTreePathsRec(root.left)) {
+            res.add(root.val + "->" + path);
+        }
+        // 遍历右子节点的路径
+        for (String path : binaryTreePathsRec(root.right)) {
+            res.add(root.val + "->" + path);
+        }
+
+        return res;
+    }
+
+    /**
      * No. 258 各位相加
      * @param num
      * @return
@@ -502,6 +568,58 @@ public class Solution {
             n /= 10;
         }
         return res;
+    }
+
+    /**
+     * No. 292 Nim游戏
+     *     如果你先手，n是4的倍数，必输。可以反向推理一下
+     * @param n
+     * @return
+     */
+    public boolean canWinNim(int n) {
+        return n % 4 != 0;
+    }
+
+    /**
+     * No. 345 翻转字符串中的元音字母
+     * @param s
+     * @return
+     */
+    public String reverseVowels(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+        StringBuilder str = new StringBuilder(s);
+        Set<Character> set = new HashSet<>();
+        set.add('a');
+        set.add('A');
+        set.add('e');
+        set.add('E');
+        set.add('i');
+        set.add('I');
+        set.add('o');
+        set.add('O');
+        set.add('u');
+        set.add('U');
+        char exchange;
+
+        while (true) {
+            while ( !set.contains(str.charAt(left)) && left < s.length() - 1) {
+                left++;
+            }
+            while ( !set.contains(str.charAt(right)) && right > 0) {
+                right--;
+            }
+            if (left < right) {
+                exchange = str.charAt(left);
+                str.setCharAt(left, str.charAt(right));
+                str.setCharAt(right, exchange);
+                ++left;
+                --right;
+            } else {
+                break;
+            }
+        }
+        return str.toString();
     }
 
     /**

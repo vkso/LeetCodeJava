@@ -5,13 +5,25 @@ import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
 import java.util.*;
-
+// https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=3
 @SuppressWarnings("all")
 public class Solution {
     @Test
     public void Test() {
-        int num = 38;
-        System.out.println(addDigits(num));
+        String s = "(name)is(age)yearsold";
+        List<List<String>> arrayLists = new ArrayList<>();
+
+        List<String> str1 = new ArrayList<>();
+        List<String> str2 = new ArrayList<>();
+        str1.add("name");
+        str1.add("bob");
+        str2.add("age");
+        str2.add("two");
+        arrayLists.add(str1);
+        arrayLists.add(str2);
+
+        System.out.println(evaluate(s, arrayLists));
+
     }
 
     /**
@@ -408,7 +420,8 @@ public class Solution {
      * No. 231 2的幂
      * 判断一个数是不是2的幂
      * 技巧：n & (n-1) 可以移除一个二进制数末位的1，2的幂次数，只有一个1，所以会被置0
-     *      return n > 0 && (n & (n - 1)) == 0;
+     * return n > 0 && (n & (n - 1)) == 0;
+     *
      * @param n
      * @return
      */
@@ -432,6 +445,7 @@ public class Solution {
 
     /**
      * No. 242 有效的字母异位词
+     *
      * @param s
      * @param t
      * @return
@@ -458,7 +472,8 @@ public class Solution {
 
     /**
      * No. 257 二叉树的所有路径
-     *     本题BFS、DFS两种算法均可以取得效果其实现细节，稍有不同。
+     * 本题BFS、DFS两种算法均可以取得效果其实现细节，稍有不同。
+     *
      * @param root
      * @return
      */
@@ -495,6 +510,7 @@ public class Solution {
         }
         return res;
     }
+
     // 递归写法
     // 如果知道了左子树和右子树的所有路径，那么添加一个root节点，root节点到左右
     // 子树的路径就是全部路径（遍历添加），递归可以使用这种思想
@@ -523,6 +539,7 @@ public class Solution {
 
     /**
      * No. 258 各位相加
+     *
      * @param num
      * @return
      */
@@ -532,6 +549,7 @@ public class Solution {
         }
         return num;
     }
+
     public int sumDigits(int num) {
         int sum = 0;
         while (num > 0) {
@@ -572,7 +590,8 @@ public class Solution {
 
     /**
      * No. 292 Nim游戏
-     *     如果你先手，n是4的倍数，必输。可以反向推理一下
+     * 如果你先手，n是4的倍数，必输。可以反向推理一下
+     *
      * @param n
      * @return
      */
@@ -582,6 +601,7 @@ public class Solution {
 
     /**
      * No. 345 翻转字符串中的元音字母
+     *
      * @param s
      * @return
      */
@@ -603,10 +623,10 @@ public class Solution {
         char exchange;
 
         while (true) {
-            while ( !set.contains(str.charAt(left)) && left < s.length() - 1) {
+            while (!set.contains(str.charAt(left)) && left < s.length() - 1) {
                 left++;
             }
-            while ( !set.contains(str.charAt(right)) && right > 0) {
+            while (!set.contains(str.charAt(right)) && right > 0) {
                 right--;
             }
             if (left < right) {
@@ -654,6 +674,106 @@ public class Solution {
     }
 
     /**
+     * No. 482 密钥格式化
+     *
+     * @param s
+     * @param k
+     * @return
+     */
+    public String licenseKeyFormatting(String s, int k) {
+        StringBuilder res = new StringBuilder();
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != '-') {
+                res.append(s.charAt(i));
+            }
+        }
+
+        int chs_count = 0;
+        //   0 1   2 3 4 5   6 7 8 9
+        //   a b - c d e f - g h i j
+        for (int i = res.length() - 1; i > 0; --i) {
+            chs_count++;
+            if (chs_count % k == 0) {
+                res.insert(i, '-');
+                chs_count = 0;
+            }
+        }
+        return res.toString().toUpperCase();
+    }
+
+    /**
+     * No. 485 最大连续1的个数
+     *     1. 将数组转换成字符串，使用split方法，按照0分割，统计最长字符串的长度
+     *        该方法，思路清晰，执行时间比较长 oj=15ms
+     *
+     *         StringBuilder sb = new StringBuilder();
+     *         for (int i = 0; i < nums.length; i++) {
+     *             sb.append(Integer.toString(nums[i]));
+     *         }
+     *
+     *         String x = sb.toString();
+     *         String[] split = x.split("0");
+     *
+     *         int res = 0;
+     *         for (String s : split) {
+     *             if (s.length() > res) {
+     *                 res = s.length();
+     *             }
+     *         }
+     *         return res;
+     *
+     *     2. 滑动窗口的方法，统计全 1 窗口的长度，tips：由于是int类型的数组，可以
+     *        利用sum直接计算即可，sum的最大值就是返回结果
+     * @param nums
+     * @return
+     */
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int max = 0;
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                max = sum > max ? sum : max;
+                sum = 0;
+            } else {
+                sum ++;
+            }
+        }
+        max = sum > max ? sum : max;
+        return max;
+    }
+
+    /**
+     * No. 496 下一个更大的元素 I
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int[] res = new int[nums1.length];
+        int exist;
+        for (int i = 0; i < nums1.length; i++) {
+            exist = -1;
+            int j = 0;
+            while (nums2[j] != nums1[i]) {
+               j++;
+            }
+            for (int k = j+1; k < nums2.length; k++) {
+                if (nums2[k] > nums1[i]) {
+                    exist = 1;
+                    res[i] = nums2[k];
+                    break;
+                }
+            }
+
+            if (exist == -1) {
+                res[i] = -1;
+            }
+        }
+        return res;
+    }
+
+    /**
      * No. 1711 大餐计数
      *
      * @param deliciousness
@@ -697,6 +817,44 @@ public class Solution {
             n = n >> 1;
         }
         return true;
+    }
+
+    /**
+     * No. 1807 替换字符串中的括号内容
+     * @param s
+     * @param knowledge
+     * @return
+     */
+    public String evaluate(String s, List<List<String>> knowledge) {
+        StringBuilder sb = new StringBuilder();
+        HashMap<String, String> hashmap = new HashMap<>();
+        int right;
+        String compare;
+
+        for (int i = 0; i < knowledge.size(); i++) {
+            hashmap.put(knowledge.get(i).get(0), knowledge.get(i).get(1));
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch != '(') {
+                sb.append(ch);
+            } else {
+                right = i + 1;
+                while (s.charAt(right) != ')') {
+                    ++right;
+                }
+                compare = s.substring(i + 1, right);
+                if (hashmap.containsKey(compare)) {
+                    sb.append(hashmap.get(compare));
+                } else {
+                    sb.append("?");
+                }
+                // 右括号赋值给i之后，循环结束，执行+1操作
+                i = right;
+            }
+        }
+        return sb.toString();
     }
 
     /**
@@ -762,6 +920,7 @@ public class Solution {
         }
         return count;
     }
+
     //统计一个数所有位数相加的结果是否位偶数
     public boolean judgeEven(int num) {
         // num 是正整数
@@ -792,6 +951,27 @@ public class Solution {
             }
         }
         return count;
+    }
+
+    /**
+     * No. 2283 判断一个数的数字计数是否等于数位的值
+     * @param num
+     * @return
+     */
+    public boolean digitCount(String num) {
+        int[] count = new int[10];
+        for (int i = 0; i < num.length(); i++) {
+            count[num.charAt(i) - '0']++;
+        }
+
+        for (int i = 0; i < num.length(); i++) {
+            int tmp = num.charAt(i) - '0';
+            if (count[i] != tmp) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

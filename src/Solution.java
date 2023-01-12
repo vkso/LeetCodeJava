@@ -131,8 +131,7 @@ public class Solution {
         return head.next;
     }
 
-    public ListNode addTwoNumbersa(ListNode l1, ListNode l2) {
-        ListNode head = new ListNode();
+    public ListNode addTwoNumbersa(ListNode l1, ListNode l2) { ListNode head = new ListNode();
         ListNode head_move = head;
         ListNode move_l1 = l1;
         ListNode move_l2 = l2;
@@ -769,6 +768,42 @@ public class Solution {
             if (exist == -1) {
                 res[i] = -1;
             }
+        }
+        return res;
+    }
+
+    /**
+     * No. 821 字符的最短距离
+     *       假定最近字符的索引是 idx
+     *         1. 计算当前字符距离 左侧 最近目标字符的距离:  currentIndex - idx
+     *         2. 计算当前字符距离 右侧 最近目标字符的距离:  idx - currentIndex
+     *         3. 两个距离取最小值，即返回的目标数组的结果
+     *
+     *    tips：一开始遍历的时候，可能不存在目标字符的位置索引，这里使用 idx = -n 和 2n来计算，
+     *          因为-n不存在，currentIndex - (-n) 一定是更大的值，同理，2n不存在 2n - currentIndex
+     *          也一定是大于n的值
+     *
+     * @param s
+     * @param c
+     * @return
+     */
+    public int[] shortestToChar(String s, char c) {
+        int n = s.length();
+        int[] res = new int[n];
+        // 计算 currentIndex 距离左侧最近的距离。因为从左到右遍历，左侧最近的字符是确定的，所以可以计算
+        for (int i = 0, idx = -n; i < s.length(); i++) {
+            if (s.charAt(i) == c) {
+                idx = i;
+            }
+            res[i] = i - idx;
+        }
+
+        // 计算 currentIndex 距离右侧最近的距离。因为从右向左遍历，右侧最近的字符位置是确定的
+        for (int i = n -1, idx = 2 * n; i >= 0; i--) {
+            if (s.charAt(i) == c) {
+                idx = i;
+            }
+            res[i] = Math.min(res[i], idx - i);
         }
         return res;
     }

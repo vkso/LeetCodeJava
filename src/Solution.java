@@ -10,6 +10,9 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
+        char[] letters = {'x', 'x', 'y', 'y'};
+        char target = 'z';
+        System.out.println(nextGreatestLetter(letters, target));
     }
 
     /**
@@ -759,6 +762,46 @@ public class Solution {
     }
 
     /**
+     * No. 709 转换成小写字母
+     * @param s
+     * @return
+     */
+    public String toLowerCase(String s) {
+        return s.toLowerCase();
+    }
+
+    /**
+     * No. 744 寻找比目标字母大的最小字母
+     *         本题可以直接线性查找，时间复杂度O(n)，也可以使用二分查找，时间复杂度O(log n)
+     * @param letters
+     * @param target
+     * @return
+     */
+    public char nextGreatestLetter(char[] letters, char target) {
+        // 线性查找：
+//        char res = letters[0];
+//        for (int i = 0; i < letters.length; i++) {
+//            if (letters[i] - target > 0) {
+//                return letters[i];
+//            }
+//        }
+//        return res;
+        // 二分查找
+        int left = -1, right = letters.length;
+        int mid;
+
+        while (left + 1 != right) {
+            mid = left + ((right - left) >> 1);
+            if (letters[mid] <= target) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return right == letters.length ? letters[0] : letters[right];
+    }
+
+    /**
      * No. 821 字符的最短距离
      *       假定最近字符的索引是 idx
      *         1. 计算当前字符距离 左侧 最近目标字符的距离:  currentIndex - idx
@@ -996,6 +1039,41 @@ public class Solution {
     }
 
     /**
+     * No. 2287 重排字符形成目标字符串
+     * @param s
+     * @param target
+     * @return
+     */
+    public int rearrangeCharacters(String s, String target) {
+        int[] ch_counts = new int[26];
+        int min = 101;
+        int repeat_count = 0;
+        boolean loop = true;
+        for (int i = 0; i < s.length(); i++) {
+            ch_counts[s.charAt(i) - 'a']++;
+        }
+
+        // 外部 while 循环，无穷遍历
+        // 内部 for 循环，每次遇到目标字符，就会对 ch_counts 中的字母进行 - 操作，相当于去除一个字符
+        // 如果遇到 0 个字符，无法提取，就默认所有的情况都已经取完了，while循环可以退出
+        while (loop) {
+            for (int i = 0; i < target.length(); i++) {
+                if (ch_counts[target.charAt(i) - 'a'] > 0) {
+                    ch_counts[target.charAt(i) - 'a']--;
+                } else {
+                    loop = false;
+                    break;
+                }
+            }
+            // for 循环结束，判断当前for循环是否成功，如果成功则进行+1统计，如果当前循环失败了，则不统计
+            if (loop) {
+                repeat_count++;
+            }
+        }
+        return repeat_count;
+    }
+
+    /**
      * No. 2351 第一个出现两次的字母
      *
      * @param s
@@ -1015,3 +1093,12 @@ public class Solution {
         return ' ';
     }
 }
+
+
+
+
+
+
+
+
+

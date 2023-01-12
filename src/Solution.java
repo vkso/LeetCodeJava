@@ -5,25 +5,11 @@ import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
 import java.util.*;
-// https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=3
+// https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
 @SuppressWarnings("all")
 public class Solution {
     @Test
     public void Test() {
-        String s = "(name)is(age)yearsold";
-        List<List<String>> arrayLists = new ArrayList<>();
-
-        List<String> str1 = new ArrayList<>();
-        List<String> str2 = new ArrayList<>();
-        str1.add("name");
-        str1.add("bob");
-        str2.add("age");
-        str2.add("two");
-        arrayLists.add(str1);
-        arrayLists.add(str2);
-
-        System.out.println(evaluate(s, arrayLists));
-
     }
 
     /**

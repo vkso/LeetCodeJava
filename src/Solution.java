@@ -838,6 +838,31 @@ public class Solution {
     }
 
     /**
+     * No. 852 山峰数组的峰顶索引
+     * @param arr
+     * @return
+     */
+    public int peakIndexInMountainArray(int[] arr) {
+        // 由题意所知，这里一定存在"山峰"顶点，所以初始化 left、right边界的时候，可以缩小范围
+        // left 向右扩张到 0 索引位置，right 向左缩小到 n - 1的位置，可以防止查询越界
+        int left = 0;
+        int right = arr.length - 1;
+        int mid;
+
+        while (left + 1 != right) {
+            mid = left + ((right - left) >> 1);
+            // 因为山峰的左边一定是单调递增的，山峰的右边一定是单调递减的，山峰默认是 target，就可以根据递增
+            // 或是递减的特性，找到target 当前所属的区间来判断，left 和 right 的区间范围应该如何变化
+            if (arr[mid] > arr[mid-1]) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
+    }
+
+    /**
      * No. 1711 大餐计数
      *
      * @param deliciousness

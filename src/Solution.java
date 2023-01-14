@@ -5,14 +5,19 @@ import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
 import java.util.*;
+
 // https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
 @SuppressWarnings("all")
 public class Solution {
     @Test
     public void Test() {
-        char[] letters = {'x', 'x', 'y', 'y'};
-        char target = 'z';
-        System.out.println(nextGreatestLetter(letters, target));
+
+    }
+
+    public void Test2(int[] x) {
+        for (int i = 0; i < x.length; i++) {
+            x[i] = 100;
+        }
     }
 
     /**
@@ -120,7 +125,8 @@ public class Solution {
         return head.next;
     }
 
-    public ListNode addTwoNumbersa(ListNode l1, ListNode l2) { ListNode head = new ListNode();
+    public ListNode addTwoNumbersa(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode();
         ListNode head_move = head;
         ListNode move_l1 = l1;
         ListNode move_l2 = l2;
@@ -256,6 +262,26 @@ public class Solution {
     }
 
     /**
+     * No. 151 翻转字符串中的单词
+     *
+     * @param s
+     * @return
+     */
+    public String reverseWords(String s) {
+        String[] s1 = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = s1.length - 1; i >= 0; i--) {
+            if (s1[i].equals("")) {
+                continue;
+            }
+            sb.append(s1[i]);
+            sb.append(" ");
+        }
+        sb.delete(sb.length() - 1, sb.length());
+        return sb.toString();
+    }
+
+    /**
      * No. 171 Excel表序列号
      * <p>
      * 这里，直接按照26进制，从头开始计算更方便：
@@ -269,8 +295,7 @@ public class Solution {
         int index = 0;
         int sum = 0;
         for (int i = len - 1; i >= 0; i--) {
-            sum = sum + (int) Math.pow(26.0, i)
-                    * (columnTitle.charAt(index++) - 64);
+            sum = sum + (int) Math.pow(26.0, i) * (columnTitle.charAt(index++) - 64);
         }
         return sum;
     }
@@ -384,8 +409,7 @@ public class Solution {
                 if (left == right_pre) {
                     tmp = new String(Integer.toString(nums[left]));
                 } else {
-                    tmp = new String(Integer.toString(nums[left]) +
-                            "->" + Integer.toString(nums[right_pre]));
+                    tmp = new String(Integer.toString(nums[left]) + "->" + Integer.toString(nums[right_pre]));
                 }
                 res.add(tmp);
                 left = right;
@@ -397,8 +421,7 @@ public class Solution {
         if (left == right_pre) {
             tmp = new String(Integer.toString(nums[left]));
         } else {
-            tmp = new String(Integer.toString(nums[left]) +
-                    "->" + Integer.toString(nums[right_pre]));
+            tmp = new String(Integer.toString(nums[left]) + "->" + Integer.toString(nums[right_pre]));
         }
         res.add(tmp);
         return res;
@@ -631,6 +654,38 @@ public class Solution {
     }
 
     /**
+     * No. 404 左叶子之和
+     * 提示：是否是左叶子节点判断    (node.left != null) && (node.left.left == null) && (node.left.right == null)
+     *
+     * @param root
+     * @return
+     */
+    public int sumOfLeftLeaves(TreeNode root) {
+        int res = 0;
+        if (root == null) {
+            return res;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode tnode = queue.poll();
+            if (tnode.left != null) {
+                queue.offer(tnode.left);
+            }
+            if (tnode.right != null) {
+                queue.offer(tnode.right);
+            }
+
+            if (tnode.left != null && tnode.left.left == null && tnode.left.right == null) {
+                res += tnode.left.val;
+            }
+        }
+        return res;
+    }
+
+    /**
      * No. 459 重复的子字符串
      *
      * @param s
@@ -692,27 +747,28 @@ public class Solution {
 
     /**
      * No. 485 最大连续1的个数
-     *     1. 将数组转换成字符串，使用split方法，按照0分割，统计最长字符串的长度
-     *        该方法，思路清晰，执行时间比较长 oj=15ms
+     * 1. 将数组转换成字符串，使用split方法，按照0分割，统计最长字符串的长度
+     * 该方法，思路清晰，执行时间比较长 oj=15ms
+     * <p>
+     * StringBuilder sb = new StringBuilder();
+     * for (int i = 0; i < nums.length; i++) {
+     * sb.append(Integer.toString(nums[i]));
+     * }
+     * <p>
+     * String x = sb.toString();
+     * String[] split = x.split("0");
+     * <p>
+     * int res = 0;
+     * for (String s : split) {
+     * if (s.length() > res) {
+     * res = s.length();
+     * }
+     * }
+     * return res;
+     * <p>
+     * 2. 滑动窗口的方法，统计全 1 窗口的长度，tips：由于是int类型的数组，可以
+     * 利用sum直接计算即可，sum的最大值就是返回结果
      *
-     *         StringBuilder sb = new StringBuilder();
-     *         for (int i = 0; i < nums.length; i++) {
-     *             sb.append(Integer.toString(nums[i]));
-     *         }
-     *
-     *         String x = sb.toString();
-     *         String[] split = x.split("0");
-     *
-     *         int res = 0;
-     *         for (String s : split) {
-     *             if (s.length() > res) {
-     *                 res = s.length();
-     *             }
-     *         }
-     *         return res;
-     *
-     *     2. 滑动窗口的方法，统计全 1 窗口的长度，tips：由于是int类型的数组，可以
-     *        利用sum直接计算即可，sum的最大值就是返回结果
      * @param nums
      * @return
      */
@@ -724,7 +780,7 @@ public class Solution {
                 max = sum > max ? sum : max;
                 sum = 0;
             } else {
-                sum ++;
+                sum++;
             }
         }
         max = sum > max ? sum : max;
@@ -733,6 +789,7 @@ public class Solution {
 
     /**
      * No. 496 下一个更大的元素 I
+     *
      * @param nums1
      * @param nums2
      * @return
@@ -744,9 +801,9 @@ public class Solution {
             exist = -1;
             int j = 0;
             while (nums2[j] != nums1[i]) {
-               j++;
+                j++;
             }
-            for (int k = j+1; k < nums2.length; k++) {
+            for (int k = j + 1; k < nums2.length; k++) {
                 if (nums2[k] > nums1[i]) {
                     exist = 1;
                     res[i] = nums2[k];
@@ -762,7 +819,37 @@ public class Solution {
     }
 
     /**
+     * No. 504 七进制数
+     *
+     * @param num
+     * @return
+     */
+    public String convertToBase7(int num) {
+        if (num == 0) {
+            return "0";
+        }
+
+        String sign = "";
+        if (num < 0) {
+            sign = "-";
+        }
+
+        num = Math.abs(num);
+        StringBuilder sb = new StringBuilder();
+        int mod = 0;
+
+        while (num > 0) {
+            mod = num % 7;
+            sb.insert(0, mod);
+            num /= 7;
+        }
+
+        return sb.insert(0, sign).toString();
+    }
+
+    /**
      * No. 709 转换成小写字母
+     *
      * @param s
      * @return
      */
@@ -772,7 +859,8 @@ public class Solution {
 
     /**
      * No. 744 寻找比目标字母大的最小字母
-     *         本题可以直接线性查找，时间复杂度O(n)，也可以使用二分查找，时间复杂度O(log n)
+     * 本题可以直接线性查找，时间复杂度O(n)，也可以使用二分查找，时间复杂度O(log n)
+     *
      * @param letters
      * @param target
      * @return
@@ -803,14 +891,14 @@ public class Solution {
 
     /**
      * No. 821 字符的最短距离
-     *       假定最近字符的索引是 idx
-     *         1. 计算当前字符距离 左侧 最近目标字符的距离:  currentIndex - idx
-     *         2. 计算当前字符距离 右侧 最近目标字符的距离:  idx - currentIndex
-     *         3. 两个距离取最小值，即返回的目标数组的结果
-     *
-     *    tips：一开始遍历的时候，可能不存在目标字符的位置索引，这里使用 idx = -n 和 2n来计算，
-     *          因为-n不存在，currentIndex - (-n) 一定是更大的值，同理，2n不存在 2n - currentIndex
-     *          也一定是大于n的值
+     * 假定最近字符的索引是 idx
+     * 1. 计算当前字符距离 左侧 最近目标字符的距离:  currentIndex - idx
+     * 2. 计算当前字符距离 右侧 最近目标字符的距离:  idx - currentIndex
+     * 3. 两个距离取最小值，即返回的目标数组的结果
+     * <p>
+     * tips：一开始遍历的时候，可能不存在目标字符的位置索引，这里使用 idx = -n 和 2n来计算，
+     * 因为-n不存在，currentIndex - (-n) 一定是更大的值，同理，2n不存在 2n - currentIndex
+     * 也一定是大于n的值
      *
      * @param s
      * @param c
@@ -828,7 +916,7 @@ public class Solution {
         }
 
         // 计算 currentIndex 距离右侧最近的距离。因为从右向左遍历，右侧最近的字符位置是确定的
-        for (int i = n -1, idx = 2 * n; i >= 0; i--) {
+        for (int i = n - 1, idx = 2 * n; i >= 0; i--) {
             if (s.charAt(i) == c) {
                 idx = i;
             }
@@ -839,6 +927,7 @@ public class Solution {
 
     /**
      * No. 852 山峰数组的峰顶索引
+     *
      * @param arr
      * @return
      */
@@ -853,13 +942,233 @@ public class Solution {
             mid = left + ((right - left) >> 1);
             // 因为山峰的左边一定是单调递增的，山峰的右边一定是单调递减的，山峰默认是 target，就可以根据递增
             // 或是递减的特性，找到target 当前所属的区间来判断，left 和 right 的区间范围应该如何变化
-            if (arr[mid] > arr[mid-1]) {
+            if (arr[mid] > arr[mid - 1]) {
                 left = mid;
             } else {
                 right = mid;
             }
         }
         return left;
+    }
+
+    /**
+     * No. 893 特殊等价字符串组
+     * Tips:
+     * 1. 分别将 奇数 位置，偶数位置的字符串提取出来，并进行排序
+     * 2. 拼接排序后的字符串，根据题意可得，如果两个字符串"特殊等价"那么，
+     * 拼接后的字符串，一定相等
+     * 3. 遍历字符串数组，将当前字符串的 奇偶排序拼接字符串存储在HashMap中【此处也可以是hashSet】
+     * 4. hashset中存放的key个数，即是需要返回的数组数量
+     * <p>
+     * 还有一种思路是，用int[] chs = new int[52]对数组 奇偶字符分别统计，然后Arrays.toString() 添加到集合中
+     *
+     * @param words
+     * @return
+     */
+    public int numSpecialEquivGroups(String[] words) {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        String str = null;
+        int res_max = 0;
+        int current_count = 0;
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            StringBuilder str_ou = new StringBuilder();
+            StringBuilder str_ji = new StringBuilder();
+            for (int j = 0; j < word.length(); j++) {
+                if (j % 2 == 0) {
+                    str_ou.append(word.charAt(j));
+                } else {
+                    str_ji.append(word.charAt(j));
+                }
+            }
+
+            str_ji = chsOrder(str_ji);
+            str_ou = chsOrder(str_ou);
+
+            str = str_ji.append(str_ou).toString();
+            if (!hashMap.containsKey(str)) {
+                hashMap.put(str, 1);
+                ++res_max;
+            }
+        }
+        return res_max;
+    }
+
+    public StringBuilder chsOrder(StringBuilder sb) {
+        String s = new String(sb);
+        char[] chars = s.toCharArray();
+        Arrays.sort(chars);
+        s = new String(chars);
+        return new StringBuilder(s);
+    }
+
+    /**
+     * No. 1275 找出井字棋的获胜者
+     *
+     * @param moves
+     * @return
+     */
+    public String tictactoe(int[][] moves) {
+        // 初始化棋盘
+        char[][] pad = new char[3][3];
+        for (int i = 0; i < 3; i++) {
+            Arrays.fill(pad[i], '*');
+        }
+
+        int row, cow;
+        for (int i = 0; i < moves.length; i++) {
+            row = moves[i][0];
+            cow = moves[i][1];
+            if (i % 2 == 0) {
+                pad[row][cow] = 'X';
+            } else {
+                pad[row][cow] = 'O';
+            }
+        }
+        // 取出来最后一步棋子的 row 和 cow
+        int[] lastStep = moves[moves.length - 1];
+        row = lastStep[0];
+        cow = lastStep[1];
+        String res = null;
+        // 最后一步落在中间偏上、下、左、右的位置
+        if ((row + cow) % 2 != 0) {
+            if (judgeRow(lastStep, pad) || judgeCow(lastStep, pad)) {
+                res = String.valueOf(pad[row][cow]);
+                if (res.equals("X")) {
+                    return "A";
+                } else {
+                    return "B";
+                }
+            } else if (moves.length == 9) {
+                return "Draw";
+            } else {
+                return "Pending";
+            }
+        } else {  // 最后一步落在 center 或 corner 的位置
+            if (judgeRow(lastStep, pad) || judgeCow(lastStep, pad) || crossLine(lastStep, pad)) {
+                res = String.valueOf(pad[row][cow]);
+                if (res.equals("X")) {
+                    return "A";
+                } else {
+                    return "B";
+                }
+            } else if (moves.length == 9) {
+                return "Draw";
+            } else {
+                return "Pending";
+            }
+        }
+    }
+
+    // 交叉线是否连线判断：center 位置 分别和四个 corner 判断是否一致，且不是 *
+    public boolean crossLine(int[] position, char[][] pad) {
+        char center = pad[1][1];
+        if (center == '*') {
+            return false;
+        }
+
+        int row = position[0];
+        int cow = position[1];
+
+        if (row == cow) {
+            if (center == pad[0][0] && center == pad[2][2]) {
+                return true;
+            }
+        }
+        if (row + cow == 2) {
+            if (center == pad[0][2] && center == pad[2][0]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean judgeCow(int[] position, char[][] pad) {
+        int cow = position[1];
+        char pre = pad[0][cow];
+        if (pre == '*') {
+            return false;
+        }
+        for (int row = 1; row < 3; row++) {
+            if (pad[row][cow] == '*') {
+                return false;
+            }
+            if (pad[row][cow] == pre) {
+                pre = pad[row][cow];
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean judgeRow(int[] position, char[][] pad) {
+        int row = position[0];
+        char pre = pad[row][0];
+        if (pre == '*') {
+            return false;
+        }
+        for (int cow = 1; cow < 3; cow++) {
+            if (pad[row][cow] == '*') {
+                return false;
+            }
+            if (pad[row][cow] == pre) {
+                pre = pad[row][cow];
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * No. 1331 数组序号转换
+     * Tips: HashMap 在 put 的过程中，对不同元素，有计数的功能
+     *
+     * @param arr
+     * @return
+     */
+    public int[] arrayRankTransform(int[] arr) {
+        int[] copyedArr = Arrays.copyOf(arr, arr.length);
+        int[] res = new int[arr.length];
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        Arrays.sort(copyedArr);
+
+        for (int i = 0; i < copyedArr.length; i++) {
+            if (!hashMap.containsKey(copyedArr[i])) {
+                hashMap.put(copyedArr[i], hashMap.size() + 1);
+            }
+        }
+
+        for (int i = 0; i < arr.length; i++) {
+            res[i] = hashMap.get(arr[i]);
+        }
+
+        return res;
+    }
+
+    /**
+     * No. 1614 括号的最大嵌套深度
+     *
+     * @param s
+     * @return
+     */
+    public int maxDepth(String s) {
+        int max_depth = 0;
+        int count = 0;
+        char ch;
+
+        for (int i = 0; i < s.length(); i++) {
+            ch = s.charAt(i);
+            if (ch == '(') {
+                count++;
+                max_depth = count > max_depth ? count : max_depth;
+            } else if (ch == ')') {
+                count--;
+            }
+        }
+        return max_depth;
     }
 
     /**
@@ -910,6 +1219,7 @@ public class Solution {
 
     /**
      * No. 1807 替换字符串中的括号内容
+     *
      * @param s
      * @param knowledge
      * @return
@@ -944,6 +1254,90 @@ public class Solution {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * No. 1818 绝对差值和
+     * 使用二分查找 nums1 中的 最逼近 nums2[i] 的元素，然后进行判断。如下代码，使用了多个if条件
+     * 语句判断情况  potential_index, potential_index_left, potential_index_right 是否
+     * 符合条件，这里多个判断语句，写法不是很优雅
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int minAbsoluteSumDiff(int[] nums1, int[] nums2) {
+        final int MOD = 1000000007;
+        int[] origin_minus_abs = new int[nums1.length];
+        int[] change_minus_abs = new int[nums1.length];
+        int res = 0;
+
+        int minus = 0;
+        for (int i = 0; i < nums1.length; i++) {
+            minus = nums1[i] - nums2[i];
+            origin_minus_abs[i] = Math.abs(minus);
+        }
+        if (nums1.length == 1) {
+            return origin_minus_abs[0];
+        }
+        Arrays.sort(nums1);
+
+        int potential_index;
+        int potential_index_result;
+        int potential_index_left_result;
+        int potential_index_right_result;
+
+        for (int i = 0; i < nums2.length; i++) {
+            potential_index = myBinarySearch(nums1, nums2[i]);
+            if (potential_index == -1) {
+                potential_index_right_result = Math.abs(nums2[i] - nums1[potential_index + 1]);
+
+                change_minus_abs[i] = potential_index_right_result;
+            } else if (potential_index == nums1.length - 1) {
+                potential_index_result = Math.abs(nums2[i] - nums1[potential_index]);
+                potential_index_left_result = Math.abs(nums2[i] - nums1[potential_index - 1]);
+
+                change_minus_abs[i] = Math.min(potential_index_result, potential_index_left_result);
+            } else if (potential_index == 0) {
+                potential_index_result = Math.abs(nums2[i] - nums1[potential_index]);
+                potential_index_right_result = Math.abs(nums2[i] - nums1[potential_index + 1]);
+                change_minus_abs[i] = Math.min(potential_index_result, potential_index_right_result);
+            } else {
+                potential_index_result = Math.abs(nums2[i] - nums1[potential_index]);
+                potential_index_left_result = Math.abs(nums2[i] - nums1[potential_index - 1]);
+                potential_index_right_result = Math.abs(nums2[i] - nums1[potential_index + 1]);
+
+                int tmpMin = Math.min(potential_index_result, potential_index_left_result);
+                change_minus_abs[i] = tmpMin < potential_index_right_result ? tmpMin : potential_index_right_result;
+            }
+        }
+        int max = -1;
+        for (int i = 0; i < nums1.length; i++) {
+            if (Math.abs(origin_minus_abs[i] - change_minus_abs[i]) > max) {
+                max = Math.abs(origin_minus_abs[i] - change_minus_abs[i]);
+            }
+        }
+
+        for (int i = 0; i < nums1.length; i++) {
+            res = (res + origin_minus_abs[i]) % MOD;
+        }
+        return (res - max + MOD) % MOD;
+    }
+
+    public int myBinarySearch(int[] nums, int target) {
+        int left = -1;
+        int right = nums.length;
+        int mid;
+
+        while (left + 1 != right) {
+            mid = left + ((right - left) >> 1);
+            if (nums[mid] <= target) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return left;
     }
 
     /**
@@ -1044,6 +1438,7 @@ public class Solution {
 
     /**
      * No. 2283 判断一个数的数字计数是否等于数位的值
+     *
      * @param num
      * @return
      */
@@ -1065,6 +1460,7 @@ public class Solution {
 
     /**
      * No. 2287 重排字符形成目标字符串
+     *
      * @param s
      * @param target
      * @return
@@ -1096,6 +1492,32 @@ public class Solution {
             }
         }
         return repeat_count;
+    }
+
+    /**
+     * No. 2293 极大极小游戏
+     *
+     * @param nums
+     * @return
+     */
+    public int minMaxGame(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        while (nums.length > 1) {
+            int len = nums.length / 2;
+            int[] newNums = new int[len];
+            for (int i = 0; i < len; i++) {
+
+                if (i % 2 == 0) {
+                    newNums[i] = Math.min(nums[2 * i], nums[2 * i + 1]);
+                } else {
+                    newNums[i] = Math.max(nums[2 * i], nums[2 * i + 1]);
+                }
+            }
+            nums = newNums;
+        }
+        return nums[0];
     }
 
     /**

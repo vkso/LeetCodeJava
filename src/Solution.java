@@ -199,6 +199,26 @@ public class Solution {
     }
 
     /**
+     * No. 26 删除数组中的重复项
+     *     Tips: 双指针（滑动窗口）
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 1) {
+            return 1;
+        }
+        int left = 1, right = 1;
+        while (right < nums.length) {
+            if (nums[right] != nums[left-1]) {
+                nums[left++] = nums[right];
+            }
+            right++;
+        }
+        return left;
+    }
+
+    /**
      * No. 35 搜索插入位置
      *
      * @param nums
@@ -219,6 +239,54 @@ public class Solution {
             }
         }
         return right;
+    }
+
+    /**
+     * No. 80 删除有序数组中的重复项
+     * Tips: 双指针（滑动窗口）slow、fast，slow之前表示已经检查过的项目
+     * fast表示当前待检查的项目
+     *
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates(int[] nums) {
+        if (nums.length < 3) {
+            return nums.length;
+        }
+
+        int slow = 2, fast = 2;
+
+        while (fast < nums.length) {
+            if (nums[fast] != nums[slow - 2]) {
+                nums[slow++] = nums[fast];
+            }
+            ++fast;
+        }
+
+        return slow;
+
+
+//        普通方法，通过循环移动后面的数据得到
+//        int front = 1, tail = nums.length;
+//        int move_index;
+//
+//        while (front < tail) {
+//            if (nums[front] != nums[front-1]) {
+//                ++front;
+//                continue;
+//            }
+//            if (nums[front] != nums[front+1]) {
+//                ++front;
+//                continue;
+//            }
+//            move_index = front + 1;
+//            while (move_index < tail) {
+//                nums[move_index] = nums[move_index+1];
+//                ++move_index;
+//            }
+//            --tail;
+//        }
+//        return tail;
     }
 
     /**

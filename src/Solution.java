@@ -11,7 +11,30 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
+        int[] nums = {1, 2, 0, 1};
+        System.out.println(longestConsecutive(nums));
 
+    }
+
+    static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    public int[][] spiralMatrixx(int m, int n, ListNode head) {
+        int[][] matrix = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            Arrays.fill(matrix[i], -1);
+        }
+        int total = m * n;
+        int row = 0, col = 0;
+        int dirIndex = 0;
+        for (ListNode node = head; node != null; node = node.next) {
+            matrix[row][col] = node.val;
+            int nextRow = row + dirs[dirIndex][0], nextCol = col + dirs[dirIndex][1];
+            if (nextRow < 0 || nextRow >= m || nextCol < 0 || nextCol >= n || matrix[nextRow][nextCol] != -1) {
+                dirIndex = (dirIndex + 1) % 4;
+            }
+            row += dirs[dirIndex][0];
+            col += dirs[dirIndex][1];
+        }
+        return matrix;
     }
 
     public void Test2(int[] x) {
@@ -160,6 +183,59 @@ public class Solution {
     }
 
     /**
+     * No. 17 电话号码的字母组合
+     * @param digits
+     * @return
+     */
+    public List<String> letterCombinations(String digits) {
+        List<String> res = new ArrayList<>();
+        if (digits.length() == 0) {
+            return res;
+        }
+        String[][] numToAlphabet = {
+                {"*"},
+                {"*"},
+                {"a", "b", "c"},       // 2
+                {"d", "e", "f"},       // 3
+                {"g", "h", "i"},       // 4
+                {"j", "k", "l"},       // 5
+                {"m", "n", "o"},       // 6
+                {"p", "q", "r", "s"},  // 7
+                {"t", "u", "v"},       // 8
+                {"w", "x", "y", "z"},  // 9
+        };
+        Queue<String> queue = new LinkedList<>();
+        int digit_int = digits.charAt(0) - 48;
+        for (int i = 0; i < numToAlphabet[digit_int].length; i++) {
+            queue.add(numToAlphabet[digit_int][i]);
+        }
+
+        int current_digit_int;
+
+        for (int i = 1; i < digits.length(); i++) {
+            current_digit_int = digits.charAt(i) - 48;
+            String[] nextDigitArray = numToAlphabet[current_digit_int];
+            int current_queue_size = queue.size();
+
+            for (int j = 0; j < current_queue_size; j++) {
+                String tmp = queue.poll();
+                for (int k = 0; k < nextDigitArray.length; k++) {
+                    String tmp_a = tmp + numToAlphabet[current_digit_int][k];
+                    queue.add(tmp_a);
+                }
+            }
+        }
+        System.out.println(queue.size());
+
+        int res_size = queue.size();
+
+        for (int i = 0; i < res_size; i++) {
+            res.add(queue.poll());
+        }
+        return res;
+    }
+
+    /**
      * No. 21 合并两个有序链表
      *
      * @param list1
@@ -200,22 +276,73 @@ public class Solution {
 
     /**
      * No. 26 删除数组中的重复项
-     *     Tips: 双指针（滑动窗口）
+     * Tips: 双指针（滑动窗口）
+     *
      * @param nums
      * @return
      */
-    public int removeDuplicates(int[] nums) {
+    public int removeDuplicates0(int[] nums) {
         if (nums.length == 1) {
             return 1;
         }
         int left = 1, right = 1;
         while (right < nums.length) {
-            if (nums[right] != nums[left-1]) {
+            if (nums[right] != nums[left - 1]) {
                 nums[left++] = nums[right];
             }
             right++;
         }
         return left;
+    }
+
+    /**
+     * No. 30 串联所有单词的子串
+     *        使用两个 map 分别统计 长度为 n 的 word 出现的次数，并判断两个 map 是否相等（时间较长）
+     * @param s
+     * @param words
+     * @return
+     */
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> res = new ArrayList<>();
+        int s_len = s.length();
+        int word_len = words[0].length();
+        int word_nums = words.length;
+        int obj_len = word_len * word_nums;
+
+        if ( obj_len> s_len) {
+           return res;
+        }
+
+        int left = 0, right = obj_len;
+        while (right < s.length() + 1) {
+            HashMap<String, Integer> map_words = new HashMap<>();
+            HashMap<String, Integer> map_s = new HashMap<>();
+
+            for (int i = 0; i < words.length; i++) {
+                if (!map_words.containsKey(words[i])) {
+                    map_words.put(words[i], 1);
+                } else {
+                    map_words.put(words[i], map_words.get(words[i]) + 1);
+                }
+            }
+
+            for (int i = left; i < right; i += word_len) {
+                String tmp = s.substring(i, i + word_len);
+                if (!map_s.containsKey(tmp)) {
+                    map_s.put(tmp, 1);
+                } else {
+                    map_s.put(tmp, map_s.get(tmp) + 1);
+                }
+            }
+
+            if (map_s.equals(map_words)) {
+                res.add(left);
+            }
+
+            left++;
+            right++;
+        }
+        return res;
     }
 
     /**
@@ -249,7 +376,7 @@ public class Solution {
      * @param nums
      * @return
      */
-    public int removeDuplicates(int[] nums) {
+    public int removeDuplicates1(int[] nums) {
         if (nums.length < 3) {
             return nums.length;
         }
@@ -327,6 +454,67 @@ public class Solution {
         }
 
         return true;
+    }
+
+    /**
+     * No. 128 最长连续序列
+     *     Tips: 使用集合，存储所有不重复的元素，有如下规律：
+     *           a, b, c, d, e, f, g, h   是一个连续序列，从 a 开始，到 h 结束，如果
+     *           碰到任意一个 a-h 之间的序列，其长度不可能超过  h-a，因此，遍历set的时候，如果
+     *           一个数组的前一个数字已经存在了，那么这个数字遍历的就没有意义了。
+     * @param nums
+     */
+    public int longestConsecutive(int[] nums) {
+        // 使用集合判断的方法
+        if (nums.length < 2) {
+            return nums.length;
+        }
+        HashSet<Integer> hashSet = new HashSet<>();
+
+        for (int n : nums) {
+            hashSet.add(n);
+        }
+
+        int longestStreak = 0;
+        for (int num : hashSet) {
+            if (!hashSet.contains(num - 1)) {
+                int currentNum = num;
+                int currentStreak = 1;
+
+                while (hashSet.contains(currentNum + 1)) {
+                    currentNum++;
+                    currentStreak++;
+                }
+
+                longestStreak = Math.max(longestStreak, currentStreak);
+            }
+        }
+        return longestStreak;
+
+
+        // 使用 sort 排序后判断的方法
+//        if (nums.length < 2) {
+//            return nums.length;
+//        }
+//        Arrays.sort(nums);
+//
+//        int i = 1;
+//        int current_max = 1;
+//        int res_max = 1;
+//        while (i < nums.length) {
+//            if (nums[i] - nums[i-1] == 0) {
+//                i++;
+//            } else if (nums[i] - nums[i-1] == 1) {
+//                current_max++;
+//                i++;
+//                res_max = current_max > res_max ? current_max: res_max;
+//            } else {
+//                res_max = current_max > res_max ? current_max: res_max;
+//                current_max = 1;
+//                i++;
+//            }
+//        }
+//        return res_max;
     }
 
     /**
@@ -913,6 +1101,38 @@ public class Solution {
         }
 
         return sb.insert(0, sign).toString();
+    }
+
+    /**
+     * No. 701 二叉搜索树中插入操作
+     *
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        TreeNode cur = root;
+        while (cur != null) {
+            if (val < cur.val) {
+                if (cur.left != null) {
+                    cur = cur.left;
+                } else {
+                    cur.left = new TreeNode(val);
+                    break;
+                }
+            } else {
+                if (cur.right != null) {
+                    cur = cur.right;
+                } else {
+                    cur.right = new TreeNode(val);
+                    break;
+                }
+            }
+        }
+        return root;
     }
 
     /**
@@ -1586,6 +1806,136 @@ public class Solution {
             nums = newNums;
         }
         return nums[0];
+    }
+
+    /**
+     * No. 2301 替换字符后匹配
+     * @param s
+     * @param sub
+     * @param mappings
+     * @return
+     */
+    public boolean matchReplacement(String s, String sub, char[][] mappings) {
+        if (s.contains(sub)) {
+            return true;
+        }
+
+        HashMap<Character, String> map = new HashMap<>();
+        for (int i = 0; i < mappings.length; i++) {
+            if (!map.containsKey(mappings[i][0])) {
+                map.put(mappings[i][0], Character.toString(mappings[i][1]));
+            } else {
+                map.put(mappings[i][0], map.get(mappings[i][0]) + mappings[i][1]);
+            }
+        }
+
+        int s_len = s.length();
+        int sub_len = sub.length();
+        for (int i = 0; i < s_len - sub_len + 1; i++) {
+            String compare = s.substring(i, i + sub_len);
+            int finded = 0;
+            for (int j = 0; j < compare.length(); j++) {
+                if (compare.charAt(j) == sub.charAt(j)) {
+                    if (j == sub.length() - 1) {
+                        finded = 1;
+                        break;
+                    }
+                    continue;
+                } else {
+                    if (!map.containsKey(sub.charAt(j))) {
+                        break;
+                    } else {
+                        if (map.get(sub.charAt(j)).contains(Character.toString(compare.charAt(j)))) {
+                            if (j == sub.length() - 1) {
+                                finded = 1;
+                                break;
+                            }
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (finded == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * No. 2326 螺旋矩阵 IV
+     *
+     * @param m
+     * @param n
+     * @param head
+     * @return
+     */
+    public int[][] spiralMatrix(int m, int n, ListNode head) {
+        ListNode cruise = head;
+        int[][] res = new int[m][n];
+
+        for (int i = 0; i < m; i++) {
+            Arrays.fill(res[i], -1);
+        }
+
+        int count = 0;
+        int restRow = m;
+        int restCow = n;
+        int reachEnd = 0;
+
+        while (restRow > 0 && restCow > 0 && reachEnd != 1) {
+            if ( m == n && count == m / 2) {
+                res[count][count] = cruise.val;
+                return res;
+            }
+            // 打印最外圈的 上行
+            for (int cow = count; cow < n - count - 1 && reachEnd != 1; cow++) {
+                res[count][cow] = cruise.val;
+                if (cruise.next != null) {
+                    cruise = cruise.next;
+                } else {
+                    reachEnd = 1;
+                    break;
+                }
+            }
+            // 打印最外圈的 右列
+            for (int row = count; row < m - count - 1 && reachEnd != 1; row++) {
+                res[row][n - count - 1] = cruise.val;
+                if (cruise.next != null) {
+                    cruise = cruise.next;
+                } else {
+                    reachEnd = 1;
+                    break;
+                }
+            }
+            // 打印最外圈的 下行
+            for (int cow = n - count - 1; cow > count && reachEnd != 1; cow--) {
+                res[m - count - 1][cow] = cruise.val;
+                if (cruise.next != null) {
+                    cruise = cruise.next;
+                } else {
+                    reachEnd = 1;
+                    break;
+                }
+            }
+            // 打印最外圈的 左列
+            for (int row = m - count - 1; row > count && reachEnd != 1; row--) {
+                res[row][count] = cruise.val;
+                if (cruise.next != null) {
+                    cruise = cruise.next;
+                } else {
+                    reachEnd = 1;
+                    break;
+                }
+            }
+
+            restRow -= 2;
+            restCow -= 2;
+            ++count;
+        }
+        return res;
     }
 
     /**

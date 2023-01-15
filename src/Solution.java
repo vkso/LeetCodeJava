@@ -11,8 +11,9 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] nums = {1, 2, 0, 1};
-        System.out.println(longestConsecutive(nums));
+        String s1 = "A B C D B B";
+        String s2 = "A B B";
+        System.out.println(areSentencesSimilar(s1, s2));
 
     }
 
@@ -1542,6 +1543,57 @@ public class Solution {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * No. 1813 句子相似性 III
+     * @param sentence1
+     * @param sentence2
+     * @return
+     */
+    public boolean areSentencesSimilar(String sentence1, String sentence2) {
+        if (sentence1.equals(sentence2)) {
+            return true;
+        }
+        String[] s1 = sentence1.split(" ");
+        String[] s2 = sentence2.split(" ");
+        if (s1.length == s2.length) {
+            return false;
+        }
+        int shortLen = s1.length < s2.length ? s1.length : s2.length;
+
+        int s1_left = 0, s1_right = s1.length-1, s2_left = 0, s2_right = s2.length -1;
+        while (s1_left < s1.length && s2_left < s2.length &&
+                s1[s1_left].equals(s2[s2_left])) {
+            s1_left++;
+            s2_left++;
+        }
+        if (s1_left == shortLen || s2_left == shortLen) {
+            return true;
+        }
+
+        while (s1_right >= 0 && s2_right >= 0 &&
+                s1[s1_right].equals(s2[s2_right])) {
+            s1_right--;
+            s2_right--;
+        }
+        if (s1_right == -1 || s2_right == -1) {
+            return true;
+        }
+
+        if (s1.length < s2.length) {
+            if (s1_left > s1_right) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (s2_left > s2_right) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     /**

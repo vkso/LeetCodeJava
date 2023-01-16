@@ -11,9 +11,8 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        String s1 = "A B C D B B";
-        String s2 = "A B B";
-        System.out.println(areSentencesSimilar(s1, s2));
+        int[] nums = {42, 11, 1, 97};
+        System.out.println(countNicePairs(nums));
 
     }
 
@@ -1489,6 +1488,88 @@ public class Solution {
     }
 
     /**
+     * No. 1814 统计一个数组中 好对子 的数目
+     *     Tips: O(n^2) 时间复杂对会超时
+     *     使用HashMap简化统计方式：nums[i] + rev(nums[j]) = nums[j] + rev(nums[i]) ①
+     *     对公式1两边转换计算可以得到   nums[i] - rev(nums[i]) = nums[j] - rev(nums[j]) ②
+     *         有：f(i) = f(j)   便可以找到  i 和 j 的关系对，使用HashMap可以统计是否出现过，
+     *         value = f(i) value 出现过5次，hashmap中的统计值4，1 + 2 + 3 + 4，就是一共出现的对数
+     * @param nums
+     * @return
+     */
+    public int countNicePairs(int[] nums) {
+        final int MOD = 1000000007;
+        int res = 0;
+        Map<Integer, Integer> h = new HashMap<>();
+        for (int i : nums) {
+            int temp = i, j = 0;
+            while (temp > 0) {
+                j = j * 10 + temp % 10;
+                temp /= 10;
+            }
+            // 这里有一个细节，res 第一次 + 0 操作，此时的值，并没有 put 到哈希表中
+            res = (res + h.getOrDefault(i - j, 0)) % MOD;
+            h.put(i - j, h.getOrDefault(i - j, 0) + 1);
+        }
+        return res;
+    }
+
+    /**
+     * No. 1575 统计所有可行路径
+     *     Tips: 动态规划
+     * @param locations
+     * @param start
+     * @param finish
+     * @param fuel
+     * @return
+     */
+    static final int MOD = 1000000007;
+    int[][] f;
+    public int countRoutes(int[] locations, int start, int finish, int fuel) {
+        f = new int[locations.length][fuel + 1];
+        for (int[] row : f) {
+            Arrays.fill(row, -1);
+        }
+        return dfs_1575(locations, start, finish, fuel);
+    }
+
+    /**
+     *
+     * @param locations  城市location数组
+     * @param pos        当前所处城市 position
+     * @param finish     目的城市
+     * @param rest       当前所剩的汽油量
+     * @return           返回当前城市、所剩汽油数量 距 finish 目的城市一共有多少种路径
+     */
+    public int dfs_1575(int[] locations, int pos, int finish, int rest) {
+        // 当前情况已经计算过
+        if (f[pos][rest] != -1) {
+            return f[pos][rest];
+        }
+
+        f[pos][rest] = 0; // 计算之前，置零
+        if (Math.abs(locations[pos] - locations[finish]) > rest) {
+            return 0;  // 如果两点直线距离 rest 数量的汽油都不可达，那么肯定没有路径可选
+        }
+
+        int n = locations.length;
+        for (int i = 0; i < n; ++i) {
+            if (pos != i) {  // 需要跳过当前节点
+                int cost;
+                if ((cost = Math.abs(locations[pos] - locations[i])) <= rest) {
+                    f[pos][rest] += dfs_1575(locations, i, finish, rest - cost);
+                    f[pos][rest] %= MOD;
+                }
+            }
+        }
+        if (pos == finish) {
+            f[pos][rest] += 1;
+            f[pos][rest] %= MOD;
+        }
+        return f[pos][rest];
+    }
+
+    /**
      * No. 1614 括号的最大嵌套深度
      *
      * @param s
@@ -2063,7 +2144,7 @@ public class Solution {
 }
 
 
-
+// No. 1575 统计所有可行路径，需要重新逐步推算
 
 
 

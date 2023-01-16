@@ -1105,6 +1105,30 @@ public class Solution {
     }
 
     /**
+     * No. 543 二叉树的直径
+     *     Tips: 设置全局变量 depth，每次递归的时候，判断 depth 是不是最长的
+     *           递归遍历过程中，其实是计算left, right 的深度
+     * @param root
+     * @return
+     */
+    public int diameterOfBinaryTree(TreeNode root) {
+        depth = 1;
+        binTreeInorderDepth(root);
+        return depth - 1;
+    }
+    int depth;
+    public int binTreeInorderDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int L = binTreeInorderDepth(root.left);
+        int R = binTreeInorderDepth(root.right);
+        // 没有下面这条语句，这是一个标准的计算二叉树深度的递归函数
+        depth = Math.max(depth, L + R + 1);
+        return Math.max(L, R) + 1;
+    }
+
+    /**
      * No. 701 二叉搜索树中插入操作
      *
      * @param root

@@ -370,6 +370,33 @@ public class Solution {
     }
 
     /**
+     * No. 48 旋转图像
+     *     Tips：顺时针旋转matrix 90度，可以转换为，对角线翻转后，按行逆序
+     * @param matrix
+     */
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        int tmp;
+        // 沿着左上、右下对角线翻转
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                tmp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = tmp;
+            }
+        }
+        // 按行逆序
+        for (int i = 0; i < n; i++) {
+            int left = 0, right = n - 1;
+            while (left < right) {
+                tmp = matrix[i][left];
+                matrix[i][left++] = matrix[i][right];
+                matrix[i][right--] = tmp;
+            }
+        }
+    }
+
+    /**
      * No. 80 删除有序数组中的重复项
      * Tips: 双指针（滑动窗口）slow、fast，slow之前表示已经检查过的项目
      * fast表示当前待检查的项目

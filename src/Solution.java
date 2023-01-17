@@ -11,8 +11,11 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] locations = {2, 3, 6, 8, 4};
-        System.out.println(countRoutes(locations, 1, 3, 5));
+        ListNode n3 = new ListNode(0, null);
+        ListNode n2 = new ListNode(0, n3);
+        ListNode n1 = new ListNode(1, n2);
+
+        System.out.println(isPalindrome(n1));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -234,6 +237,30 @@ public class Solution {
             res.add(queue.poll());
         }
         return res;
+    }
+
+    /**
+     * No. 19 删除链表的倒数第N个节点
+     *     Tips: 方便删除操作，构造一个 dummy 头节点挂载 head 的前面
+     * @param head
+     * @param n
+     * @return
+     */
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0, head);
+        ListNode fast = head;
+        ListNode slow = dummy;
+
+        while (fast != null && n > 0) {
+            fast = fast.next;
+            n--;
+        }
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
     }
 
     /**
@@ -791,6 +818,53 @@ public class Solution {
             n = n >> 1;
         }
         return true;
+    }
+
+    /**
+     * No. 234 回文链表
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome(ListNode head) {
+        if (head.next == null) {
+            return true;
+        }
+        ListNode slow = head, fast = head;
+        Stack<Integer> stack = new Stack<>();
+        while (fast != null && fast.next != null) {
+            stack.push(slow.val);
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        if (fast == null) {
+            while(!stack.isEmpty()) {
+                if (stack.pop() != slow.val) {
+                    return false;
+                } else {
+                    slow = slow.next;
+                }
+            }
+        }else if (fast.next == null) {
+            slow = slow.next;
+            while (!stack.isEmpty()) {
+                if (stack.pop() != slow.val) {
+                    return false;
+                } else {
+                    slow = slow.next;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * No. 237 删除链表中的节点
+     * @param node
+     */
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
     }
 
     /**
@@ -2272,6 +2346,57 @@ public class Solution {
             }
         }
         return ' ';
+    }
+
+    /**
+     * 剑指Offer II 024. 翻转链表
+     *             Tips: ① 使用 stack 存放数据，弹出数据加入到新的链表中，即可翻转链表
+     *                   ② 原地修改链表
+     * @param head
+     * @return
+     */
+    public ListNode reverseList(ListNode head) {
+
+        // 原地修改，使用尾插法，从head处，重新构建一个新链表，插入的节点就是原来链表顺序遍历的节点
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode ans_head = new ListNode(0, null);
+        ListNode cruise = head.next;
+        ListNode cruise_pre = head;
+
+        ans_head.next = cruise_pre;
+        cruise_pre.next = null;
+
+        while (cruise.next != null) {
+            cruise_pre = cruise;
+            cruise = cruise.next;
+
+            cruise_pre.next = ans_head.next;
+            ans_head.next = cruise_pre;
+        }
+
+        cruise.next = ans_head.next;
+        ans_head.next = cruise;
+        return ans_head.next;
+
+//       if (head == null || head.next == null) {
+//           return head;
+//       }
+//       ListNode res_head = new ListNode(0, null);
+//       ListNode cru = res_head;
+//       Stack<ListNode> stack = new Stack<>();
+//       while (head != null) {
+//           stack.push(head);
+//           head = head.next;
+//       }
+//       while (!stack.isEmpty()) {
+//           cru.next = stack.pop();
+//           cru = cru.next;
+//       }
+//       cru.next = null;
+//       return res_head.next;
     }
 }
 

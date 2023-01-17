@@ -11,12 +11,12 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] nums = {42, 11, 1, 97};
-        System.out.println(countNicePairs(nums));
-
+        int[] locations = {2, 3, 6, 8, 4};
+        System.out.println(countRoutes(locations, 1, 3, 5));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
     public int[][] spiralMatrixx(int m, int n, ListNode head) {
         int[][] matrix = new int[m][n];
         for (int i = 0; i < m; i++) {
@@ -184,6 +184,7 @@ public class Solution {
 
     /**
      * No. 17 电话号码的字母组合
+     *
      * @param digits
      * @return
      */
@@ -297,7 +298,8 @@ public class Solution {
 
     /**
      * No. 30 串联所有单词的子串
-     *        使用两个 map 分别统计 长度为 n 的 word 出现的次数，并判断两个 map 是否相等（时间较长）
+     * 使用两个 map 分别统计 长度为 n 的 word 出现的次数，并判断两个 map 是否相等（时间较长）
+     *
      * @param s
      * @param words
      * @return
@@ -309,8 +311,8 @@ public class Solution {
         int word_nums = words.length;
         int obj_len = word_len * word_nums;
 
-        if ( obj_len> s_len) {
-           return res;
+        if (obj_len > s_len) {
+            return res;
         }
 
         int left = 0, right = obj_len;
@@ -369,8 +371,38 @@ public class Solution {
     }
 
     /**
+     * No. 38 外观数列
+     * Tips: 典型的递归方法且没有重复递归项目，递归  say(n) = say(n-1), say(1) = "1";
+     *       双重while循环，不停的滑动  [left, right] 区间，left指向区间内开始的字符，right是整个区间的重点
+     *       将结果append 到 res 字符串中即可
+     *
+     * @param n
+     * @return
+     */
+    public String countAndSay(int n) {
+        if (n == 1) {
+            return "1";
+        }
+        String pre = countAndSay(n - 1);
+        StringBuilder res = new StringBuilder();
+
+        int start = 0, end = 0;
+
+        while (end < pre.length()) {
+            while (end < pre.length() && pre.charAt(start) == pre.charAt(end)) {
+                end++;
+            }
+            res.append(end - start);
+            res.append(pre.charAt(start));
+            start = end;
+        }
+        return res.toString();
+    }
+
+    /**
      * No. 48 旋转图像
-     *     Tips：顺时针旋转matrix 90度，可以转换为，对角线翻转后，按行逆序
+     * Tips：顺时针旋转matrix 90度，可以转换为，对角线翻转后，按行逆序
+     *
      * @param matrix
      */
     public void rotate(int[][] matrix) {
@@ -393,6 +425,29 @@ public class Solution {
                 matrix[i][right--] = tmp;
             }
         }
+    }
+
+    /**
+     * No. 66 加一
+     * Tips: 从后向前遍历，如果当前位置数字不是9，那么可以直接进行+1操作然后返回
+     * 直到第一位也是9的时候，重新生成一个数组【默认全0】，最高位置1，返回即可
+     *
+     * @param digits
+     * @return
+     */
+    public int[] plusOne(int[] digits) {
+        int length = digits.length;
+        for (int i = length - 1; i >= 0; i--) {
+            if (digits[i] != 9) {
+                digits[i]++;
+                return digits;
+            } else {
+                digits[i] = 0;
+            }
+        }
+        int res[] = new int[length + 1];
+        res[0] = 1;
+        return res;
     }
 
     /**
@@ -485,10 +540,11 @@ public class Solution {
 
     /**
      * No. 128 最长连续序列
-     *     Tips: 使用集合，存储所有不重复的元素，有如下规律：
-     *           a, b, c, d, e, f, g, h   是一个连续序列，从 a 开始，到 h 结束，如果
-     *           碰到任意一个 a-h 之间的序列，其长度不可能超过  h-a，因此，遍历set的时候，如果
-     *           一个数组的前一个数字已经存在了，那么这个数字遍历的就没有意义了。
+     * Tips: 使用集合，存储所有不重复的元素，有如下规律：
+     * a, b, c, d, e, f, g, h   是一个连续序列，从 a 开始，到 h 结束，如果
+     * 碰到任意一个 a-h 之间的序列，其长度不可能超过  h-a，因此，遍历set的时候，如果
+     * 一个数组的前一个数字已经存在了，那么这个数字遍历的就没有意义了。
+     *
      * @param nums
      */
     public int longestConsecutive(int[] nums) {
@@ -883,6 +939,26 @@ public class Solution {
     }
 
     /**
+     * No. 283 移动零
+     *
+     * @param nums
+     */
+    public void moveZeroes(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return;
+        }
+        int left = 0;    // left,right 位于整个数组的起始位置，right 从头到后遍历，遇到非0元素 替换到left的为止
+        for (int right = 0; right < nums.length; ++right) {
+            if (nums[right] != 0) {
+                nums[left++] = nums[right];
+            }
+        }
+        while (left < nums.length) {
+            nums[left++] = 0;
+        }
+    }
+
+    /**
      * No. 292 Nim游戏
      * 如果你先手，n是4的倍数，必输。可以反向推理一下
      *
@@ -934,6 +1010,55 @@ public class Solution {
             }
         }
         return str.toString();
+    }
+
+    /**
+     * No. 350 两个数组的交集 II
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] intersect(int[] nums1, int[] nums2) {
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        for (int i = 0; i < nums1.length; i++) {
+            hashMap.put(nums1[i], hashMap.getOrDefault(nums1[i], 0) + 1);
+        }
+        for (int j = 0; j < nums2.length; j++) {
+            if (hashMap.containsKey(nums2[j])) {
+                arrayList.add(nums2[j]);
+                hashMap.put(nums2[j], hashMap.get(nums2[j]) - 1);
+                if (hashMap.get(nums2[j]) == 0) {
+                    hashMap.remove(nums2[j]);
+                }
+            }
+        }
+        int[] res = new int[arrayList.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = arrayList.get(i);
+        }
+        return res;
+    }
+
+    /**
+     * No. 387 字符串中的第一个唯一字符
+     *
+     * @param s
+     * @return
+     */
+    public int firstUniqChar(String s) {
+        int res = -1;
+        HashMap<Character, Integer> hashmap = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            hashmap.put(s.charAt(i), hashmap.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (hashmap.get(s.charAt(i)) == 1) {
+                return i;
+            }
+        }
+        return res;
     }
 
     /**
@@ -1132,8 +1257,9 @@ public class Solution {
 
     /**
      * No. 543 二叉树的直径
-     *     Tips: 设置全局变量 depth，每次递归的时候，判断 depth 是不是最长的
-     *           递归遍历过程中，其实是计算left, right 的深度
+     * Tips: 设置全局变量 depth，每次递归的时候，判断 depth 是不是最长的
+     * 递归遍历过程中，其实是计算left, right 的深度
+     *
      * @param root
      * @return
      */
@@ -1142,7 +1268,9 @@ public class Solution {
         binTreeInorderDepth(root);
         return depth - 1;
     }
+
     int depth;
+
     public int binTreeInorderDepth(TreeNode root) {
         if (root == null) {
             return 0;
@@ -1489,11 +1617,12 @@ public class Solution {
 
     /**
      * No. 1814 统计一个数组中 好对子 的数目
-     *     Tips: O(n^2) 时间复杂对会超时
-     *     使用HashMap简化统计方式：nums[i] + rev(nums[j]) = nums[j] + rev(nums[i]) ①
-     *     对公式1两边转换计算可以得到   nums[i] - rev(nums[i]) = nums[j] - rev(nums[j]) ②
-     *         有：f(i) = f(j)   便可以找到  i 和 j 的关系对，使用HashMap可以统计是否出现过，
-     *         value = f(i) value 出现过5次，hashmap中的统计值4，1 + 2 + 3 + 4，就是一共出现的对数
+     * Tips: O(n^2) 时间复杂对会超时
+     * 使用HashMap简化统计方式：nums[i] + rev(nums[j]) = nums[j] + rev(nums[i]) ①
+     * 对公式1两边转换计算可以得到   nums[i] - rev(nums[i]) = nums[j] - rev(nums[j]) ②
+     * 有：f(i) = f(j)   便可以找到  i 和 j 的关系对，使用HashMap可以统计是否出现过，
+     * value = f(i) value 出现过5次，hashmap中的统计值4，1 + 2 + 3 + 4，就是一共出现的对数
+     *
      * @param nums
      * @return
      */
@@ -1516,7 +1645,8 @@ public class Solution {
 
     /**
      * No. 1575 统计所有可行路径
-     *     Tips: 动态规划
+     * Tips: 动态规划
+     *
      * @param locations
      * @param start
      * @param finish
@@ -1525,6 +1655,7 @@ public class Solution {
      */
     static final int MOD = 1000000007;
     int[][] f;
+
     public int countRoutes(int[] locations, int start, int finish, int fuel) {
         f = new int[locations.length][fuel + 1];
         for (int[] row : f) {
@@ -1534,12 +1665,11 @@ public class Solution {
     }
 
     /**
-     *
-     * @param locations  城市location数组
-     * @param pos        当前所处城市 position
-     * @param finish     目的城市
-     * @param rest       当前所剩的汽油量
-     * @return           返回当前城市、所剩汽油数量 距 finish 目的城市一共有多少种路径
+     * @param locations 城市location数组
+     * @param pos       当前所处城市 position
+     * @param finish    目的城市
+     * @param rest      当前所剩的汽油量
+     * @return 返回当前城市、所剩汽油数量 距 finish 目的城市一共有多少种路径
      */
     public int dfs_1575(int[] locations, int pos, int finish, int rest) {
         // 当前情况已经计算过
@@ -1679,6 +1809,7 @@ public class Solution {
 
     /**
      * No. 1813 句子相似性 III
+     *
      * @param sentence1
      * @param sentence2
      * @return
@@ -1694,7 +1825,7 @@ public class Solution {
         }
         int shortLen = s1.length < s2.length ? s1.length : s2.length;
 
-        int s1_left = 0, s1_right = s1.length-1, s2_left = 0, s2_right = s2.length -1;
+        int s1_left = 0, s1_right = s1.length - 1, s2_left = 0, s2_right = s2.length - 1;
         while (s1_left < s1.length && s2_left < s2.length &&
                 s1[s1_left].equals(s2[s2_left])) {
             s1_left++;
@@ -1994,6 +2125,7 @@ public class Solution {
 
     /**
      * No. 2301 替换字符后匹配
+     *
      * @param s
      * @param sub
      * @param mappings
@@ -2070,7 +2202,7 @@ public class Solution {
         int reachEnd = 0;
 
         while (restRow > 0 && restCow > 0 && reachEnd != 1) {
-            if ( m == n && count == m / 2) {
+            if (m == n && count == m / 2) {
                 res[count][count] = cruise.val;
                 return res;
             }

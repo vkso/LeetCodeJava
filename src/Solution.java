@@ -1,9 +1,11 @@
+import apple.laf.JRSUIUtils;
 import com.leetcode.tools.ListNode;
 import com.leetcode.tools.MyLinkedList;
 import com.leetcode.tools.TreeNode;
 import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
+import java.security.cert.CollectionCertStoreParameters;
 import java.util.*;
 
 // https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
@@ -11,18 +13,8 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        MKAverage a = new MKAverage(3, 1);
-        a.addElement(17612);
-        a.addElement(74607);
-        System.out.println(a.calculateMKAverage());
+        System.out.println(firstBadVersion(2147483647));
 
-        a.addElement(8272);
-        a.addElement(33433);
-        System.out.println(a.calculateMKAverage());
-        a.addElement(15456);
-        a.addElement(64938);
-        System.out.println(a.calculateMKAverage());
-        a.addElement(99741);
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -248,7 +240,8 @@ public class Solution {
 
     /**
      * No. 19 删除链表的倒数第N个节点
-     *     Tips: 方便删除操作，构造一个 dummy 头节点挂载 head 的前面
+     * Tips: 方便删除操作，构造一个 dummy 头节点挂载 head 的前面
+     *
      * @param head
      * @param n
      * @return
@@ -268,6 +261,39 @@ public class Solution {
         }
         slow.next = slow.next.next;
         return dummy.next;
+    }
+
+    /**
+     * No. 20 有效的括号
+     * @param s
+     * @return
+     */
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char cur = s.charAt(i);
+            if (cur == '(' || cur == '{' || cur == '[') {
+                stack.push(cur);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                } else {
+                    char ch = stack.pop();
+                    switch (ch) {
+                        case '(':
+                            if (cur != ')') return false;
+                            break;
+                        case '{':
+                            if (cur != '}') return false;
+                            break;
+                        case '[':
+                            if (cur != ']') return false;
+                            break;
+                    }
+                }
+            }
+        }
+        return stack.isEmpty() ? true : false;
     }
 
     /**
@@ -407,8 +433,8 @@ public class Solution {
     /**
      * No. 38 外观数列
      * Tips: 典型的递归方法且没有重复递归项目，递归  say(n) = say(n-1), say(1) = "1";
-     *       双重while循环，不停的滑动  [left, right] 区间，left指向区间内开始的字符，right是整个区间的重点
-     *       将结果append 到 res 字符串中即可
+     * 双重while循环，不停的滑动  [left, right] 区间，left指向区间内开始的字符，right是整个区间的重点
+     * 将结果append 到 res 字符串中即可
      *
      * @param n
      * @return
@@ -533,17 +559,48 @@ public class Solution {
     }
 
     /**
+     * No. 88 合并两个有序数组
+     * Tips: 由于 nums1 数组的后半部分是0，所有可以从后往前归并两个数组
+     *
+     * @param nums1
+     * @param m
+     * @param nums2
+     * @param n
+     */
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int current = m + n - 1;
+        int nums1_end = m - 1;
+        int nums2_end = n - 1;
+        while (nums1_end >= 0 && nums2_end >= 0) {
+            if (nums1[nums1_end] >= nums2[nums2_end]) {
+                nums1[current--] = nums1[nums1_end--];
+            } else {
+                nums1[current--] = nums2[nums2_end--];
+            }
+        }
+        while (nums1_end >= 0) {
+            nums1[current--] = nums1[nums1_end--];
+        }
+        while (nums2_end >= 0) {
+            nums1[current--] = nums2[nums2_end--];
+        }
+    }
+
+    /**
      * No. 98 验证二叉搜索树
-     *     Tips: 中序遍历一个二叉搜索树，一定得到一个单调递增序列
+     * Tips: 中序遍历一个二叉搜索树，一定得到一个单调递增序列
+     *
      * @param root
      * @return
      */
     Long pre_98 = Long.MIN_VALUE;
     boolean res_98 = true;
+
     public boolean isValidBST(TreeNode root) {
         inOrder_98(root);
         return res_98;
     }
+
     public void inOrder_98(TreeNode root) {
         if (root == null) {
             return;
@@ -559,8 +616,72 @@ public class Solution {
     }
 
     /**
+     * No. 101 对称二叉树
+     *     Tips:
+     *         ①递归实现
+     *         ②队列实现（相当于将左右子树，重叠在一起遍历，一次取出两个元素）
+     * @param root
+     * @return
+     */
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null || (root.left == null && root.right == null)) {
+            return true;
+        }
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.add(root.left);
+        queue.add(root.right);
+        while (queue.size() > 0) {
+            TreeNode left = queue.removeFirst();
+            TreeNode right = queue.removeFirst();
+            if (left == null && right == null) {
+                continue;
+            }
+            if (left == null || right == null) {
+                return false;
+            }
+            if (left.val != right.val) {
+                return false;
+            }
+            queue.add(left.left);
+            queue.add(right.right);
+            queue.add(left.right);
+            queue.add(right.left);
+        }
+        return true;
+    }
+
+//    public boolean isSymmetric(TreeNode root) {
+//        // 如果是空树，返回 true
+//        if (root == null) {
+//            return true;
+//        }
+//        // 递归判断这个树的左右孩子是不是符合对称二叉树的规律
+//        return dfs_101(root.left, root.right);
+//
+//    }
+//    public boolean dfs_101(TreeNode left, TreeNode right) {
+//        // 如果左右孩子节点都是空，返回 true
+//        if (left == null && right == null) {
+//            return true;
+//        }
+//        // 如果只有一个节点是非空，结合上一个if语句，那么这课树一定不对称
+//        if (left == null || right == null) {
+//            return false;
+//        }
+//        // 如果带个节点都不为空，但是val不相等，那么不对称
+//        if (left.val != right.val) {
+//            return false;
+//        }
+//        // 递归判断，左节点的做孩子 和 有节点的右孩子是不是相等
+//        //          左节点的右孩子 和 右节点的左孩子是不是相等
+//        return dfs_101(left.left, right.right) &&
+//                dfs_101(left.right, right.left);
+//    }
+
+    /**
      * No. 102 二叉树的层序遍历
-     *     Tips: 在while循环中间，添加一个当前队列包含的总数量，即一层所有的节点数量
+     * Tips: 在while循环中间，添加一个当前队列包含的总数量，即一层所有的节点数量
+     *
      * @param root
      * @return
      */
@@ -589,6 +710,27 @@ public class Solution {
             res.add(tmpList);
         }
         return res;
+    }
+
+    /**
+     * No. 118 杨辉三角
+     * @param numRows
+     * @return
+     */
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
+            List<Integer> row = new ArrayList<>();
+            for (int j = 0; j <= i; j++) {
+                if (j == 0 || j == i) {
+                    row.add(1);
+                } else {
+                    row.add(ret.get(i-1).get(j-1) + ret.get(i-1).get(j));
+                }
+            }
+            ret.add(row);
+        }
+        return ret;
     }
 
     /**
@@ -695,7 +837,8 @@ public class Solution {
 
     /**
      * No. 141 环形链表
-     *     Tips: 快慢指针，如果快的能追上慢的，代表一定有环路出现
+     * Tips: 快慢指针，如果快的能追上慢的，代表一定有环路出现
+     *
      * @param head
      * @return
      */
@@ -910,6 +1053,7 @@ public class Solution {
 
     /**
      * No. 234 回文链表
+     *
      * @param head
      * @return
      */
@@ -926,14 +1070,14 @@ public class Solution {
         }
 
         if (fast == null) {
-            while(!stack.isEmpty()) {
+            while (!stack.isEmpty()) {
                 if (stack.pop() != slow.val) {
                     return false;
                 } else {
                     slow = slow.next;
                 }
             }
-        }else if (fast.next == null) {
+        } else if (fast.next == null) {
             slow = slow.next;
             while (!stack.isEmpty()) {
                 if (stack.pop() != slow.val) {
@@ -948,6 +1092,7 @@ public class Solution {
 
     /**
      * No. 237 删除链表中的节点
+     *
      * @param node
      */
     public void deleteNode(ListNode node) {
@@ -1098,6 +1243,31 @@ public class Solution {
             n /= 10;
         }
         return res;
+    }
+
+    /**
+     * No. 278 第一个错误的版本
+     * Tips: 使用二分查找，注意 n 的取值范围，有可能导致 int 越界
+     *
+     * @param n
+     * @return
+     */
+    public int firstBadVersion(int n) {
+        long left = -1, right = n + 1;
+        while (left + 1 != right) {
+            long mid = left + ((right - left) >> 1);
+            System.out.println(mid);
+            if (!isBadVersion((int) mid)) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        return (int) right;
+    }
+
+    public boolean isBadVersion(int n) {
+        return n == 2147483647 ? true : false;
     }
 
     /**
@@ -2438,8 +2608,9 @@ public class Solution {
 
     /**
      * 剑指Offer II 024. 翻转链表
-     *             Tips: ① 使用 stack 存放数据，弹出数据加入到新的链表中，即可翻转链表
-     *                   ② 原地修改链表
+     * Tips: ① 使用 stack 存放数据，弹出数据加入到新的链表中，即可翻转链表
+     * ② 原地修改链表
+     *
      * @param head
      * @return
      */
@@ -2485,6 +2656,22 @@ public class Solution {
 //       }
 //       cru.next = null;
 //       return res_head.next;
+    }
+
+    /**
+     * 剑指Offer 53 - II 0~1 中缺失的数字
+     *     Tips: [0, 1, 2]   缺失的是3，n = 4， 0~n-1 = 0, 1, 2, 3
+     * @param nums
+     * @return
+     */
+    public int missingNumber_swardOffer (int[] nums) {
+        int n = nums.length + 1;
+        for (int i = 0; i < n - 1; i++) {
+            if (nums[i] != i) {
+                return i;
+            }
+        }
+        return n - 1;
     }
 }
 

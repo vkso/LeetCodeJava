@@ -265,6 +265,7 @@ public class Solution {
 
     /**
      * No. 20 有效的括号
+     *
      * @param s
      * @return
      */
@@ -617,9 +618,10 @@ public class Solution {
 
     /**
      * No. 101 对称二叉树
-     *     Tips:
-     *         ①递归实现
-     *         ②队列实现（相当于将左右子树，重叠在一起遍历，一次取出两个元素）
+     * Tips:
+     * ①递归实现
+     * ②队列实现（相当于将左右子树，重叠在一起遍历，一次取出两个元素）
+     *
      * @param root
      * @return
      */
@@ -714,6 +716,7 @@ public class Solution {
 
     /**
      * No. 118 杨辉三角
+     *
      * @param numRows
      * @return
      */
@@ -725,7 +728,7 @@ public class Solution {
                 if (j == 0 || j == i) {
                     row.add(1);
                 } else {
-                    row.add(ret.get(i-1).get(j-1) + ret.get(i-1).get(j));
+                    row.add(ret.get(i - 1).get(j - 1) + ret.get(i - 1).get(j));
                 }
             }
             ret.add(row);
@@ -1922,6 +1925,37 @@ public class Solution {
     }
 
     /**
+     * No. 1300 转变数组后最接近目标值的数组和
+     *
+     * @param var
+     * @param target
+     * @return
+     */
+    public int findBestValue(int[] var, int target) {
+        Arrays.sort(var);
+        int len = var.length;
+        int cur_sum = 0;
+
+        for (int i = 0; i < len; i++) {
+            int cur_avg = (target - cur_sum) / (len - i);
+            // 如果当前位置的值 比 已经计算的后面所需的平均值大【意味着，后面加起来一定 > target】
+            if (cur_avg < var[i]) {
+                // 平均值不一定是整除，这里用double保留小数位
+                double curAveDou = (target * 1.0 - cur_sum) / (len - i);
+                if (curAveDou - cur_avg <= 0.5) {
+                    return cur_avg;
+                } else {
+                    return cur_avg + 1;
+                }
+            }
+            // 如果当前位置的平均值小于 当前位置的值，代表这个位置的值之后变大，sum也不会超过target
+            cur_sum += var[i];
+        }
+        // 返回数组最后一位，也就是所求的value值
+        return var[len - 1];
+    }
+
+    /**
      * No. 1331 数组序号转换
      * Tips: HashMap 在 put 的过程中，对不同元素，有计数的功能
      *
@@ -2456,6 +2490,55 @@ public class Solution {
     }
 
     /**
+     * No. 2299 强密码检验器II
+     * @param password
+     * @return
+     */
+    public boolean strongPasswordCheckerII(String password) {
+        if (password.length() < 8) {
+            return false;
+        }
+        boolean hasLowerChar = false;
+        boolean hasUpperChar = false;
+        boolean hasDigit = false;
+        boolean hasSpecialChar = false;
+        char cur;
+
+        for (int i = 0; i < password.length(); i++) {
+            cur = password.charAt(i);
+            if (cur >= 'a' && cur <= 'z') {
+                hasLowerChar = true;
+            }
+            if (cur >= 'A' && cur <= 'Z') {
+                hasUpperChar = true;
+            }
+            if (cur >= '0' && cur <= '9') {
+                hasDigit = true;
+            }
+            switch (cur) {
+                case '!':
+                case '@':
+                case '#':
+                case '$':
+                case '%':
+                case '^':
+                case '&':
+                case '*':
+                case '(':
+                case ')':
+                case '-':
+                case '+':
+                    hasSpecialChar = true;
+                    break;
+            }
+            if (i != password.length() - 1 && password.charAt(i) == password.charAt(i+1)) {
+                return false;
+            }
+        }
+        return hasLowerChar && hasUpperChar && hasDigit && hasSpecialChar;
+    }
+
+    /**
      * No. 2301 替换字符后匹配
      *
      * @param s
@@ -2660,11 +2743,12 @@ public class Solution {
 
     /**
      * 剑指Offer 53 - II 0~1 中缺失的数字
-     *     Tips: [0, 1, 2]   缺失的是3，n = 4， 0~n-1 = 0, 1, 2, 3
+     * Tips: [0, 1, 2]   缺失的是3，n = 4， 0~n-1 = 0, 1, 2, 3
+     *
      * @param nums
      * @return
      */
-    public int missingNumber_swardOffer (int[] nums) {
+    public int missingNumber_swardOffer(int[] nums) {
         int n = nums.length + 1;
         for (int i = 0; i < n - 1; i++) {
             if (nums[i] != i) {
@@ -2673,10 +2757,65 @@ public class Solution {
         }
         return n - 1;
     }
+
+    /**
+     * LCP 06. 拿硬币
+     *
+     * @param coins
+     * @return
+     */
+    public int minCount(int[] coins) {
+        int sum = 0;
+        for (int i = 0; i < coins.length; i++) {
+            if (coins[i] % 2 == 0) {
+                sum += coins[i] / 2;
+            } else {
+                sum += ((coins[i] / 2) + 1);
+            }
+        }
+        return sum;
+    }
+
+//    /**
+//     * LCP 13. 寻宝
+//     * @param maze
+//     * @return
+//     */
+//    public int minimalSteps(String[] maze) {
+//
+//    }
 }
 
 
 // No. 1575 统计所有可行路径，需要重新逐步推算
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

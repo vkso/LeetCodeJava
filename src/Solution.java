@@ -11,11 +11,18 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        ListNode n3 = new ListNode(0, null);
-        ListNode n2 = new ListNode(0, n3);
-        ListNode n1 = new ListNode(1, n2);
+        MKAverage a = new MKAverage(3, 1);
+        a.addElement(17612);
+        a.addElement(74607);
+        System.out.println(a.calculateMKAverage());
 
-        System.out.println(isPalindrome(n1));
+        a.addElement(8272);
+        a.addElement(33433);
+        System.out.println(a.calculateMKAverage());
+        a.addElement(15456);
+        a.addElement(64938);
+        System.out.println(a.calculateMKAverage());
+        a.addElement(99741);
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -526,6 +533,65 @@ public class Solution {
     }
 
     /**
+     * No. 98 验证二叉搜索树
+     *     Tips: 中序遍历一个二叉搜索树，一定得到一个单调递增序列
+     * @param root
+     * @return
+     */
+    Long pre_98 = Long.MIN_VALUE;
+    boolean res_98 = true;
+    public boolean isValidBST(TreeNode root) {
+        inOrder_98(root);
+        return res_98;
+    }
+    public void inOrder_98(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inOrder_98(root.left);
+        if (pre_98 <= root.val) {
+            res_98 = false;
+            return;
+        } else {
+            pre_98 = (long) root.val;
+        }
+        inOrder_98(root.right);
+    }
+
+    /**
+     * No. 102 二叉树的层序遍历
+     *     Tips: 在while循环中间，添加一个当前队列包含的总数量，即一层所有的节点数量
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        TreeNode tmp;
+        while (!queue.isEmpty()) {
+            int n = queue.size();
+            List<Integer> tmpList = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                tmp = queue.poll();
+                tmpList.add(tmp.val);
+                if (tmp.left != null) {
+                    queue.add(tmp.left);
+                }
+                if (tmp.right != null) {
+                    queue.add(tmp.right);
+                }
+            }
+            res.add(tmpList);
+        }
+        return res;
+    }
+
+    /**
      * No. 125 验证回文串
      *
      * @param s
@@ -625,6 +691,28 @@ public class Solution {
 //            }
 //        }
 //        return res_max;
+    }
+
+    /**
+     * No. 141 环形链表
+     *     Tips: 快慢指针，如果快的能追上慢的，代表一定有环路出现
+     * @param head
+     * @return
+     */
+    public boolean hasCycle(ListNode head) {
+        if (head == null) {
+            return false;
+        }
+        ListNode slow = head, fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

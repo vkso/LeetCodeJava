@@ -13,7 +13,8 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        System.out.println(firstBadVersion(2147483647));
+        String str = "   -42";
+        System.out.println(myAtoi(str));
 
     }
 
@@ -182,6 +183,16 @@ public class Solution {
             head_move.next = new ListNode(1);
         }
         return head.next;
+    }
+
+    /**
+     * No. 8 字符串转换整数(atoi)
+     * @param columnTitle
+     * @return
+     */
+    public int myAtoi(String columnTitle) {
+
+        return 0;
     }
 
     /**
@@ -712,6 +723,33 @@ public class Solution {
             res.add(tmpList);
         }
         return res;
+    }
+
+    /**
+     * No. 108 将有序数组转换为二叉搜索树
+     *     Tips: 二叉搜索树的中序遍历是一个递增数列，那么数列的中间节点可以作为 root 节点，
+     *           左边节点作为左子树节点，右边节点作为右子树节点
+     *           利用这一特性，递归可得
+     * @param nums
+     * @return
+     */
+    public TreeNode sortedArrayToBST(int[] nums) {
+        if (nums.length == 0) {
+            return null;
+        }
+        return sortedArrayToBST(nums, 0, nums.length - 1);
+
+    }
+    // [start, x, x, [mid], x, x, end]  => mid应该是 root 返回
+    public TreeNode sortedArrayToBST(int[] nums, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        int mid = start + ((end - start) >> 1);
+        TreeNode root = new TreeNode(nums[mid]);
+        root.left = sortedArrayToBST(nums, start, mid - 1);
+        root.right = sortedArrayToBST(nums, mid + 1, end);
+        return root;
     }
 
     /**
@@ -2226,6 +2264,35 @@ public class Solution {
     }
 
     /**
+     * No. 1817 查找用户活跃分钟数,
+     *     Tips: HashMap<Integer, HashSet<Integer>> hashMap = new HashMap<>();
+     * @param logs
+     * @param k
+     * @return
+     */
+    public int[] findingUsersActiveMinutes(int[][] logs, int k) {
+        int[] res = new int[k];
+        HashMap<Integer, HashSet<Integer>> hashMap = new HashMap<>();
+        for (int[] log : logs) {
+            int id = log[0], time = log[1];
+            hashMap.putIfAbsent(id, new HashSet<Integer>());
+            hashMap.get(id).add(time);
+        }
+
+//        Set keyset = hashMap.keySet();
+//        for (Object key : keyset) {
+//            int size = hashMap.get(key).size();
+//            res[size-1]++;
+//        }
+
+        for (Set<Integer> times : hashMap.values()) {
+            int size = times.size();
+            res[size - 1]++;
+        }
+        return res;
+    }
+
+    /**
      * No. 1818 绝对差值和
      * 使用二分查找 nums1 中的 最逼近 nums2[i] 的元素，然后进行判断。如下代码，使用了多个if条件
      * 语句判断情况  potential_index, potential_index_left, potential_index_right 是否
@@ -2357,6 +2424,18 @@ public class Solution {
         }
         return true;
     }
+
+    /**
+     * No. 2115 从给定原材料中找到所有可以做出的菜
+     *     Tips: 拓扑排序，广度优先搜索，不断添加入度为0的节点(入度为0表示，这个菜品可以直接获得)
+     * @param recipes
+     * @param ingredients
+     * @param supplies
+     * @return
+     */
+//    public List<String> FindAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+//
+//    }
 
     /**
      * No. 2180 统计各位数字之和为偶数的整数个数
@@ -2774,6 +2853,87 @@ public class Solution {
             }
         }
         return sum;
+    }
+
+    /**
+     * LCP. 07 传递信息
+     *      Tips: 深度优先搜索，利用系统栈，不用自己维护栈
+     *            广度优先搜索，需要单独维护一个队列，当前队列的 size ，即为一层的宽度（第 k 层，n-1 节点出现的次数即是结果）
+     * @param n
+     * @param relation
+     * @param k
+     * @return
+     */
+    // ways 计算一共有多少种方法
+    public int ways_lcp07, n_lcp07, k_lcp07;
+    List<List<Integer>> edges_lcp07;
+    public int numWays(int n, int[][] relation, int k) {
+        ways_lcp07 = 0;
+        this.n_lcp07 = n;
+        this.k_lcp07 = k;
+        edges_lcp07 = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            edges_lcp07.add(new ArrayList<Integer>());
+        }
+        for (int[] edge : relation) {
+            int src = edge[0], des = edge[1];
+            edges_lcp07.get(src).add(des);
+        }
+
+        dfs_lcp07(0, 0);
+        return ways_lcp07;
+    }
+    public void dfs_lcp07(int index, int steps) {
+        if (steps == k_lcp07) {
+            if (index == k_lcp07 - 1) {
+                ways_lcp07++;
+            }
+            return;
+        }
+        // 这里相当于获得了，经过 index 节点可以到达的所有下一个节点，他们分别进栈
+        List<Integer> list = edges_lcp07.get(index);
+        for (int nextIndex : list) {
+            dfs_lcp07(nextIndex, steps + 1);
+        }
+    }
+
+    // 广度优先搜索
+    public int numWays_bfs(int n, int[][] relation, int k) {
+        List<List<Integer>> edges = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            edges.add(new ArrayList<Integer>());
+        }
+        for (int[] edge : relation) {
+            int src = edge[0];
+            int des = edge[1];
+            edges.get(src).add(des);
+        }
+
+        int steps = 0;
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(0);
+
+        while (!queue.isEmpty() && steps < k) {
+            steps++;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int index = queue.poll();
+                List<Integer> list = edges.get(index);
+                for (int nextIndex : list) {
+                    queue.offer(nextIndex);
+                }
+            }
+        }
+        int ways = 0;
+        if (steps == k) {
+            while (!queue.isEmpty()) {
+                if (queue.poll() == n - 1) {
+                    ways++;
+                }
+            }
+        }
+        return ways;
     }
 
 //    /**

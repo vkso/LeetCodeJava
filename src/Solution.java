@@ -443,6 +443,30 @@ public class Solution {
     }
 
     /**
+     * No. 36 有效的数独
+     * @param board
+     * @return
+     */
+    public boolean isValidSudoku(char[][] board) {
+        int line[][] = new int[9][9];
+        int column[][] = new int[9][9];
+        int cell[][] = new int[9][9];
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.')
+                    continue;
+                int num = board[i][j] - '0' -1;
+                int k = i / 3 * 3 + j / 3;
+                if (line[i][num] != 0 || column[j][num] != 0 || cell[k][num] != 0)
+                    return false;
+                line[i][num] = column[j][num] = cell[k][num] = 1;
+            }
+        }
+        return true;
+    }
+
+    /**
      * No. 38 外观数列
      * Tips: 典型的递归方法且没有重复递归项目，递归  say(n) = say(n-1), say(1) = "1";
      * 双重while循环，不停的滑动  [left, right] 区间，left指向区间内开始的字符，right是整个区间的重点
@@ -2672,6 +2696,35 @@ public class Solution {
             }
         }
         return false;
+    }
+
+    /**
+     * No. 2309 兼具大小写的最好英文字母
+     *     Tips: A -> 65, a -> 97     UpCase: < 92; lowCase: > 96
+     * @param s
+     * @return
+     */
+    public String greatestLetter(String s) {
+        StringBuilder resStr = new StringBuilder("");
+        HashSet<Character> mySet = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (mySet.contains(ch)) {
+                resStr.append(Character.toUpperCase(ch));
+            } else {
+                if (ch > 96) {
+                    mySet.add((char)(ch - 32));
+                } else {
+                    mySet.add((char)(ch + 32));
+                }
+            }
+        }
+        if (resStr.length() == 0) {
+            return "";
+        }
+        char[] chars = resStr.toString().toCharArray();
+        Arrays.sort(chars);
+        return String.valueOf(chars[chars.length]);
     }
 
     /**

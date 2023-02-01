@@ -2728,6 +2728,31 @@ public class Solution {
     }
 
     /**
+     * No. 2325 解密消息
+     * @param key
+     * @param message
+     * @return
+     */
+    public String decodeMessage(String key, String message) {
+        HashMap<Character, Character> hashMap = new HashMap<>();
+        StringBuilder res = new StringBuilder();
+        int index = 0;
+        char ch;
+        hashMap.put(' ', ' ');
+        for (int i = 0; i < key.length() && index < 26; i++) {
+            ch = key.charAt(i);
+            if (!hashMap.containsKey(ch)) {
+                hashMap.put(ch, (char)('a' + index++));
+            }
+        }
+
+        for (int i = 0; i < message.length(); i++) {
+            res.append(hashMap.get(message.charAt(i)));
+        }
+        return res.toString();
+    }
+
+    /**
      * No. 2326 螺旋矩阵 IV
      *
      * @param m

@@ -13,9 +13,14 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        String str = "   -42";
-        System.out.println(myAtoi(str));
-
+        int n = 3;
+        int[][] redEdges = {{0, 1}, {0, 2}};
+        int[][] blueEdges = {{1, 0}};
+        int[] res;
+        res = shortestAlternatingPaths(n, redEdges, blueEdges);
+        for (int i = 0; i < res.length; i++) {
+            System.out.println(res[i]);
+        }
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -1865,6 +1870,56 @@ public class Solution {
         Arrays.sort(chars);
         s = new String(chars);
         return new StringBuilder(s);
+    }
+
+    /**
+     * No. 1129 颜色交替的最短路径
+     * @param n
+     * @param redEdges
+     * @param blueEdges
+     * @return
+     */
+    public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges) {
+        int[] ans = new int[n];
+        int[][] edges = new int[n][n];
+        int[] visited = new int[n];
+        int row, cow, pathLong = 0, curColor = -1;
+        int[] curNode = new int[2];
+        Queue<int[]> queue = new LinkedList<>();
+
+        Arrays.fill(ans, -1);
+
+        // redEdges value = 1
+        for (int i = 0; i < redEdges.length; i++) {
+            row = redEdges[i][0];
+            cow = redEdges[i][1];
+            edges[row][cow] = 1;
+        }
+        // blueEdges value = 2
+        for (int i = 0; i < blueEdges.length; i++) {
+            row = blueEdges[i][0];
+            cow = blueEdges[i][1];
+            edges[row][cow] = 2;
+        }
+
+        queue.add(new int[] {0, curColor});
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int j = 0; j < size; j++) {
+                curNode = queue.poll();
+                curColor = curNode[1];
+                visited[curNode[0]] = 1;
+                ans[curNode[0]] = pathLong;
+                for (int i = 0; i < n; i++) {
+                    if (edges[curNode[0]][i] != 0 && visited[i] != 1 &&
+                            edges[curNode[0]][i] != curColor) {
+                        queue.add(new int[] {i, edges[curNode[0]][i]});
+                    }
+                }
+            }
+            pathLong++;
+        }
+        return ans;
     }
 
     /**

@@ -353,6 +353,45 @@ public class Solution {
     }
 
     /**
+     * No. 22 括号生成
+     * @param n
+     * @return
+     */
+    public List<String> generateParenthesis(int n) {
+        List<String> res = new ArrayList<>();
+        generateAll(new char[n*2], 0, res);
+        return res;
+    }
+
+    public void generateAll(char[] current, int pos, List<String> result) {
+        if (pos == current.length) {
+            if (valided(current)) {
+                result.add(new String(current));
+            }
+        } else {
+            current[pos] = '(';
+            generateAll(current, pos + 1, result);
+            current[pos] = ')';
+            generateAll(current, pos + 1, result);
+        }
+    }
+
+    public boolean valided(char[] charArray) {
+        int balance = 0;
+        for (char ch : charArray) {
+            if (ch == '(') {
+                balance++;
+            } else {
+                balance--;
+            }
+            if (balance < 0) {
+                return false;
+            }
+        }
+        return balance == 0;
+    }
+
+    /**
      * No. 26 删除数组中的重复项
      * Tips: 双指针（滑动窗口）
      *
@@ -422,6 +461,34 @@ public class Solution {
             right++;
         }
         return res;
+    }
+
+    /**
+     * No. 33 搜索旋转排序数组
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int search(int[] nums, int target) {
+       int res = -1;
+       for (int i = 0; i < nums.length; i++) {
+           if (nums[i] == target) {
+               return i;
+           }
+       }
+       return res;
+    }
+
+    public int search_bin(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = left + ((right - left) >> 1);
+            if ((nums[0] > target) ^ (nums[0] > nums[mid]) ^ (target > nums[mid]))
+                left = mid + 1;
+            else
+                right = mid;
+        }
+        return left == right && nums[left] == target ? left : -1;
     }
 
     /**
@@ -498,6 +565,37 @@ public class Solution {
             start = end;
         }
         return res.toString();
+    }
+
+    /**
+     * No. 46 全排列
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> permute(int[] nums) {
+
+        int len = nums.length;
+        List<List<Integer>> res = new ArrayList<>();
+        boolean[] used = new boolean[len];
+        List<Integer> path = new ArrayList<>();
+        dfs_46(nums, len, 0, path, used, res);
+        return res;
+    }
+    public static void dfs_46(int[] nums, int len, int depth,
+                  List<Integer> path, boolean[] used, List<List<Integer>> res) {
+        if (depth == len) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < len; i++) {
+            if (!used[i]) {
+                path.add(nums[i]);
+                used[i] = true;
+                dfs_46(nums, len, depth+1, path, used, res);
+                used[i] = false;
+                path.remove(path.size()-1);
+            }
+        }
     }
 
     /**

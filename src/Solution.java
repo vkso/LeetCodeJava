@@ -2021,6 +2021,35 @@ public class Solution {
     }
 
     /**
+     * No. 1145 二叉树着色游戏
+     *     Tips: 本题可以转换为一个统计二叉树节点数量的问题。节点X将整个二叉树分为了3个部分：左孩子树、右孩子树、父节点数
+     *
+     * @param root
+     * @param n
+     * @param x
+     * @return
+     */
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        this.x_1145 = x;
+        dfs_1145(root);
+        return Math.max(Math.max(lsz_1145, rsz_1145), n - 1 - lsz_1145 - rsz_1145) * 2 > n;
+    }
+
+    private int x_1145, lsz_1145, rsz_1145;
+    public int dfs_1145(TreeNode node) {
+        if (node == null) {
+            return 0;
+        }
+        int ls = dfs_1145(node.left);
+        int rs = dfs_1145(node.right);
+        if (node.val == x_1145) {
+            lsz_1145 = ls;
+            rsz_1145 = rs;
+        }
+        return ls + rs + 1;
+    }
+
+    /**
      * No. 1275 找出井字棋的获胜者
      *
      * @param moves

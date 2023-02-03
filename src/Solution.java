@@ -13,14 +13,9 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int n = 3;
-        int[][] redEdges = {{0, 1}, {0, 2}};
-        int[][] blueEdges = {{1, 0}};
-        int[] res;
-        res = shortestAlternatingPaths(n, redEdges, blueEdges);
-        for (int i = 0; i < res.length; i++) {
-            System.out.println(res[i]);
-        }
+        int[][] grid = {{0, 0}, {0, 0}};
+        System.out.println(largestIsland(grid));
+
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -192,6 +187,7 @@ public class Solution {
 
     /**
      * No. 8 字符串转换整数(atoi)
+     *
      * @param columnTitle
      * @return
      */
@@ -354,12 +350,13 @@ public class Solution {
 
     /**
      * No. 22 括号生成
+     *
      * @param n
      * @return
      */
     public List<String> generateParenthesis(int n) {
         List<String> res = new ArrayList<>();
-        generateAll(new char[n*2], 0, res);
+        generateAll(new char[n * 2], 0, res);
         return res;
     }
 
@@ -465,18 +462,19 @@ public class Solution {
 
     /**
      * No. 33 搜索旋转排序数组
+     *
      * @param nums
      * @param target
      * @return
      */
     public int search(int[] nums, int target) {
-       int res = -1;
-       for (int i = 0; i < nums.length; i++) {
-           if (nums[i] == target) {
-               return i;
-           }
-       }
-       return res;
+        int res = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                return i;
+            }
+        }
+        return res;
     }
 
     public int search_bin(int[] nums, int target) {
@@ -516,6 +514,7 @@ public class Solution {
 
     /**
      * No. 36 有效的数独
+     *
      * @param board
      * @return
      */
@@ -528,7 +527,7 @@ public class Solution {
             for (int j = 0; j < 9; j++) {
                 if (board[i][j] == '.')
                     continue;
-                int num = board[i][j] - '0' -1;
+                int num = board[i][j] - '0' - 1;
                 int k = i / 3 * 3 + j / 3;
                 if (line[i][num] != 0 || column[j][num] != 0 || cell[k][num] != 0)
                     return false;
@@ -569,6 +568,7 @@ public class Solution {
 
     /**
      * No. 46 全排列
+     *
      * @param nums
      * @return
      */
@@ -581,8 +581,9 @@ public class Solution {
         dfs_46(nums, len, 0, path, used, res);
         return res;
     }
+
     public static void dfs_46(int[] nums, int len, int depth,
-                  List<Integer> path, boolean[] used, List<List<Integer>> res) {
+                              List<Integer> path, boolean[] used, List<List<Integer>> res) {
         if (depth == len) {
             res.add(new ArrayList<>(path));
             return;
@@ -591,9 +592,9 @@ public class Solution {
             if (!used[i]) {
                 path.add(nums[i]);
                 used[i] = true;
-                dfs_46(nums, len, depth+1, path, used, res);
+                dfs_46(nums, len, depth + 1, path, used, res);
                 used[i] = false;
-                path.remove(path.size()-1);
+                path.remove(path.size() - 1);
             }
         }
     }
@@ -854,9 +855,10 @@ public class Solution {
 
     /**
      * No. 108 将有序数组转换为二叉搜索树
-     *     Tips: 二叉搜索树的中序遍历是一个递增数列，那么数列的中间节点可以作为 root 节点，
-     *           左边节点作为左子树节点，右边节点作为右子树节点
-     *           利用这一特性，递归可得
+     * Tips: 二叉搜索树的中序遍历是一个递增数列，那么数列的中间节点可以作为 root 节点，
+     * 左边节点作为左子树节点，右边节点作为右子树节点
+     * 利用这一特性，递归可得
+     *
      * @param nums
      * @return
      */
@@ -867,6 +869,7 @@ public class Solution {
         return sortedArrayToBST(nums, 0, nums.length - 1);
 
     }
+
     // [start, x, x, [mid], x, x, end]  => mid应该是 root 返回
     public TreeNode sortedArrayToBST(int[] nums, int start, int end) {
         if (start > end) {
@@ -1095,6 +1098,43 @@ public class Solution {
             n >>>= 1;
         }
         return count;
+    }
+
+    /**
+     * No. 200 岛屿数量
+     *
+     * @param grid
+     * @return
+     */
+    public int numIslands(char[][] grid) {
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    countIsland(grid, i, j);
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public void countIsland(char[][] grid, int row, int cow) {
+        if (!isValid(grid, row, cow)) {
+            return;
+        }
+        if (grid[row][cow] != '1') {
+            return;
+        }
+        grid[row][cow] = '2';
+        countIsland(grid, row, cow - 1);
+        countIsland(grid, row, cow + 1);
+        countIsland(grid, row - 1, cow);
+        countIsland(grid, row + 1, cow);
+    }
+
+    public boolean isValid(char[][] grid, int row, int cow) {
+        return row >= 0 && row < grid.length && cow >= 0 && cow < grid[0].length;
     }
 
     /**
@@ -1625,6 +1665,40 @@ public class Solution {
     }
 
     /**
+     * No. 463 岛屿的周长
+     *
+     * @param grid
+     * @return
+     */
+    public int islandPerimeter(int[][] grid) {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    return islandLen(grid, i, j);
+                }
+            }
+        }
+        return 0;
+    }
+
+    public int islandLen(int[][] grid, int row, int cow) {
+        if (!isValid(grid, row, cow)) {
+            return 1;
+        }
+        if (grid[row][cow] == 0) {
+            return 1;
+        }
+        if (grid[row][cow] != 1) {
+            return 0;
+        }
+        grid[row][cow] = 2;
+        return islandLen(grid, row, cow - 1) +
+                islandLen(grid, row, cow + 1) +
+                islandLen(grid, row + 1, cow) +
+                islandLen(grid, row - 1, cow);
+    }
+
+    /**
      * No. 482 密钥格式化
      *
      * @param s
@@ -1783,6 +1857,44 @@ public class Solution {
     }
 
     /**
+     * No. 695 岛屿的最大面积
+     * Tips: 二叉树DFS的变形，二维矩阵的DFS搜索
+     *
+     * @param grid
+     * @return
+     */
+    public int maxAreaOfIsland(int[][] grid) {
+        int max = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    max = Math.max(max, area(grid, i, j));
+                }
+            }
+        }
+        return max;
+    }
+
+    public int area(int[][] grid, int row, int cow) {
+        if (!isValid(grid, row, cow)) {
+            return 0;
+        }
+        if (grid[row][cow] != 1) {
+            return 0;
+        }
+        grid[row][cow] = 2;
+
+        return 1 + area(grid, row, cow - 1) +
+                area(grid, row, cow + 1) +
+                area(grid, row - 1, cow) +
+                area(grid, row + 1, cow);
+    }
+
+    public boolean isValid(int[][] grid, int row, int cow) {
+        return row >= 0 && row < grid.length && cow >= 0 && cow < grid[0].length;
+    }
+
+    /**
      * No. 701 二叉搜索树中插入操作
      *
      * @param root
@@ -1893,6 +2005,103 @@ public class Solution {
     }
 
     /**
+     * No. 827 最大人工岛
+     * Tips: 两次DFS遍历
+     * 1. 第一次遍历岛屿，计算每个岛屿的面积并标记该岛屿
+     * 2. 第二次遍历海洋，计算与海洋相邻的岛屿的面积之和最大
+     *
+     * @param grid
+     * @return
+     */
+    public int largestIsland(int[][] grid) {
+        int max = 0;
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        hashMap.put(0, 0);    //
+        int index = 2, curArea;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    curArea = calIsland(grid, i, j, index);
+                    max = Math.max(max, curArea);
+                    hashMap.put(index++, curArea);
+                }
+            }
+        }
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 0) {
+                    max = Math.max(max, calConnectSea(grid, i, j, hashMap));
+                }
+            }
+        }
+        return max;
+    }
+
+    /**
+     *     DFS计算每个独立岛屿的面积，并将该岛屿的grid值修改为index
+     * @param grid
+     * @param row
+     * @param cow
+     * @param index
+     * @return
+     */
+    public int calIsland(int[][] grid, int row, int cow, int index) {
+        if (!isValid(grid, row, cow)) {
+            return 0;
+        }
+        if (grid[row][cow] != 1) {
+            return 0;
+        }
+        grid[row][cow] = index;
+        return 1 + calIsland(grid, row, cow - 1, index) +
+                calIsland(grid, row, cow + 1, index) +
+                calIsland(grid, row - 1, cow, index) +
+                calIsland(grid, row + 1, cow, index);
+    }
+
+    /**
+     *     计算将row、cow 位置的海域填充为岛屿后，与其相邻的四块海域全部面积加起来是多少
+     *     其中，hashMap是上一步计算出的所有index岛屿的面积，removeRepeat为了减少重复计算
+     * @param grid
+     * @param row
+     * @param cow
+     * @param hashMap
+     * @return
+     */
+    public int calConnectSea(int[][] grid, int row, int cow, HashMap<Integer, Integer> hashMap) {
+        int upArea, downArea, leftArea, rightArea;
+        int upIndex, downIndex, leftIndex, rightIndex;
+        int res = 1;
+        // 为了降低重复计算，一个填充岛屿的周围可能是同一块岛屿
+        HashMap<Integer, Integer> removeRepeat = new HashMap<>();
+        if (isValid(grid, row - 1, cow)) {
+            upIndex = grid[row - 1][cow];
+            upArea = hashMap.get(upIndex);
+            removeRepeat.put(upIndex, upArea);
+        }
+        if (isValid(grid, row + 1, cow)) {
+            downIndex = grid[row + 1][cow];
+            downArea = hashMap.get(downIndex);
+            removeRepeat.put(downIndex, downArea);
+        }
+        if (isValid(grid, row, cow - 1)) {
+            leftIndex = grid[row][cow - 1];
+            leftArea = hashMap.get(leftIndex);
+            removeRepeat.put(leftIndex, leftArea);
+        }
+        if (isValid(grid, row, cow + 1)) {
+            rightIndex = grid[row][cow + 1];
+            rightArea = hashMap.get(rightIndex);
+            removeRepeat.put(rightIndex, rightArea);
+        }
+//        Collection<Integer> values = removeRepeat.values();
+        for (Integer value : removeRepeat.values()) {
+            res = res + value;
+        }
+        return res;
+    }
+
+    /**
      * No. 852 山峰数组的峰顶索引
      *
      * @param arr
@@ -1972,6 +2181,7 @@ public class Solution {
 
     /**
      * No. 1129 颜色交替的最短路径
+     *
      * @param n
      * @param redEdges
      * @param blueEdges
@@ -2000,7 +2210,7 @@ public class Solution {
             edges[row][cow] = 2;
         }
 
-        queue.add(new int[] {0, curColor});
+        queue.add(new int[]{0, curColor});
         while (!queue.isEmpty()) {
             int size = queue.size();
             for (int j = 0; j < size; j++) {
@@ -2011,7 +2221,7 @@ public class Solution {
                 for (int i = 0; i < n; i++) {
                     if (edges[curNode[0]][i] != 0 && visited[i] != 1 &&
                             edges[curNode[0]][i] != curColor) {
-                        queue.add(new int[] {i, edges[curNode[0]][i]});
+                        queue.add(new int[]{i, edges[curNode[0]][i]});
                     }
                 }
             }
@@ -2022,7 +2232,7 @@ public class Solution {
 
     /**
      * No. 1145 二叉树着色游戏
-     *     Tips: 本题可以转换为一个统计二叉树节点数量的问题。节点X将整个二叉树分为了3个部分：左孩子树、右孩子树、父节点数
+     * Tips: 本题可以转换为一个统计二叉树节点数量的问题。节点X将整个二叉树分为了3个部分：左孩子树、右孩子树、父节点数
      *
      * @param root
      * @param n
@@ -2036,6 +2246,7 @@ public class Solution {
     }
 
     private int x_1145, lsz_1145, rsz_1145;
+
     public int dfs_1145(TreeNode node) {
         if (node == null) {
             return 0;
@@ -2471,7 +2682,8 @@ public class Solution {
 
     /**
      * No. 1817 查找用户活跃分钟数,
-     *     Tips: HashMap<Integer, HashSet<Integer>> hashMap = new HashMap<>();
+     * Tips: HashMap<Integer, HashSet<Integer>> hashMap = new HashMap<>();
+     *
      * @param logs
      * @param k
      * @return
@@ -2776,6 +2988,7 @@ public class Solution {
 
     /**
      * No. 2299 强密码检验器II
+     *
      * @param password
      * @return
      */
@@ -2816,7 +3029,7 @@ public class Solution {
                     hasSpecialChar = true;
                     break;
             }
-            if (i != password.length() - 1 && password.charAt(i) == password.charAt(i+1)) {
+            if (i != password.length() - 1 && password.charAt(i) == password.charAt(i + 1)) {
                 return false;
             }
         }
@@ -2882,7 +3095,8 @@ public class Solution {
 
     /**
      * No. 2309 兼具大小写的最好英文字母
-     *     Tips: A -> 65, a -> 97     UpCase: < 92; lowCase: > 96
+     * Tips: A -> 65, a -> 97     UpCase: < 92; lowCase: > 96
+     *
      * @param s
      * @return
      */
@@ -2895,9 +3109,9 @@ public class Solution {
                 resStr.append(Character.toUpperCase(ch));
             } else {
                 if (ch > 96) {
-                    mySet.add((char)(ch - 32));
+                    mySet.add((char) (ch - 32));
                 } else {
-                    mySet.add((char)(ch + 32));
+                    mySet.add((char) (ch + 32));
                 }
             }
         }
@@ -2911,6 +3125,7 @@ public class Solution {
 
     /**
      * No. 2325 解密消息
+     *
      * @param key
      * @param message
      * @return
@@ -2924,7 +3139,7 @@ public class Solution {
         for (int i = 0; i < key.length() && index < 26; i++) {
             ch = key.charAt(i);
             if (!hashMap.containsKey(ch)) {
-                hashMap.put(ch, (char)('a' + index++));
+                hashMap.put(ch, (char) ('a' + index++));
             }
         }
 
@@ -3117,8 +3332,9 @@ public class Solution {
 
     /**
      * LCP. 07 传递信息
-     *      Tips: 深度优先搜索，利用系统栈，不用自己维护栈
-     *            广度优先搜索，需要单独维护一个队列，当前队列的 size ，即为一层的宽度（第 k 层，n-1 节点出现的次数即是结果）
+     * Tips: 深度优先搜索，利用系统栈，不用自己维护栈
+     * 广度优先搜索，需要单独维护一个队列，当前队列的 size ，即为一层的宽度（第 k 层，n-1 节点出现的次数即是结果）
+     *
      * @param n
      * @param relation
      * @param k
@@ -3127,6 +3343,7 @@ public class Solution {
     // ways 计算一共有多少种方法
     public int ways_lcp07, n_lcp07, k_lcp07;
     List<List<Integer>> edges_lcp07;
+
     public int numWays(int n, int[][] relation, int k) {
         ways_lcp07 = 0;
         this.n_lcp07 = n;
@@ -3144,6 +3361,7 @@ public class Solution {
         dfs_lcp07(0, 0);
         return ways_lcp07;
     }
+
     public void dfs_lcp07(int index, int steps) {
         if (steps == k_lcp07) {
             if (index == k_lcp07 - 1) {

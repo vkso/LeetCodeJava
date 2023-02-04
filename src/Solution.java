@@ -3473,6 +3473,17 @@ public class Solution {
 //    public int minimalSteps(String[] maze) {
 //
 //    }
+
+    /**
+     * 面试题16.07. 最大数值
+     *     Tips: 不使用条件判断运算符 if else 语句
+     * @param a
+     * @param b
+     * @return
+     */
+    public int maximum(int a, int b) {
+        return ((Math.abs(a - b) + a + b) / 2);
+    }
 }
 
 

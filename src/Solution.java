@@ -15,6 +15,9 @@ public class Solution {
     public void Test() {
         int[][] grid = {{0, 0}, {0, 0}};
         System.out.println(largestIsland(grid));
+        Arrays.sort();
+        Collections.reverseOrder();
+        Comparator
 
     }
 
@@ -2437,32 +2440,36 @@ public class Solution {
     }
 
     /**
-     * No. 1814 统计一个数组中 好对子 的数目
-     * Tips: O(n^2) 时间复杂对会超时
-     * 使用HashMap简化统计方式：nums[i] + rev(nums[j]) = nums[j] + rev(nums[i]) ①
-     * 对公式1两边转换计算可以得到   nums[i] - rev(nums[i]) = nums[j] - rev(nums[j]) ②
-     * 有：f(i) = f(j)   便可以找到  i 和 j 的关系对，使用HashMap可以统计是否出现过，
-     * value = f(i) value 出现过5次，hashmap中的统计值4，1 + 2 + 3 + 4，就是一共出现的对数
-     *
+     * No. 1509 三次操作后最大值与最小值的最小差
      * @param nums
      * @return
      */
-    public int countNicePairs(int[] nums) {
-        final int MOD = 1000000007;
-        int res = 0;
-        Map<Integer, Integer> h = new HashMap<>();
-        for (int i : nums) {
-            int temp = i, j = 0;
-            while (temp > 0) {
-                j = j * 10 + temp % 10;
-                temp /= 10;
-            }
-            // 这里有一个细节，res 第一次 + 0 操作，此时的值，并没有 put 到哈希表中
-            res = (res + h.getOrDefault(i - j, 0)) % MOD;
-            h.put(i - j, h.getOrDefault(i - j, 0) + 1);
+    public int minDifference_(int[] nums) {
+        if (nums.length <= 4) {
+            return 0;
         }
-        return res;
+        Arrays.sort(nums);
+        int min = Integer.MAX_VALUE;
+        min = Math.min(min, nums[nums.length-1] - nums[3]);
+        min = Math.min(min, nums[nums.length-4] - nums[0]);
+        min = Math.min(min, nums[nums.length-2] - nums[2]);
+        min = Math.min(min, nums[nums.length-3] - nums[1]);
+        return min;
     }
+
+    public int minDifference(int[] nums) {
+        int n = nums.length;
+        if (nums.length <= 4) {
+            return 0;
+        }
+        Arrays.sort(nums);
+        int ret = Integer.MAX_VALUE;
+        for (int i = 0; i < 4; i++) {
+            ret = Math.min(ret, nums[n - 4 + i] - nums[i]);
+        }
+        return ret;
+    }
+
 
     /**
      * No. 1575 统计所有可行路径
@@ -2475,8 +2482,8 @@ public class Solution {
      * @return
      */
     static final int MOD = 1000000007;
-    int[][] f;
 
+    int[][] f;
     public int countRoutes(int[] locations, int start, int finish, int fuel) {
         f = new int[locations.length][fuel + 1];
         for (int[] row : f) {
@@ -2588,6 +2595,22 @@ public class Solution {
         }
         return true;
     }
+    /**
+     * No. 1798 你能构造出连续值的最大数目
+     * @param coins
+     * @return
+     */
+    public int getMaximumConsecutive(int[] coins) {
+        Arrays.sort(coins);
+        int x = 0;
+        for (int y : coins) {
+            if (y > x + 1) {
+                break;
+            }
+            x += y;
+        }
+        return x + 1;
+    }
 
     /**
      * No. 1807 替换字符串中的括号内容
@@ -2678,6 +2701,34 @@ public class Solution {
                 return false;
             }
         }
+    }
+
+    /**
+     * No. 1814 统计一个数组中 好对子 的数目
+     * Tips: O(n^2) 时间复杂对会超时
+     * 使用HashMap简化统计方式：nums[i] + rev(nums[j]) = nums[j] + rev(nums[i]) ①
+     * 对公式1两边转换计算可以得到   nums[i] - rev(nums[i]) = nums[j] - rev(nums[j]) ②
+     * 有：f(i) = f(j)   便可以找到  i 和 j 的关系对，使用HashMap可以统计是否出现过，
+     * value = f(i) value 出现过5次，hashmap中的统计值4，1 + 2 + 3 + 4，就是一共出现的对数
+     *
+     * @param nums
+     * @return
+     */
+    public int countNicePairs(int[] nums) {
+        final int MOD = 1000000007;
+        int res = 0;
+        Map<Integer, Integer> h = new HashMap<>();
+        for (int i : nums) {
+            int temp = i, j = 0;
+            while (temp > 0) {
+                j = j * 10 + temp % 10;
+                temp /= 10;
+            }
+            // 这里有一个细节，res 第一次 + 0 操作，此时的值，并没有 put 到哈希表中
+            res = (res + h.getOrDefault(i - j, 0)) % MOD;
+            h.put(i - j, h.getOrDefault(i - j, 0) + 1);
+        }
+        return res;
     }
 
     /**

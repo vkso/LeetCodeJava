@@ -1860,6 +1860,46 @@ public class Solution {
     }
 
     /**
+     * No. 680 验证回文串 II
+     * @param s
+     * @return
+     */
+    public boolean validPalindrome(String s) {
+        if (s.length() == 1) {
+            return true;
+        }
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l) == s.charAt(r)) {
+                l++;
+                r--;
+                continue;
+            } else {
+                if (isPalindrome_(s.substring(l, r)) || isPalindrome_(s.substring(l+1, r+1))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isPalindrome_(String s) {
+        if (s.length() == 1) {
+            return true;
+        }
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l++) == s.charAt(r--)) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * No. 695 岛屿的最大面积
      * Tips: 二叉树DFS的变形，二维矩阵的DFS搜索
      *
@@ -2183,6 +2223,29 @@ public class Solution {
     }
 
     /**
+     * No. 921 使括号有效的最少添加
+     * @param s
+     * @return
+     */
+    public int minAddToMakeValid(String s) {
+        int left_count = 0, right_count = 0;
+        char ch;
+        for (int i = 0; i < s.length(); i++) {
+            ch = s.charAt(i);
+            if (ch == '(') {
+                left_count++;
+            } else {
+                if (left_count > 0) {
+                    left_count--;
+                } else {
+                    right_count++;
+                }
+            }
+        }
+        return left_count + right_count;
+    }
+
+    /**
      * No. 1129 颜色交替的最短路径
      *
      * @param n
@@ -2437,6 +2500,33 @@ public class Solution {
         }
 
         return res;
+    }
+
+    /**
+     * No. 1465 切割后面积最大的蛋糕
+     * @param h
+     * @param w
+     * @param horizontalCuts
+     * @param verticalCuts
+     * @return
+     */
+    public int maxArea(int h, int w, int[] horizontalCuts, int[] verticalCuts) {
+        int MOD = 1000000007;
+        Arrays.sort(horizontalCuts);
+        Arrays.sort(verticalCuts);
+        long max_h = Integer.MIN_VALUE, max_v = Integer.MIN_VALUE;
+        max_h = Math.max(max_h, horizontalCuts[0]);
+        max_v = Math.max(max_v, verticalCuts[0]);
+
+        for (int i = 0; i < horizontalCuts.length - 1; i++) {
+            max_h = Math.max(max_h, horizontalCuts[i+1] - horizontalCuts[i]);
+        }
+        for (int i = 0; i < verticalCuts.length - 1; i++) {
+            max_v = Math.max(max_v, verticalCuts[i+1] - verticalCuts[i]);
+        }
+        max_h = Math.max(max_h, h - horizontalCuts[horizontalCuts.length - 1]);
+        max_v = Math.max(max_v, w -verticalCuts[verticalCuts.length - 1]);
+        return (int)((max_h * max_v) % MOD);
     }
 
     /**
@@ -2895,6 +2985,43 @@ public class Solution {
     }
 
     /**
+     * No. 2087 网格图中机器人回家的最小代价
+     * @param startPos
+     * @param homePos
+     * @param rowCosts
+     * @param colCosts
+     * @return
+     */
+    public int minCost(int[] startPos, int[] homePos, int[] rowCosts, int[] colCosts) {
+        int rowStart = startPos[0];
+        int rowEnd = homePos[0];
+        int colStart = startPos[1];
+        int colEnd = homePos[1];
+        int res = 0;
+
+        int tmp;
+        if (rowStart < rowEnd) {
+            for (int i = rowStart + 1; i <= rowEnd; i++) {
+                res += rowCosts[i];
+            }
+        } else {
+            for (int i = rowEnd; i < rowStart; i++) {
+                res += rowCosts[i];
+            }
+        }
+        if (colStart < colEnd) {
+            for (int i = colStart + 1; i <= colEnd; i++) {
+                res += colCosts[i];
+            }
+        } else {
+            for (int i = colEnd; i < colStart; i++) {
+                res += colCosts[i];
+            }
+        }
+        return res;
+    }
+
+    /**
      * No. 2115 从给定原材料中找到所有可以做出的菜
      *     Tips: 拓扑排序，广度优先搜索，不断添加入度为0的节点(入度为0表示，这个菜品可以直接获得)
      * @param recipes
@@ -3344,6 +3471,23 @@ public class Solution {
 //       }
 //       cru.next = null;
 //       return res_head.next;
+    }
+
+    /**
+     * 剑指Offer 44. 数字序列中某一位的数字
+     * @param n
+     * @return
+     */
+    public int findNthDigit(int n) {
+        int len = 1;
+        while (len * 9 * Math.pow(10, len - 1) < n) {
+            n -= len * 9 * Math.pow(10, len - 1);
+            len++;
+        }
+        long s = (long) Math.pow(10, len - 1);
+        long x = n / len - 1 + s;
+        n -= (x - s + 1) * len;
+        return n == 0 ? (int) (x % 10) : (int) ((x + 1) / Math.pow(10, len - n) % 10);
     }
 
     /**

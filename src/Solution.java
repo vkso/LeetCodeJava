@@ -2327,6 +2327,51 @@ public class Solution {
     }
 
     /**
+     * No. 1210 穿过迷宫的最少移动次数
+     *     Tips: 将贪吃蛇的坐标和方向用一个int[] {x, y, s} 三元组表示
+     *           1, 0, 0 表示向右移动
+     *           0, 1, 0 表示向下移动
+     *           0, 0, 1 表示旋转（这里可以用 ^ 异或运算表示旋转）
+     *
+     *           使用广度优先搜索 BFS 算法，记录每次的路径
+     *
+     * @param grid
+     * @return
+     */
+    private static int[][] DIRS = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    public int minimumMoves(int[][] grid) {
+        int n = grid.length;
+        boolean[][][] vis = new boolean[n][n][2];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[] {0, 0, 0});
+        vis[0][0][0] = true;
+        for (int steps = 1; !queue.isEmpty(); steps++) {
+            var tmp = queue;
+            queue = new LinkedList<>();
+            for (int[] t : tmp) {
+                for (int[] d : DIRS) {
+                    int x = t[0] + d[0];
+                    int y = t[1] + d[1];
+                    int s = t[2] ^ d[2];
+                    int x2 = x + s;
+                    int y2 = y + (s ^ 1);
+
+                    if (x2 < n && y2 < n && !vis[x][y][s] &&
+                            grid[x][y] == 0 && grid[x2][y2] == 0 &&
+                            (d[2] == 0 || grid[x+1][y+1] == 0)) {
+                        if (x == n - 1 && y == n - 2) {
+                            return steps;
+                        }
+                        vis[x][y][s] = true;
+                        queue.add(new int[] {x, y, s});
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
      * No. 1275 找出井字棋的获胜者
      *
      * @param moves
@@ -3032,6 +3077,15 @@ public class Solution {
 //    public List<String> FindAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
 //
 //    }
+
+    /**
+     * No. 2119 翻转两次的数字
+     * @param num
+     * @return
+     */
+    public boolean isSameAfterReversals(int num) {
+        return num == 0 || num % 10 != 0;
+    }
 
     /**
      * No. 2180 统计各位数字之和为偶数的整数个数

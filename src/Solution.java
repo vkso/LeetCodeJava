@@ -13,6 +13,9 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
+        String s = "ibpbhixfiouhdljnjfflpapptrxgcomvnb";
+        int k = 33;
+        System.out.println(maxVowels(s, k));
 
     }
 
@@ -2580,6 +2583,42 @@ public class Solution {
         }
 
         return res;
+    }
+
+    /**
+     * No. 1445 定长子串中元音的最大数目
+     * @param s
+     * @param k
+     * @return
+     */
+    public int maxVowels(String s, int k) {
+        int left = 0, right = k-1;
+        int count = 0, max_count = Integer.MIN_VALUE;
+        for (int i = 0; i <= right; i++) {
+            if (isVowels(s.charAt(i))) {
+                count++;
+            }
+        }
+        if (count == k) {
+            return count;
+        }
+        max_count = Math.max(count, max_count);
+        while (right < s.length() - 1) {
+            char ch_l = s.charAt(left);
+            ++left;
+            ++right;
+            char ch_r = s.charAt(right);
+            if (((isVowels(ch_l)) && !(isVowels(ch_r)))) {
+                --count;
+            } else if ((!(isVowels(ch_l)) && (isVowels(ch_r)))) {
+                ++count;
+            }
+           max_count = Math.max(max_count, count);
+        }
+        return max_count;
+    }
+    public boolean isVowels(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
     }
 
     /**

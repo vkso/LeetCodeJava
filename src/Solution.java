@@ -200,6 +200,46 @@ public class Solution {
     }
 
     /**
+     * No. 16 最接近的三数之和
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int best = Integer.MAX_VALUE;
+        int ans = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
+            int j = i + 1, k = nums.length - 1;
+            while (j < k) {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == target) {
+                    return sum;
+                }
+                if (Math.abs(sum - target) < best) {
+                    best = Math.abs(sum - target);
+                    ans = sum;
+                }
+                if (sum > target) {
+                    --k;
+                    while (k > j && nums[k] == nums[k+1]) {
+                        --k;
+                    }
+                } else {
+                    ++j;
+                    while (j < k && nums[j] == nums[j-1]) {
+                        ++j;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 17 电话号码的字母组合
      *
      * @param digits
@@ -3454,6 +3494,60 @@ public class Solution {
         }
         return res;
     }
+
+    /**
+     * No. 2331 计算布尔二叉树的值
+     * @param root
+     * @return
+     */
+    public boolean evaluateTree_(TreeNode root) {
+        if (root.left == null) {
+            return root.val == 1;
+        }
+        if (root.val == 2) {
+            return evaluateTree_(root.left) || evaluateTree_(root.right);
+        } else {
+            return evaluateTree_(root.left) && evaluateTree_(root.right);
+        }
+    }
+    public boolean boo1, boo2;
+
+    public boolean evaluateTree(TreeNode root) {
+        Stack<Boolean> stack_2331 = new Stack<>();
+        dfs_2331(root, stack_2331);
+        return stack_2331.pop();
+    }
+
+    public void dfs_2331(TreeNode root, Stack<Boolean> stack) {
+        if (root == null) {
+            return;
+        }
+        dfs_2331(root.left, stack);
+        dfs_2331(root.right, stack);
+        if (root.val < 2) {
+            switch (root.val) {
+                case 0:
+                    stack.push(false);
+                    break;
+                case 1:
+                    stack.push(true);
+                    break;
+            }
+        } else {
+            boo1 = stack.pop();
+            boo2 = stack.pop();
+            switch (root.val) {
+                case 2:
+                    stack.push(boo1 || boo2);
+                    break;
+                case 3:
+                    stack.push(boo1 && boo2);
+                    break;
+            }
+        }
+    }
+
+
 
     /**
      * No. 2351 第一个出现两次的字母

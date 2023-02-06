@@ -13,11 +13,6 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int[][] grid = {{0, 0}, {0, 0}};
-        System.out.println(largestIsland(grid));
-        Arrays.sort();
-        Collections.reverseOrder();
-        Comparator
 
     }
 

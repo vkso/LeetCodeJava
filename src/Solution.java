@@ -2562,6 +2562,26 @@ public class Solution {
     }
 
     /**
+     * No. 1323 6和9组成的最大数字
+     * @param num
+     * @return
+     */
+    public int maximum69Number(int num) {
+        String s = Integer.toString(num);
+        StringBuilder sb = new StringBuilder(s);
+        char ch;
+        for (int i = 0; i < s.length(); i++) {
+            ch = sb.charAt(i);
+            if (ch == '6') {
+                sb.setCharAt(i, '9');
+                break;
+            }
+        }
+        s = sb.toString();
+        return Integer.parseInt(s);
+    }
+
+    /**
      * No. 1331 数组序号转换
      * Tips: HashMap 在 put 的过程中，对不同元素，有计数的功能
      *
@@ -3360,6 +3380,26 @@ public class Solution {
             nums = newNums;
         }
         return nums[0];
+    }
+
+    /**
+     * No. 2295 替换数组中的元素
+     * @param nums
+     * @param operations
+     * @return
+     */
+    public int[] arrayChange(int[] nums, int[][] operations) {
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            hashMap.put(nums[i], i);
+        }
+        int index;
+        for (int i = 0; i < operations.length; i++) {
+            index = hashMap.get(operations[i][0]);
+            nums[index] = operations[i][1];
+            hashMap.put(operations[i][1], index);
+        }
+        return nums;
     }
 
     /**

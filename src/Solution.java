@@ -3089,6 +3089,23 @@ public class Solution {
     }
 
     /**
+     * No. 1877 数组中最大数对和的最小值
+     * @param nums
+     * @return
+     */
+    public int minPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int max = Integer.MIN_VALUE;
+        int temp = 0;
+        for (int left = 0, right = nums.length - 1; left < right; right--,right++) {
+//            max = Math.max(max, nums[left] + nums[right]);
+            temp = nums[left] + nums[right];
+            max = temp > max ? temp : max;
+        }
+        return max;
+    }
+
+    /**
      * No. 2022 将一维数组转变成二维数组
      *
      * @param original
@@ -3240,6 +3257,25 @@ public class Solution {
             }
         }
         return count;
+    }
+
+    /**
+     * No. 2235 两整数相加
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public int sum(int num1, int num2) {
+        return num1 + num2;
+    }
+
+    /**
+     * No. 2236 判断根节点是否等于子节点之和
+     * @param root
+     * @return
+     */
+    public boolean checkTree(TreeNode root) {
+        return root.val == root.left.val + root.right.val;
     }
 
     /**

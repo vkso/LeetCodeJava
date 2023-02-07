@@ -3637,6 +3637,24 @@ public class Solution {
         return ' ';
     }
 
+    /**
+     * No. 2395 和相等的子数组
+     * @param nums
+     * @return
+     */
+    public boolean findSubarrays(int[] nums) {
+        HashSet<Integer> hashSet = new HashSet<>();
+        int sum = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            sum = nums[i] + nums[i+1];
+            if (hashSet.contains(sum)) {
+                return true;
+            } else {
+                hashSet.add(sum);
+            }
+        }
+        return false;
+    }
 
     /**
      * LCP 06. 拿硬币

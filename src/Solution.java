@@ -13,10 +13,12 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        String s = "ibpbhixfiouhdljnjfflpapptrxgcomvnb";
-        int k = 33;
-        System.out.println(maxVowels(s, k));
-
+        String[] keyName = {"a","a","a","a","a","a","a","b","b","b","b","b","b","b","c","c","c","c","c","c","c","c","c"};
+        String[] keyTime = {"00:37","11:24","14:35","21:25","15:48","20:28","07:30","09:26","10:32","20:10","19:26","08:13","01:08","15:49","02:34","06:48","04:33","07:18","00:05","06:44","13:33","04:12","03:54"};
+        List<String> strings = alertNames(keyName, keyTime);
+        for (int i = 0; i < strings.size(); i++) {
+            System.out.println(strings.get(i));
+        }
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -2734,6 +2736,38 @@ public class Solution {
             f[pos][rest] %= MOD;
         }
         return f[pos][rest];
+    }
+
+    /**
+     * No. 1604 警告一小时内使用相同员工卡大于等于三次的人
+     * @param keyName
+     * @param keyTime
+     * @return
+     */
+    public List<String> alertNames(String[] keyName, String[] keyTime) {
+        HashMap<String, List<Integer>> hashMap = new HashMap<>();
+        List<String> ans = new ArrayList<>();
+        int H_m = 0, M = 0, minutes;
+        for (int i = 0; i < keyName.length; i++) {
+            hashMap.putIfAbsent(keyName[i], new ArrayList<>());
+            H_m = ((keyTime[i].charAt(0) - '0') * 10 + (keyTime[i].charAt(1) - '0')) * 60;
+            M = (keyTime[i].charAt(3) - '0') * 10 + (keyTime[i].charAt(4) - '0');
+            minutes = H_m + M;
+            hashMap.get(keyName[i]).add(minutes);
+        }
+        Set<String> strings = hashMap.keySet();
+        for (String name : strings) {
+            List<Integer> list = hashMap.get(name);
+            Collections.sort(list);
+            for (int i = 2; i < list.size(); i++) {
+                if (list.get(i) - list.get(i-2) <= 60) {
+                    ans.add(name);
+                    break;
+                }
+            }
+        }
+        Collections.sort(ans);
+        return ans;
     }
 
     /**

@@ -8,7 +8,7 @@ public class Trie {
     public Map<String, Trie> children;
 
     public Trie() {
-        this.ref = ref;
+        this.ref = -1;
         this.children= new HashMap<>();
     }
 }

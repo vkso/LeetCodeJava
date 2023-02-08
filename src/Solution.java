@@ -11,12 +11,8 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        String[] keyName = {"a","a","a","a","a","a","a","b","b","b","b","b","b","b","c","c","c","c","c","c","c","c","c"};
-        String[] keyTime = {"00:37","11:24","14:35","21:25","15:48","20:28","07:30","09:26","10:32","20:10","19:26","08:13","01:08","15:49","02:34","06:48","04:33","07:18","00:05","06:44","13:33","04:12","03:54"};
-        List<String> strings = alertNames(keyName, keyTime);
-        for (int i = 0; i < strings.size(); i++) {
-            System.out.println(strings.get(i));
-        }
+        String[] words = {"w","wo","wor","worl","world"};
+        System.out.println(longestWord(words));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -199,6 +195,7 @@ public class Solution {
 
     /**
      * No. 16 最接近的三数之和
+     *
      * @param nums
      * @param target
      * @return
@@ -208,7 +205,7 @@ public class Solution {
         int best = Integer.MAX_VALUE;
         int ans = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (i > 0 && nums[i] == nums[i-1]) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
             int j = i + 1, k = nums.length - 1;
@@ -223,12 +220,12 @@ public class Solution {
                 }
                 if (sum > target) {
                     --k;
-                    while (k > j && nums[k] == nums[k+1]) {
+                    while (k > j && nums[k] == nums[k + 1]) {
                         --k;
                     }
                 } else {
                     ++j;
-                    while (j < k && nums[j] == nums[j-1]) {
+                    while (j < k && nums[j] == nums[j - 1]) {
                         ++j;
                     }
                 }
@@ -1899,6 +1896,7 @@ public class Solution {
 
     /**
      * No. 680 验证回文串 II
+     *
      * @param s
      * @return
      */
@@ -1913,7 +1911,7 @@ public class Solution {
                 r--;
                 continue;
             } else {
-                if (isPalindrome_(s.substring(l, r)) || isPalindrome_(s.substring(l+1, r+1))) {
+                if (isPalindrome_(s.substring(l, r)) || isPalindrome_(s.substring(l + 1, r + 1))) {
                     return true;
                 } else {
                     return false;
@@ -1922,6 +1920,7 @@ public class Solution {
         }
         return true;
     }
+
     public boolean isPalindrome_(String s) {
         if (s.length() == 1) {
             return true;
@@ -2015,6 +2014,65 @@ public class Solution {
      */
     public String toLowerCase(String s) {
         return s.toLowerCase();
+    }
+
+    /**
+     * No. 720 字典中最长的单词
+     *
+     * @param words
+     * @return
+     */
+    public String longestWord(String[] words) {
+        class Trie {
+            boolean isEnd;
+            Map<Character, Trie> child;
+
+            public Trie() {
+                this.isEnd = false;
+                this.child = new HashMap<>();
+            }
+
+            public void addWord(String word) {
+                Trie node = this;
+                for (int i = 0; i < word.length(); i++) {
+                    char ch = word.charAt(i);
+                    node.child.putIfAbsent(ch, new Trie());
+                    node = node.child.get(ch);
+                }
+                node.isEnd = true;
+            }
+
+            public boolean hasWord(String word) {
+                Trie node = this;
+                for (int i = 0; i < word.length(); i++) {
+                    char ch = word.charAt(i);
+                    if (node.child.containsKey(ch) && node.isEnd == true) {
+                        node = node.child.get(ch);
+                    } else {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        Trie root = new Trie();
+        root.isEnd = true;
+        for (int i = 0; i < words.length; i++) {
+            root.addWord(words[i]);
+        }
+
+        String ans = "";
+        int maxLen = 0;
+        Arrays.sort(words);
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            if (root.hasWord(word) && word.length() > maxLen) {
+                ans = word;
+                maxLen = word.length();
+            }
+        }
+        return ans;
     }
 
     /**
@@ -2119,7 +2177,8 @@ public class Solution {
     }
 
     /**
-     *     DFS计算每个独立岛屿的面积，并将该岛屿的grid值修改为index
+     * DFS计算每个独立岛屿的面积，并将该岛屿的grid值修改为index
+     *
      * @param grid
      * @param row
      * @param cow
@@ -2141,8 +2200,9 @@ public class Solution {
     }
 
     /**
-     *     计算将row、cow 位置的海域填充为岛屿后，与其相邻的四块海域全部面积加起来是多少
-     *     其中，hashMap是上一步计算出的所有index岛屿的面积，removeRepeat为了减少重复计算
+     * 计算将row、cow 位置的海域填充为岛屿后，与其相邻的四块海域全部面积加起来是多少
+     * 其中，hashMap是上一步计算出的所有index岛屿的面积，removeRepeat为了减少重复计算
+     *
      * @param grid
      * @param row
      * @param cow
@@ -2262,6 +2322,7 @@ public class Solution {
 
     /**
      * No. 921 使括号有效的最少添加
+     *
      * @param s
      * @return
      */
@@ -2366,22 +2427,23 @@ public class Solution {
 
     /**
      * No. 1210 穿过迷宫的最少移动次数
-     *     Tips: 将贪吃蛇的坐标和方向用一个int[] {x, y, s} 三元组表示
-     *           1, 0, 0 表示向右移动
-     *           0, 1, 0 表示向下移动
-     *           0, 0, 1 表示旋转（这里可以用 ^ 异或运算表示旋转）
-     *
-     *           使用广度优先搜索 BFS 算法，记录每次的路径
+     * Tips: 将贪吃蛇的坐标和方向用一个int[] {x, y, s} 三元组表示
+     * 1, 0, 0 表示向右移动
+     * 0, 1, 0 表示向下移动
+     * 0, 0, 1 表示旋转（这里可以用 ^ 异或运算表示旋转）
+     * <p>
+     * 使用广度优先搜索 BFS 算法，记录每次的路径
      *
      * @param grid
      * @return
      */
     private static int[][] DIRS = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+
     public int minimumMoves(int[][] grid) {
         int n = grid.length;
         boolean[][][] vis = new boolean[n][n][2];
         Queue<int[]> queue = new LinkedList<>();
-        queue.add(new int[] {0, 0, 0});
+        queue.add(new int[]{0, 0, 0});
         vis[0][0][0] = true;
         for (int steps = 1; !queue.isEmpty(); steps++) {
             Queue<int[]> tmp = queue;
@@ -2396,12 +2458,12 @@ public class Solution {
 
                     if (x2 < n && y2 < n && !vis[x][y][s] &&
                             grid[x][y] == 0 && grid[x2][y2] == 0 &&
-                            (d[2] == 0 || grid[x+1][y+1] == 0)) {
+                            (d[2] == 0 || grid[x + 1][y + 1] == 0)) {
                         if (x == n - 1 && y == n - 2) {
                             return steps;
                         }
                         vis[x][y][s] = true;
-                        queue.add(new int[] {x, y, s});
+                        queue.add(new int[]{x, y, s});
                     }
                 }
             }
@@ -2411,6 +2473,7 @@ public class Solution {
 
     /**
      * No. 1233 删除子文件夹
+     *
      * @param folder
      * @return
      */
@@ -2609,6 +2672,7 @@ public class Solution {
 
     /**
      * No. 1323 6和9组成的最大数字
+     *
      * @param num
      * @return
      */
@@ -2655,12 +2719,13 @@ public class Solution {
 
     /**
      * No. 1445 定长子串中元音的最大数目
+     *
      * @param s
      * @param k
      * @return
      */
     public int maxVowels(String s, int k) {
-        int left = 0, right = k-1;
+        int left = 0, right = k - 1;
         int count = 0, max_count = Integer.MIN_VALUE;
         for (int i = 0; i <= right; i++) {
             if (isVowels(s.charAt(i))) {
@@ -2681,16 +2746,18 @@ public class Solution {
             } else if ((!(isVowels(ch_l)) && (isVowels(ch_r)))) {
                 ++count;
             }
-           max_count = Math.max(max_count, count);
+            max_count = Math.max(max_count, count);
         }
         return max_count;
     }
+
     public boolean isVowels(char ch) {
         return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
     }
 
     /**
      * No. 1465 切割后面积最大的蛋糕
+     *
      * @param h
      * @param w
      * @param horizontalCuts
@@ -2706,18 +2773,19 @@ public class Solution {
         max_v = Math.max(max_v, verticalCuts[0]);
 
         for (int i = 0; i < horizontalCuts.length - 1; i++) {
-            max_h = Math.max(max_h, horizontalCuts[i+1] - horizontalCuts[i]);
+            max_h = Math.max(max_h, horizontalCuts[i + 1] - horizontalCuts[i]);
         }
         for (int i = 0; i < verticalCuts.length - 1; i++) {
-            max_v = Math.max(max_v, verticalCuts[i+1] - verticalCuts[i]);
+            max_v = Math.max(max_v, verticalCuts[i + 1] - verticalCuts[i]);
         }
         max_h = Math.max(max_h, h - horizontalCuts[horizontalCuts.length - 1]);
-        max_v = Math.max(max_v, w -verticalCuts[verticalCuts.length - 1]);
-        return (int)((max_h * max_v) % MOD);
+        max_v = Math.max(max_v, w - verticalCuts[verticalCuts.length - 1]);
+        return (int) ((max_h * max_v) % MOD);
     }
 
     /**
      * No. 1509 三次操作后最大值与最小值的最小差
+     *
      * @param nums
      * @return
      */
@@ -2727,10 +2795,10 @@ public class Solution {
         }
         Arrays.sort(nums);
         int min = Integer.MAX_VALUE;
-        min = Math.min(min, nums[nums.length-1] - nums[3]);
-        min = Math.min(min, nums[nums.length-4] - nums[0]);
-        min = Math.min(min, nums[nums.length-2] - nums[2]);
-        min = Math.min(min, nums[nums.length-3] - nums[1]);
+        min = Math.min(min, nums[nums.length - 1] - nums[3]);
+        min = Math.min(min, nums[nums.length - 4] - nums[0]);
+        min = Math.min(min, nums[nums.length - 2] - nums[2]);
+        min = Math.min(min, nums[nums.length - 3] - nums[1]);
         return min;
     }
 
@@ -2761,6 +2829,7 @@ public class Solution {
     static final int MOD = 1000000007;
 
     int[][] f;
+
     public int countRoutes(int[] locations, int start, int finish, int fuel) {
         f = new int[locations.length][fuel + 1];
         for (int[] row : f) {
@@ -2806,6 +2875,7 @@ public class Solution {
 
     /**
      * No. 1604 警告一小时内使用相同员工卡大于等于三次的人
+     *
      * @param keyName
      * @param keyTime
      * @return
@@ -2826,7 +2896,7 @@ public class Solution {
             List<Integer> list = hashMap.get(name);
             Collections.sort(list);
             for (int i = 2; i < list.size(); i++) {
-                if (list.get(i) - list.get(i-2) <= 60) {
+                if (list.get(i) - list.get(i - 2) <= 60) {
                     ans.add(name);
                     break;
                 }
@@ -2904,8 +2974,10 @@ public class Solution {
         }
         return true;
     }
+
     /**
      * No. 1798 你能构造出连续值的最大数目
+     *
      * @param coins
      * @return
      */
@@ -3156,6 +3228,7 @@ public class Solution {
 
     /**
      * No. 1877 数组中最大数对和的最小值
+     *
      * @param nums
      * @return
      */
@@ -3163,7 +3236,7 @@ public class Solution {
         Arrays.sort(nums);
         int max = Integer.MIN_VALUE;
         int temp = 0;
-        for (int left = 0, right = nums.length - 1; left < right; right--,right++) {
+        for (int left = 0, right = nums.length - 1; left < right; right--, right++) {
 //            max = Math.max(max, nums[left] + nums[right]);
             temp = nums[left] + nums[right];
             max = temp > max ? temp : max;
@@ -3222,6 +3295,7 @@ public class Solution {
 
     /**
      * No. 2087 网格图中机器人回家的最小代价
+     *
      * @param startPos
      * @param homePos
      * @param rowCosts
@@ -3271,6 +3345,7 @@ public class Solution {
 
     /**
      * No. 2119 翻转两次的数字
+     *
      * @param num
      * @return
      */
@@ -3327,6 +3402,7 @@ public class Solution {
 
     /**
      * No. 2235 两整数相加
+     *
      * @param num1
      * @param num2
      * @return
@@ -3337,6 +3413,7 @@ public class Solution {
 
     /**
      * No. 2236 判断根节点是否等于子节点之和
+     *
      * @param root
      * @return
      */
@@ -3430,6 +3507,7 @@ public class Solution {
 
     /**
      * No. 2295 替换数组中的元素
+     *
      * @param nums
      * @param operations
      * @return
@@ -3687,6 +3765,7 @@ public class Solution {
 
     /**
      * No. 2331 计算布尔二叉树的值
+     *
      * @param root
      * @return
      */
@@ -3700,6 +3779,7 @@ public class Solution {
             return evaluateTree_(root.left) && evaluateTree_(root.right);
         }
     }
+
     public boolean boo1, boo2;
 
     public boolean evaluateTree(TreeNode root) {
@@ -3738,7 +3818,6 @@ public class Solution {
     }
 
 
-
     /**
      * No. 2351 第一个出现两次的字母
      *
@@ -3761,6 +3840,7 @@ public class Solution {
 
     /**
      * No. 2395 和相等的子数组
+     *
      * @param nums
      * @return
      */
@@ -3768,7 +3848,7 @@ public class Solution {
         HashSet<Integer> hashSet = new HashSet<>();
         int sum = 0;
         for (int i = 0; i < nums.length - 1; i++) {
-            sum = nums[i] + nums[i+1];
+            sum = nums[i] + nums[i + 1];
             if (hashSet.contains(sum)) {
                 return true;
             } else {

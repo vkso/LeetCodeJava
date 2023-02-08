@@ -13,8 +13,28 @@ public class InterviewProblems {
     }
 
     /**
+     * 面试题01.06. 字符串压缩
+     *
+     * @param s
+     * @return
+     */
+    public String compressString(String s) {
+        StringBuilder sb = new StringBuilder();
+        int l = 0, r = 0, len = s.length();
+        while (l < len) {
+            while (r < len && s.charAt(l) == s.charAt(r)) {
+                ++r;
+            }
+            sb.append(s.charAt(l)).append(r - l);
+            l = r;
+        }
+        return sb.length() < len ? sb.toString() : s;
+    }
+
+    /**
      * 面试题16.07. 最大数值
-     *     Tips: 不使用条件判断运算符 if else 语句
+     * Tips: 不使用条件判断运算符 if else 语句
+     *
      * @param a
      * @param b
      * @return
@@ -25,6 +45,7 @@ public class InterviewProblems {
 
     /**
      * 面试题17.22. 单词转换
+     *
      * @param beginWord
      * @param endWord
      * @param wordList
@@ -73,6 +94,8 @@ public class InterviewProblems {
         }
         return new ArrayList<>();
     }
+
+
 }
 
 

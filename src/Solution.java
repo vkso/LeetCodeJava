@@ -1,7 +1,5 @@
 import apple.laf.JRSUIUtils;
-import com.leetcode.tools.ListNode;
-import com.leetcode.tools.MyLinkedList;
-import com.leetcode.tools.TreeNode;
+import com.leetcode.tools.*;
 import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
@@ -2409,6 +2407,54 @@ public class Solution {
             }
         }
         return -1;
+    }
+
+    /**
+     * No. 1233 删除子文件夹
+     * @param folder
+     * @return
+     */
+    public List<String> removeSubfolders(String[] folder) {
+        Trie root = new Trie();
+        for (int i = 0; i < folder.length; i++) {
+            List<String> dir = split_1233(folder[i]);
+            Trie cur = root;
+            for (String name : dir) {
+                cur.children.putIfAbsent(name, new Trie());
+                cur = cur.children.get(name);
+            }
+            cur.ref = i;
+        }
+
+        List<String> ans = new ArrayList<>();
+        dfs_1233(folder, ans, root);
+        return ans;
+    }
+
+    public List<String> split_1233(String s) {
+        List<String> ret = new ArrayList<>();
+        StringBuilder cur = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '/') {
+                ret.add(cur.toString());
+                cur.setLength(0);
+            } else {
+                cur.append(ch);
+            }
+        }
+        ret.add(cur.toString());
+        return ret;
+    }
+
+    public void dfs_1233(String[] folder, List<String> ans, Trie cur) {
+        if (cur.ref >= 0) {
+            ans.add(folder[cur.ref]);
+            return;
+        }
+        for (Trie child : cur.children.values()) {
+            dfs_1233(folder, ans, child);
+        }
     }
 
     /**

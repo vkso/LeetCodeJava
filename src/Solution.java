@@ -1620,6 +1620,19 @@ public class Solution {
     }
 
     /**
+     * No. 373 查找和最小的k对数字
+     *     Tips: 优先队列，PriorityQueue 构造
+     * @param nums1
+     * @param nums2
+     * @param k
+     * @return
+     */
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+
+
+    }
+
+    /**
      * No. 387 字符串中的第一个唯一字符
      *
      * @param s
@@ -2342,6 +2355,29 @@ public class Solution {
             }
         }
         return left_count + right_count;
+    }
+
+    /**
+     * No. 1047 删除字符串中所有相邻重复项
+     *     Tips 使用栈来实现相邻重复字符的删除，这里使用StringBuilder的append和deleteCharAt方法
+     *          来实现栈
+     * @param s
+     * @return
+     */
+    public String removeDuplicates(String s) {
+        StringBuilder stack = new StringBuilder();
+        int top = -1;
+        for (int i = 0; i < s.length(); ++i) {
+            char ch = s.charAt(i);
+            if (top >= 0 && stack.charAt(top) == ch) {
+                stack.deleteCharAt(top);
+                --top;
+            } else {
+                stack.append(ch);
+                ++top;
+            }
+        }
+        return stack.toString();
     }
 
     /**
@@ -3817,6 +3853,19 @@ public class Solution {
         }
     }
 
+    /**
+     * No. 2335 装满被子需要的最短总时长
+     *     Tips: 数学计算题，分类讨论三个数字的大小情况
+     * @param amount
+     * @return
+     */
+     public int fillCups(int[] amount) {
+        Arrays.sort(amount);
+        if (amount[2] > amount[1] + amount[0]) {
+            return amount[2];
+        }
+        return (amount[0] + amount[1] + amount[2] + 1) / 2;
+     }
 
     /**
      * No. 2351 第一个出现两次的字母

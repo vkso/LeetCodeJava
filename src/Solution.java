@@ -11,7 +11,7 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        String[] words = {"w","wo","wor","worl","world"};
+        String[] words = {"w", "wo", "wor", "worl", "world"};
         System.out.println(longestWord(words));
     }
 
@@ -1621,7 +1621,8 @@ public class Solution {
 
     /**
      * No. 373 查找和最小的k对数字
-     *     Tips: 优先队列，PriorityQueue 构造
+     * Tips: 优先队列，PriorityQueue 构造
+     *
      * @param nums1
      * @param nums2
      * @param k
@@ -2359,8 +2360,9 @@ public class Solution {
 
     /**
      * No. 1047 删除字符串中所有相邻重复项
-     *     Tips 使用栈来实现相邻重复字符的删除，这里使用StringBuilder的append和deleteCharAt方法
-     *          来实现栈
+     * Tips 使用栈来实现相邻重复字符的删除，这里使用StringBuilder的append和deleteCharAt方法
+     * 来实现栈
+     *
      * @param s
      * @return
      */
@@ -3458,6 +3460,34 @@ public class Solution {
     }
 
     /**
+     * No. 2265 统计值等于子树平均值的节点数
+     *
+     * @param root
+     * @return
+     */
+    int count_2265 = 0, res_2265 = 0;
+
+    public int averageOfSubtree(TreeNode root) {
+        dfs_2265(root);
+        return res_2265;
+    }
+
+    public int dfs_2265(TreeNode root) {
+        if (null == root) {
+            return 0;
+        }
+        int count = count_2265;
+        ++count_2265;
+        int sum_left = dfs_2265(root.left);
+        int sum_right = dfs_2265(root.right);
+        int sum = root.val + sum_left + sum_right;
+        if (sum / (count_2265 - count) == root.val) {
+            res_2265++;
+        }
+        return sum;
+    }
+
+    /**
      * No. 2283 判断一个数的数字计数是否等于数位的值
      *
      * @param num
@@ -3855,17 +3885,42 @@ public class Solution {
 
     /**
      * No. 2335 装满被子需要的最短总时长
-     *     Tips: 数学计算题，分类讨论三个数字的大小情况
+     * Tips: 数学计算题，分类讨论三个数字的大小情况
+     *
      * @param amount
      * @return
      */
-     public int fillCups(int[] amount) {
+    public int fillCups(int[] amount) {
         Arrays.sort(amount);
         if (amount[2] > amount[1] + amount[0]) {
             return amount[2];
         }
         return (amount[0] + amount[1] + amount[2] + 1) / 2;
-     }
+    }
+
+    /**
+     * No. 2341 数组能形成多少数对
+     * @param nums
+     * @return
+     */
+    public int[] numberOfPairs(int[] nums) {
+        int count[] = new int[101];
+        int pairs = 0, singles = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (count[nums[i]] == 0) {
+                count[nums[i]]++;
+            } else {
+                count[nums[i]] = 0;
+                pairs++;
+            }
+        }
+        for (int i = 0; i < 101; i++) {
+            if (count[i] != 0) {
+                singles++;
+            }
+        }
+        return new int[] {pairs, singles};
+    }
 
     /**
      * No. 2351 第一个出现两次的字母

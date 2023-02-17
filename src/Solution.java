@@ -2434,6 +2434,35 @@ public class Solution {
     }
 
     /**
+     * No. 1139 最大的以1为边界的正方形
+     *
+     * @param grid
+     * @return
+     */
+    public int largest1BorderedSquare(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] rs = new int[m][n + 1], cs = new int[n][m + 1];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                rs[i][j + 1] = rs[i][j] + grid[i][j];
+                cs[j][i + 1] = cs[j][i] + grid[i][j];
+            }
+        }
+        for (int d = Math.min(m, n); d > 0; d--) {
+            for (int i = 0; i <= m - d; i++) {
+                for (int j = 0; j <= n - d; j++) {
+                    if (rs[i][j+d] - rs[i][j] == d &&
+                    cs[j][i+d] - cs[j][i] == d &&
+                    rs[i+d-1][j+d] - rs[i + d - 1][j] == d &&
+                    cs[j + d - 1][i + d] - cs[j + d - 1][i] == d)
+                        return d * d;
+                }
+            }
+        }
+        return 0;
+    }
+
+    /**
      * No. 1145 二叉树着色游戏
      * Tips: 本题可以转换为一个统计二叉树节点数量的问题。节点X将整个二叉树分为了3个部分：左孩子树、右孩子树、父节点数
      *
@@ -3900,6 +3929,7 @@ public class Solution {
 
     /**
      * No. 2341 数组能形成多少数对
+     *
      * @param nums
      * @return
      */
@@ -3919,7 +3949,7 @@ public class Solution {
                 singles++;
             }
         }
-        return new int[] {pairs, singles};
+        return new int[]{pairs, singles};
     }
 
     /**

@@ -2588,6 +2588,28 @@ public class Solution {
     }
 
     /**
+     * No. 1237 找出给定方程的正整数解
+     *     Tips：直接枚举所有结果，即可AC
+     * @param customFunction
+     * @param z
+     * @return
+     */
+    public List<List<Integer>> findSolution(CustomFunction customFunction, int z) {
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = 1; i <= 1000; i++) {
+            for (int j = 1; j <= 1000; j++) {
+                if (customFunction.f(i, j) == z) {
+                    List<Integer> pairs = new ArrayList<>();
+                    pairs.add(i);
+                    pairs.add(j);
+                    ans.add(pairs);
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 1275 找出井字棋的获胜者
      *
      * @param moves

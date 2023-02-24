@@ -3975,6 +3975,33 @@ public class Solution {
     }
 
     /**
+     * No. 2347 最好的扑克手牌
+     * @param ranks
+     * @param suits
+     * @return
+     */
+    public String bestHand(int[] ranks, char[] suits) {
+        int[] count_ranks = new int[13];
+        int[] count_suits = new int[4];
+        int max_ranks = 0, max_suits = 0;
+        for (int i = 0; i < 5; i++) {
+            count_ranks[ranks[i] - 1]++;
+            count_suits[suits[i] - 'a']++;
+            max_ranks = Math.max(max_ranks, count_ranks[ranks[i]-1]);
+            max_suits = Math.max(max_suits, count_suits[suits[i] - 'a']);
+        }
+        if (max_suits == 5) {
+            return "Flush";
+        } else if (max_ranks >= 3) {
+            return "Three of a Kind";
+        } else if (max_ranks == 2) {
+            return "Pair";
+        } else {
+            return "High Card";
+        }
+    }
+
+    /**
      * No. 2351 第一个出现两次的字母
      *
      * @param s
@@ -3992,6 +4019,22 @@ public class Solution {
             }
         }
         return ' ';
+    }
+
+    /**
+     * No. 2357 使数组中所有元素都等于零
+     * @param nums
+     * @return
+     */
+    public int minimumOperations(int[] nums) {
+        HashSet<Integer> hashSet = new HashSet<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 0) {
+                continue;
+            }
+            hashSet.add(nums[i]);
+        }
+        return hashSet.size();
     }
 
     /**

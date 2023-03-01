@@ -2610,6 +2610,25 @@ public class Solution {
     }
 
     /**
+     * No. 1255 得分最高的单词集合
+     * @param words
+     * @param letters
+     * @param score
+     * @return
+     */
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+        int n = words.length;
+        int[] count = new int[26];
+        for (char ch : letters) {
+            count[ch - 'a']++;
+        }
+        for (int i = 1; i < 1 << n; i++) {
+
+        }
+        return 0;
+    }
+
+    /**
      * No. 1275 找出井字棋的获胜者
      *
      * @param moves
@@ -4035,6 +4054,52 @@ public class Solution {
             hashSet.add(nums[i]);
         }
         return hashSet.size();
+    }
+
+    /**
+     * No. 2363 合并相似的物品
+     * @param items
+     * @param items2
+     * @return
+     */
+    public List<List<Integer>> mergeSimilarItems(int[][] items1, int[][] items2) {
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        for (int[] v : items1) {
+            hashMap.put(v[0], hashMap.getOrDefault(v[0], 0) + v[1]);
+        }
+        for (int[] v : items2) {
+            hashMap.put(v[0], hashMap.getOrDefault(v[0], 0) + v[1]);
+        }
+        List<List<Integer>> ret = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+            int k = entry.getKey(), v = entry.getValue();
+            List<Integer> pair = new ArrayList<>();
+            pair.add(k);
+            pair.add(v);
+            ret.add(pair);
+        }
+        Collections.sort(ret, (a, b) -> a.get(0) - b.get(0));
+        return ret;
+    }
+
+    /**
+     * No. 2373 矩阵中的局部最大值
+     * @param grid
+     * @return
+     */
+    public int[][] largestLocal(int[][] grid) {
+        int n = grid.length;
+        int[][] ret = new int[n-2][n-2];
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = 0; j < n - 2; j++) {
+                for (int x = i; x < i + 3; x++) {
+                    for (int y = j; y < j + 3; y++) {
+                        ret[i][j] = Math.max(ret[i][j], grid[x][y]);
+                    }
+                }
+            }
+        }
+        return ret;
     }
 
     /**

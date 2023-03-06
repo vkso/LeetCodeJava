@@ -44,6 +44,34 @@ public class InterviewProblems {
     }
 
     /**
+     * No. 16.24. 数对和
+     * @param nums
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> pairSums(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<List<Integer>> ret = new ArrayList<>();
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int sum = nums[left] + nums[right];
+            if (sum > target) {
+                --right;
+            } else if (sum < target) {
+                ++left;
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(nums[left]);
+                list.add(nums[right]);
+                ret.add(list);
+                --right;
+                ++left;
+            }
+        }
+        return ret;
+    }
+
+    /**
      * 面试题17.22. 单词转换
      *
      * @param beginWord

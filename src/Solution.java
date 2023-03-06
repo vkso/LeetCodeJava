@@ -921,6 +921,24 @@ public class Solution {
     }
 
     /**
+     * No. 112 路径总和
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
+        }
+        if (root.left == null && root.right == null) {
+            return targetSum == root.val;
+        }
+        return hasPathSum(root.left, targetSum - root.val) ||
+                hasPathSum(root.right, targetSum - root.val);
+
+    }
+
+    /**
      * No. 118 杨辉三角
      *
      * @param numRows
@@ -2892,6 +2910,33 @@ public class Solution {
     }
 
     /**
+     * No. 1487 保证文件名唯一
+     * @param names
+     * @return
+     */
+    public String[] getFolderNames(String[] names) {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        ArrayList<String> ret = new ArrayList<>();
+        for (String name : names) {
+            if (hashMap.containsKey(name)) {
+                int k = hashMap.get(name);
+                while (hashMap.containsKey(name + "(" + k + ")")) {
+                    k++;
+                }
+                ret.add(name + "(" + k + ")");
+                hashMap.put(name, k + 1);
+                hashMap.put(name + "(" + k + ")", 1);
+            } else {
+                hashMap.put(name, 1);
+                ret.add(name);
+            }
+        }
+        String[] ans = new String[ret.size()];
+        ans = ret.toArray(ans);
+        return ans;
+    }
+
+    /**
      * No. 1509 三次操作后最大值与最小值的最小差
      *
      * @param nums
@@ -3035,6 +3080,22 @@ public class Solution {
             }
         }
         return max_depth;
+    }
+
+    /**
+     * No. 1653 使字符串平衡的最少删除次数
+     *     Tips: 1 如果字符串中存在 "ba"，那么一定不是平衡的串，将其替换为空串，最后字符串的长度
+     *             除以2就是需要删除的操作次数
+     *           2 a a a a | b b b b ，平衡的串一定是 a 在 b 的左边，枚举所有的 | 的位置，计算次数
+     * @param s
+     * @return
+     */
+    public int minimumDeletions(String s) {
+        int len = s.length();
+        while (s.indexOf("ba") >= 0) {
+            s = s.replace("ba", "");
+        }
+        return (len - s.length()) / 2;
     }
 
     /**

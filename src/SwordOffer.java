@@ -1,5 +1,7 @@
 import com.leetcode.tools.ListNode;
 
+import java.util.Map;
+
 public class SwordOffer {
 
     /**
@@ -69,6 +71,27 @@ public class SwordOffer {
         long x = n / len - 1 + s;
         n -= (x - s + 1) * len;
         return n == 0 ? (int) (x % 10) : (int) ((x + 1) / Math.pow(10, len - n) % 10);
+    }
+
+    /**
+     * 剑指Offer 47. 礼物的最大价值
+     * @param grid
+     * @return
+     */
+    public int maxValue(int[][] grid) {
+        int row = grid.length;
+        int cow = grid[0].length;
+
+        int[][] dp = new int[row+1][cow+1];
+        for (int i = 1; i <= row; i++) {
+            for (int j = 1; j <= cow; j++) {
+                dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]) + grid[i-1][j-1];
+            }
+        }
+        return dp[row][cow];
+    }
+    public boolean inArea(int x, int y, int[][] grid) {
+        return x < grid.length && y < grid[0].length;
     }
 
     /**

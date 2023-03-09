@@ -11,8 +11,11 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        String[] words = {"w", "wo", "wor", "worl", "world"};
-        System.out.println(longestWord(words));
+        int[] nums = {3, 2, 3};
+        List<Integer> integers = majorityElement(nums);
+        for (Integer i : integers) {
+            System.out.println(i);
+        }
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -1289,6 +1292,26 @@ public class Solution {
     }
 
     /**
+     * No. 229 多数元素 II
+     * @param nums
+     * @return
+     */
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> ans = new ArrayList<>();
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        for (int i : nums) {
+            hashMap.put(i, hashMap.getOrDefault(i, 0) + 1);
+        }
+        Set<Integer> integers = hashMap.keySet();
+        for (Integer num : integers) {
+            if (hashMap.get(num) > nums.length / 3) {
+                ans.add(num);
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 231 2的幂
      * 判断一个数是不是2的幂
      * 技巧：n & (n-1) 可以移除一个二进制数末位的1，2的幂次数，只有一个1，所以会被置0
@@ -1646,10 +1669,10 @@ public class Solution {
      * @param k
      * @return
      */
-    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-
-
-    }
+//    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+//
+//
+//    }
 
     /**
      * No. 387 字符串中的第一个唯一字符
@@ -2612,20 +2635,20 @@ public class Solution {
      * @param z
      * @return
      */
-    public List<List<Integer>> findSolution(CustomFunction customFunction, int z) {
-        List<List<Integer>> ans = new ArrayList<>();
-        for (int i = 1; i <= 1000; i++) {
-            for (int j = 1; j <= 1000; j++) {
-                if (customFunction.f(i, j) == z) {
-                    List<Integer> pairs = new ArrayList<>();
-                    pairs.add(i);
-                    pairs.add(j);
-                    ans.add(pairs);
-                }
-            }
-        }
-        return ans;
-    }
+//    public List<List<Integer>> findSolution(CustomFunction customFunction, int z) {
+//        List<List<Integer>> ans = new ArrayList<>();
+//        for (int i = 1; i <= 1000; i++) {
+//            for (int j = 1; j <= 1000; j++) {
+//                if (customFunction.f(i, j) == z) {
+//                    List<Integer> pairs = new ArrayList<>();
+//                    pairs.add(i);
+//                    pairs.add(j);
+//                    ans.add(pairs);
+//                }
+//            }
+//        }
+//        return ans;
+//    }
 
     /**
      * No. 1255 得分最高的单词集合

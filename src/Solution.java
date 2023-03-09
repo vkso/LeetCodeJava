@@ -4164,6 +4164,27 @@ public class Solution {
     }
 
     /**
+     * No. 2379 得到K歌黑块的最少涂色次数
+     *     Tips: 滑动窗口：用K长度的窗口，滑动遍历整个blocks长度，取窗口内的白色块的最小值
+     * @param blocks
+     * @param k
+     * @return
+     */
+    public int minimumRecolors(String blocks, int k) {
+        int ans = Integer.MAX_VALUE;
+        for (int i = 0; i <= blocks.length() - k; i++) {
+            int count = 0;
+            for (int j = 0; j < k; j++) {
+                if (blocks.charAt(i + j) == 'W') {
+                    ++count;
+                }
+            }
+            ans = Math.min(ans, count);
+        }
+        return ans;
+    }
+
+    /**
      * No. 2395 和相等的子数组
      *
      * @param nums

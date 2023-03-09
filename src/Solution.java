@@ -2,6 +2,7 @@ import apple.laf.JRSUIUtils;
 import com.leetcode.tools.*;
 import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
+import org.omg.PortableServer.POAHelper;
 
 import java.security.cert.CollectionCertStoreParameters;
 import java.util.*;
@@ -11,11 +12,17 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] nums = {3, 2, 3};
-        List<Integer> integers = majorityElement(nums);
-        for (Integer i : integers) {
-            System.out.println(i);
+        ListNode five = new ListNode(5, null);
+        ListNode three = new ListNode(3, five);
+
+        ListNode listNode = reverseBetween(three, 1, 2);
+
+        ListNode head = listNode;
+        while (null != head) {
+            System.out.print(head.val + " ");
+            head = head.next;
         }
+        System.out.println();
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -765,6 +772,52 @@ public class Solution {
         while (nums2_end >= 0) {
             nums1[current--] = nums2[nums2_end--];
         }
+    }
+
+    /**
+     * No. 92 翻转链表 II
+     *     Tips: 找到 pre cur next 三个节点的位置，进行尾插法即可，注意新建一个头结点
+     *           用作处理返回。
+     * @param head
+     * @param left
+     * @param right
+     * @return
+     */
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if (left == right) {
+            return head;
+        }
+        ListNode pHead = new ListNode();
+        ListNode start = new ListNode();
+        ListNode next = new ListNode();
+        ListNode end = new ListNode();
+        ListNode HHead = new ListNode();
+
+        pHead.next = head;
+        HHead = pHead;
+
+        // pHead 指向 left 节点的左侧，待调整链表的前一个节点
+        for (int i = 0; i < left - 1; i++) {
+            pHead = pHead.next;
+        }
+
+        start = pHead.next;
+        next = start.next;
+
+        // end 指向 right 节点
+        end = start;
+        for (int i = 0; i < right - left; i++) {
+            end = end.next;
+        }
+
+        for (int i = 0; i < right - left; i++) {
+            start.next = next.next;
+            next.next = pHead.next;
+            pHead.next = next;
+            next = start.next;
+        }
+
+        return HHead.next;
     }
 
     /**

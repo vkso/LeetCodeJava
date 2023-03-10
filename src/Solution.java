@@ -12,7 +12,8 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        System.out.println(countNumbersWithUniqueDigits(3));
+        int[] nums = {4, 2, 4, 5, 6};
+        System.out.println(maximumUniqueSubarray(nums));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -3220,6 +3221,36 @@ public class Solution {
             s = s.replace("ba", "");
         }
         return (len - s.length()) / 2;
+    }
+
+    /**
+     * No. 1695 删除子数组的最大得分
+     * @param nums
+     * @return
+     */
+    public int maximumUniqueSubarray(int[] nums) {
+        HashSet<Integer> hashSet = new HashSet<>();
+        int l = 0, r = 0, sum = 0, ans= 0;
+
+        while (r < nums.length) {
+            int num = nums[r];
+            if (!hashSet.contains(num)) {
+                hashSet.add(num);
+                ++r;
+                sum += num;
+            } else {
+                ans = Math.max(ans, sum);
+                while (nums[l] != num) {
+                    hashSet.remove(nums[l]);
+                    sum -= nums[l];
+                    ++l;
+                }
+                ++l;
+                ++r;
+            }
+        }
+        ans = Math.max(ans, sum);
+        return ans;
     }
 
     /**

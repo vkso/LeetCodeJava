@@ -12,17 +12,7 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        ListNode five = new ListNode(5, null);
-        ListNode three = new ListNode(3, five);
-
-        ListNode listNode = reverseBetween(three, 1, 2);
-
-        ListNode head = listNode;
-        while (null != head) {
-            System.out.print(head.val + " ");
-            head = head.next;
-        }
-        System.out.println();
+        System.out.println(countNumbersWithUniqueDigits(3));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -744,6 +734,35 @@ public class Solution {
 //            --tail;
 //        }
 //        return tail;
+    }
+
+    /**
+     * No. 86 分隔链表
+     *     Tips: 类似归并的方法，最后将两个链表整合在一起
+     * @param head
+     * @param x
+     * @return
+     */
+    public ListNode partition(ListNode head, int x) {
+        ListNode dummyLeft = new ListNode();
+        ListNode dummyRight = new ListNode();
+        ListNode cur = head;
+        ListNode curLeft = dummyLeft;
+        ListNode curRight = dummyRight;
+
+        while (null != cur) {
+            if (cur.val < x) {
+                curLeft.next = cur;
+                curLeft = curLeft.next;
+            } else {
+                curRight.next = cur;
+                curRight = curRight.next;
+            }
+            cur = cur.next;
+        }
+        curRight.next = null;
+        curLeft.next = dummyRight.next;
+        return dummyLeft.next;
     }
 
     /**
@@ -1711,6 +1730,35 @@ public class Solution {
             res[i] = arrayList.get(i);
         }
         return res;
+    }
+
+    /**
+     * No. 357 统计个位数字都不相同的数字个数
+     *     Tips: 用枚举的方法，从第一位开始统计 9 x 9 x 8 x 7 x 6 x 5 x ... + f(n-1)
+     * @param n
+     * @return
+     */
+    public int countNumbersWithUniqueDigits(int n) {
+        if (n == 0) {
+            return 1;
+        }
+        if (n == 1) {
+            return 10;
+        }
+
+        int[] dp = new int[9];
+        dp[0] = 1;
+        dp[1] = 10;
+
+        for (int i = 2; i <= n; i++) {
+            int cur = 9;
+            for (int j = 0; j < i - 1; j++) {
+                cur *= (9 - j);
+            }
+            cur += dp[i - 1];
+            dp[i] = cur;
+        }
+        return dp[n];
     }
 
     /**

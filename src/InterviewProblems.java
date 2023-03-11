@@ -9,6 +9,11 @@ import java.util.*;
 public class InterviewProblems {
     @Test
     public void test() {
+        String[] array = {"A","1","B","C","D","2","3","4","E","5","F","G","6","7","H","I","J","K","L","M"};
+        String[] longestSubarray = findLongestSubarray(array);
+        for (String s : longestSubarray) {
+            System.out.println(s);
+        }
 
     }
 
@@ -69,6 +74,44 @@ public class InterviewProblems {
             }
         }
         return ret;
+    }
+
+    /**
+     * 面试题 17.05. 字母与数字
+     *     Tips: 将两个字母分别用 1 和 -1 代替，问题可以转换为"前缀和"问题
+     * @param array
+     * @return
+     */
+    public String[] findLongestSubarray(String[] array) {
+        Map<Integer, Integer> indices = new HashMap<>();
+        indices.put(0, -1);
+        int sum = 0;
+        int maxLength = 0;
+        int startIndex = -1;
+        int n = array.length;
+
+        for (int i = 0; i < n; i++) {
+            if (Character.isLetter(array[i].charAt(0))) {
+                ++sum;
+            } else {
+                --sum;
+            }
+            if (indices.containsKey(sum)) {
+                int firstIndex = indices.get(sum);
+                if (i - firstIndex > maxLength) {
+                    maxLength = i - firstIndex;
+                    startIndex = firstIndex + 1;
+                }
+            } else {
+                indices.put(sum, i);
+            }
+        }
+        if (maxLength == 0) {
+            return new String[0];
+        }
+        String[] ans = new String[maxLength];
+        System.arraycopy(array, startIndex, ans, 0, maxLength);
+        return ans;
     }
 
     /**

@@ -4361,7 +4361,6 @@ public class Solution {
                 initialExperience = 2 * experience[i] + 1;
             }
         }
-
         if (initialEnergy > 0) {
             return sum;
         } else {

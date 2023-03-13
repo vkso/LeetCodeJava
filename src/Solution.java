@@ -1830,6 +1830,30 @@ public class Solution {
     }
 
     /**
+     * No. 415 字符串相加
+     * @param num1
+     * @param num2
+     * @return
+     */
+    public String addStrings(String num1, String num2) {
+        int index1 = num1.length() - 1;
+        int index2 = num2.length() - 1;
+        int add = 0;
+        StringBuilder ans = new StringBuilder();
+
+        while (index1 >= 0 || index2 >= 0 || add != 0) {
+            int x = index1 >= 0 ? num1.charAt(index1) - '0' : 0;
+            int y = index2 >= 0 ? num2.charAt(index2) - '0' : 0;
+
+            int temp = x + y + add;
+
+            add = temp > 9 ? 1 : 0;
+            ans.append(temp % 10);
+        }
+        return ans.reverse().toString();
+    }
+
+    /**
      * No. 459 重复的子字符串
      *
      * @param s

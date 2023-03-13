@@ -3060,6 +3060,25 @@ public class Solution {
     }
 
     /**
+     * No. 1497 检查数组对是否可以被k整除
+     * @param arr
+     * @param K
+     * @return
+     */
+    public boolean canArrange(int[] arr, int K) {
+        int[] count = new int[K];
+        for (int num : arr) {
+            count[(num % K + K) % K]++;  // 这里保证负数也可以被取余数
+        }
+        for (int i = 1; i + i < K; i++) {
+            if (count[i] != count[K - i]) {
+                return false;
+            }
+        }
+        return count[0] % 2 == 0;  // 如果 0 位置的统计数量为奇数，那么 剩下的一个位置的数，也一定为奇数，则找不到与其对应的配对数
+    }
+
+    /**
      * No. 1487 保证文件名唯一
      * @param names
      * @return

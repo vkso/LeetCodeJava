@@ -1,6 +1,7 @@
 import apple.laf.JRSUIUtils;
 import com.leetcode.tools.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+//import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 import org.omg.PortableServer.POAHelper;
 
@@ -4337,6 +4338,35 @@ public class Solution {
             ans = Math.min(ans, count);
         }
         return ans;
+    }
+
+    /**
+     * No. 2383 赢得比赛需要的最少训练时长
+     * @param initialEnergy
+     * @param initialExperience
+     * @param energy
+     * @param experience
+     * @return
+     */
+    public int minNumberOfHours(int initialEnergy, int initialExperience, int[] energy, int[] experience) {
+        for (int i = 0; i < energy.length; i++) {
+            initialEnergy -= energy[i];
+        }
+        int sum = 0;
+        for (int i = 0; i < experience.length; i++) {
+            if (initialExperience > experience[i]) {
+                initialExperience += experience[i];
+            } else {
+                sum += 1 + (experience[i] - initialExperience);
+                initialExperience = 2 * experience[i] + 1;
+            }
+        }
+
+        if (initialEnergy > 0) {
+            return sum;
+        } else {
+            return Math.abs(initialEnergy) + sum + 1;
+        }
     }
 
     /**

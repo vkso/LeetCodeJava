@@ -3229,6 +3229,28 @@ public class Solution {
     }
 
     /**
+     * No. 1605 给定行和列的和，求可行的矩阵
+     * @param rowSum
+     * @param colSum
+     * @return
+     */
+    public int[][] restoreMatrix(int[] rowSum, int[] colSum) {
+        int rowLen = rowSum.length;
+        int colLen = colSum.length;
+
+        int[][] ans = new int[rowLen][colLen];
+        for (int i = 0; i < rowLen; i++) {
+            for (int j = 0; j < colLen; j++) {
+                int min = Math.min(rowSum[i], colSum[j]);
+                ans[i][j] = min;
+                rowSum[i] -= min;
+                colSum[j] -= min;
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 1614 括号的最大嵌套深度
      *
      * @param s

@@ -13,8 +13,9 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] nums = {4, 2, 4, 5, 6};
-        System.out.println(maximumUniqueSubarray(nums));
+        int n = 5;
+        int[][] roads = new int[][]{{0, 1}, {0, 3}, {1, 2}, {1, 3}, {2, 3}, {2, 4}};
+        System.out.println(maximalNetworkRank(n, roads));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -3271,6 +3272,43 @@ public class Solution {
             }
         }
         return max_depth;
+    }
+
+    /**
+     * No. 1615 最大网络秩
+     *     Tips: 直接枚举所有城市对之间的连接数量，如果两个城市之间存在连接，则结果-1
+     *     如果
+     * @param n
+     * @param roads
+     * @return
+     */
+    public int maximalNetworkRank(int n, int[][] roads) {
+        int[][] matrix = new int[n][n + 1];
+
+        // 构建邻接矩阵
+        for (int[] path : roads) {
+            matrix[path[0]][path[1]] = 1;
+            matrix[path[1]][path[0]] = 1;
+        }
+
+        // 求i城市的度，结果存放在邻接矩阵的最后一列，matrix[i][n]
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matrix[i][n] += matrix[i][j];
+            }
+        }
+
+        // 枚举所有的城市对，如果这两个城市之间存在连接，那么结果 -1，求取最大的即可
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            int max_tmp = 0;
+            for (int j = i + 1; j < n; j++) {
+                max_tmp = matrix[i][n] + matrix[j][n];
+                max_tmp = matrix[i][j] == 1 ? max_tmp - 1 : max_tmp;
+                ans = Math.max(ans, max_tmp);
+            }
+        }
+        return ans;
     }
 
     /**

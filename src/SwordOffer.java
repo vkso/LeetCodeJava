@@ -1,8 +1,16 @@
 import com.leetcode.tools.ListNode;
+import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 public class SwordOffer {
+
+    @Test
+    public void test() {
+    }
 
     /**
      * 剑指Offer II 024. 翻转链表
@@ -110,4 +118,11 @@ public class SwordOffer {
         }
         return n - 1;
     }
+
+    /**
+     * 剑指offer II 103. 最少硬币数目
+     * @param coins
+     * @param amount
+     * @return
+     */
 }

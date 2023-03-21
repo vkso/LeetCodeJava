@@ -2158,6 +2158,26 @@ public class Solution {
     }
 
     /**
+     * No. 700 二叉搜索树中的搜索
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode searchBST(TreeNode root, int val) {
+        TreeNode cur = root;
+        while (cur != null) {
+            if (cur.val == val) {
+                return cur;
+            } else if (cur.val < val) {
+                cur = cur.right;
+            } else {
+                cur = cur.left;
+            }
+        }
+        return null;
+    }
+
+    /**
      * No. 701 二叉搜索树中插入操作
      *
      * @param root
@@ -2288,6 +2308,21 @@ public class Solution {
             }
         }
         return right == letters.length ? letters[0] : letters[right];
+    }
+
+    /**
+     * No. 779 第K个语法符号
+     * @param n
+     * @param k
+     * @return
+     */
+    public int kthGrammar(int n, int k) {
+        int pre = 0;
+        for (int p = k - 1, q = n - 1; q >= 0; --q) {
+            if (pre == 0) pre = (p & (1 << q)) > 0 ? 1 : 0;
+            else pre = (p & (1 << q)) > 0 ? 0 : 1;
+        }
+        return pre;
     }
 
     /**
@@ -3760,6 +3795,26 @@ public class Solution {
     }
 
     /**
+     * No. 2089 找出数组排序后的目标下标
+     * @param nums
+     * @param target
+     * @return
+     */
+    public List<Integer> targetIndices(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                ans.add(i);
+            }
+            if (nums[i] > target) {
+                break;
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 2115 从给定原材料中找到所有可以做出的菜
      *     Tips: 拓扑排序，广度优先搜索，不断添加入度为0的节点(入度为0表示，这个菜品可以直接获得)
      * @param recipes
@@ -4489,6 +4544,18 @@ public class Solution {
             }
         }
         return false;
+    }
+
+    /**
+     * No. 2469 温度转换
+     * @param celsius
+     * @return
+     */
+    public double[] convertTemperature(double celsius) {
+        double[] ans = new double[2];
+        ans[0] = celsius + 273.15;
+        ans[1] = celsius * 1.80 + 32.00;
+        return ans;
     }
 
     /**

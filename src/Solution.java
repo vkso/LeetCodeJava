@@ -13,9 +13,8 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int n = 5;
-        int[][] roads = new int[][]{{0, 1}, {0, 3}, {1, 2}, {1, 3}, {2, 3}, {2, 4}};
-        System.out.println(maximalNetworkRank(n, roads));
+        int[] arr = new int[]{1, 2, 3, 10, 4, 2, 3, 5};
+        System.out.println(findLengthOfShortestSubarray(arr));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -2563,6 +2562,26 @@ public class Solution {
     }
 
     /**
+     * No. 1029 两地调度
+     * @param costs
+     * @return
+     */
+    public int twoCitySchedCost(int[][] costs) {
+        Arrays.sort(costs, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o1[1] - (o2[0] - o2[1]);
+            }
+        });
+
+        int total = 0;
+        int n = costs.length / 2;
+        for (int i = 0; i < n; ++i) {
+            total += costs[i][0] + costs[i+n][1];
+        }
+        return total;
+    }
+    /**
      * No. 1047 删除字符串中所有相邻重复项
      * Tips 使用栈来实现相邻重复字符的删除，这里使用StringBuilder的append和deleteCharAt方法
      * 来实现栈
@@ -3173,6 +3192,47 @@ public class Solution {
         return ret;
     }
 
+    /**
+     * No. 1574 删除最短的子数组使剩余数组有序
+     * @param arr
+     * @return
+     */
+    public int findLengthOfShortestSubarray(int[] arr) {
+        int n = arr.length;
+        int i = 0, j = n - 1;
+
+        while (i + 1 < n && arr[i] <= arr[i + 1]) {
+            ++i;
+        }
+        while (j - 1 >= 0 && arr[j - 1] <= arr[j]) {
+            --j;
+        }
+
+        if (i >= j) {
+            return 0;
+        }
+
+        int ans = Math.min(n - i - 1, j);
+        for (int l = 0; l <= i; ++l) {
+            int r = search_1574(arr, arr[l], j);
+            ans = Math.min(ans, r - l -1);
+        }
+        return ans;
+    }
+
+    public int search_1574(int[] arr, int x, int left) {
+        int right = arr.length;
+        while (left < right) {
+            int mid = (left + right) >> 1;
+            if (arr[mid] >= x) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
 
     /**
      * No. 1575 统计所有可行路径
@@ -3343,6 +3403,88 @@ public class Solution {
                 ans = Math.max(ans, max_tmp);
             }
         }
+        return ans;
+    }
+
+    /**
+     * No. 1626 无矛盾的最佳球队
+     * @param scores
+     * @param ages
+     * @return
+     */
+    public int bestTeamScore(int[] scores, int[] ages) {
+        int n = scores.length;
+        int[][] people = new int[n][2];
+
+        for (int i = 0; i < n; i++) {
+            people[i] = new int[]{scores[i], ages[i]};
+        }
+
+        Arrays.sort(people, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
+
+        int[] dp = new int[n];
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i - 1; j >= 0; --j) {
+                if (people[j][1] <= people[i][1]) {
+                    dp[i] = Math.max(dp[i], dp[j]);
+                }
+            }
+            dp[i] += people[i][0];
+            res = Math.max(res, dp[i]);
+        }
+        return res;
+    }
+
+    /**
+     * No. 1630 等差子数组
+     * @param nums
+     * @param l
+     * @param r
+     * @return
+     */
+    public List<Boolean> checkArithmeticSubarrays(int[] nums, int[] l, int[] r) {
+        List<Boolean> ans = new ArrayList<>();
+        int zooms = l.length;
+        for (int i = 0; i < zooms; i++) {
+            boolean isFalse = false;
+            int left = l[i];
+            int right = r[i];
+            int[] zoom = Arrays.copyOfRange(nums, left, right + 1);
+            Arrays.sort(zoom);
+            int step = zoom[1] - zoom[0];
+            for (int j = 1; j < zoom.length; j++) {
+                if (zoom[j] - zoom[j-1] != step) {
+                    isFalse = true;
+                    break;
+                }
+            }
+
+            boolean b = isFalse ? ans.add(false) : ans.add(true);
+        }
+        return ans;
+    }
+
+    /**
+     * No. 1641 统计字典序元音字符串的数目
+     * @param n
+     * @return
+     */
+    public int countVowelStrings(int n) {
+        int[] dp = new int[5];
+        Arrays.fill(dp, 1);
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < 5; j++) {
+                dp[j] += dp[j - 1];
+            }
+        }
+
+        int ans = 0;
+        for (int i : dp) {
+            ans += i;
+        }
+
         return ans;
     }
 

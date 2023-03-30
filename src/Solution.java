@@ -3466,6 +3466,27 @@ public class Solution {
     }
 
     /**
+     * No. 1637 两点之间不包含任何点的最宽垂直区域
+     * @param points
+     * @return
+     */
+    public int maxWidthOfVerticalArea(int[][] points) {
+        Arrays.sort(points, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+
+        int ans = 0;
+        for (int i = 1; i < points.length; i++) {
+            ans = Math.max(ans, points[i][0] - points[i - 1][0]);
+        }
+
+        return ans;
+    }
+
+    /**
      * No. 1641 统计字典序元音字符串的数目
      * @param n
      * @return

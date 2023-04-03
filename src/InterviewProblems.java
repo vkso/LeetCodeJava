@@ -10,12 +10,6 @@ import java.util.*;
 public class InterviewProblems {
     @Test
     public void test() {
-        String[] array = {"A","1","B","C","D","2","3","4","E","5","F","G","6","7","H","I","J","K","L","M"};
-        String[] longestSubarray = findLongestSubarray(array);
-        for (String s : longestSubarray) {
-            System.out.println(s);
-        }
-
     }
 
     /**

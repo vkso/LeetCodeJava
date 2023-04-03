@@ -2460,6 +2460,61 @@ public class Solution {
     }
 
     /**
+     * No. 隐藏个人信息
+     * @param s
+     * @return
+     */
+    public String maskPII(String s) {
+        int i = s.indexOf('@');
+        if (i != -1) {
+            return mailPress(s);
+        } else {
+            return phoneNumberPress(s);
+        }
+    }
+
+    public String mailPress(String s) {
+        String toLowCase = s.toLowerCase();
+        String[] split = toLowCase.split("@");
+
+        String instead = "*****";
+        StringBuilder name = new StringBuilder(split[0]);
+        StringBuilder new_name = name.replace(1, name.length() - 1, instead);
+        return new_name.append('@').append(split[1]).toString();
+    }
+
+    public String phoneNumberPress(String s) {
+        StringBuilder ret =  new StringBuilder();
+        StringBuilder nums = new StringBuilder();
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch > 47 && ch < 58) {
+                nums.append(ch);
+            }
+        }
+
+        int len = nums.length();
+        switch (len) {
+            case 10:
+                ret.append("***-***-");
+                break;
+            case 11:
+                ret.append("+*-***-***-");
+                break;
+            case 12:
+                ret.append("+**-***-***-");
+                break;
+            case 13:
+                ret.append("+***-***-***-");
+                break;
+        }
+
+        ret.append(nums.substring(nums.length()-4));
+        return ret.toString();
+    }
+
+    /**
      * No. 852 山峰数组的峰顶索引
      *
      * @param arr

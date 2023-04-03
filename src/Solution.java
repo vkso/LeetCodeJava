@@ -13,8 +13,8 @@ import java.util.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] arr = new int[]{1, 2, 3, 10, 4, 2, 3, 5};
-        System.out.println(findLengthOfShortestSubarray(arr));
+        int[] arr = new int[]{3, 1, 1, 3};
+        System.out.println(Arrays.toString(prevPermOpt1(arr)));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -2460,7 +2460,7 @@ public class Solution {
     }
 
     /**
-     * No. 隐藏个人信息
+     * No. 831 隐藏个人信息
      * @param s
      * @return
      */
@@ -2658,6 +2658,42 @@ public class Solution {
             }
         }
         return stack.toString();
+    }
+
+    /**
+     * No. 1053 交换一次的先前排列
+     *     Tips: 因为交换后的序列需要比原先的序列字典序小，所以，如果原先序列是升序，那么直接返回原先序列即可
+     *           从后往前找到原先序列的第一个降序子序列的起始点，这个起始点可以和后面的某一个值进行交换（降序序列代表后面的值一定小于该点的值）
+     *           从降序序列的起止点开始向后寻找，寻找小于该点值的最大值，进行交换
+     *           交换后的序列，一定是比原来字典序小的最大字典序序列
+     * @param arr
+     * @return
+     */
+    public int[] prevPermOpt1(int[] arr) {
+        int swap_index = -1;
+        int max_index = -1;
+        int max_value = Integer.MIN_VALUE;
+        for (int back = arr.length - 1; back > 0; --back) {
+            if (arr[back - 1] > arr[back]) {
+                swap_index = back;
+                break;
+            }
+        }
+        if (swap_index != -1) {
+            for (int i = swap_index; i < arr.length; i++) {
+                if (arr[i] >= arr[swap_index - 1]) {
+                    continue;
+                }
+                if (arr[i] > max_value) {
+                    max_value = arr[i];
+                    max_index = i;
+                }
+            }
+            int temp = arr[max_index];
+            arr[max_index] = arr[swap_index - 1];
+            arr[swap_index - 1] = temp;
+        }
+        return arr;
     }
 
     /**

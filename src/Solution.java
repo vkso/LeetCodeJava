@@ -4826,6 +4826,17 @@ public class Solution {
         return false;
     }
 
+    public int commonFactors(int a, int b) {
+        int min = a > b ? b : a;
+        int count = 0;
+        for (int i = 1; i <= min; i++) {
+            if (a % i == 0 && b % i == 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     /**
      * No. 2469 温度转换
      * @param celsius

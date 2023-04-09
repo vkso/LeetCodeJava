@@ -4826,6 +4826,36 @@ public class Solution {
         return false;
     }
 
+    /**
+     * No. 2399 检查相同字母间的距离
+     * @param s
+     * @param distance
+     * @return
+     */
+    public boolean checkDistances(String s, int[] distance) {
+        int[] cmp = new int[26];
+        HashSet<Character> set = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (!set.contains(ch)) {
+                set.add(ch);
+                cmp[ch - 97] = i;
+            } else {
+                cmp[ch - 97] = i - cmp[ch - 97] - 1;
+                if (cmp[ch - 97] != distance[ch - 97]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * No. 2427 公因子的数目
+     * @param a
+     * @param b
+     * @return
+     */
     public int commonFactors(int a, int b) {
         int min = a > b ? b : a;
         int count = 0;

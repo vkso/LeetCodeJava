@@ -6,6 +6,7 @@ import com.leetcode.tools.ListNode;
 import org.omg.PortableServer.POAHelper;
 
 import java.security.cert.CollectionCertStoreParameters;
+import java.sql.Array;
 import java.util.*;
 
 // https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
@@ -2617,6 +2618,36 @@ public class Solution {
     }
 
     /**
+     * No. 1019 链表中的下一个更大节点
+     * @param head
+     * @return
+     */
+    public int[] nextLargerNodes(ListNode head) {
+        Queue<ListNode> queue = new LinkedList();
+        int total = 0;
+        ListNode cur = head;
+        while (cur != null) {
+            queue.add(cur);
+            total++;
+            cur = cur.next;
+        }
+        int[] ans = new int[total];
+        int cur_index = -1;
+        while (!queue.isEmpty()) {
+            ListNode poll = queue.poll();
+            int cur_val = poll.val;
+            cur_index++;
+            poll = poll.next;
+            while (poll != null) {
+                if (poll.val > cur_val) {
+                    ans[cur_index] = poll.val;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 1029 两地调度
      * @param costs
      * @return
@@ -2636,6 +2667,51 @@ public class Solution {
         }
         return total;
     }
+
+    /**
+     * No. 1041 困于环中的机器人
+     * @param instructions
+     * @return
+     */
+    public boolean isRobotBounded(String instructions) {
+        // 起始位置 (x, y) -> (0, 0)
+        // 起始朝向：north = 0, right = 1, down = 2, left = 3
+        // position[0] = x, position[1] = y, position[2] = direction
+        int[] position = new int[]{0, 0, 0};
+
+        for (int i = 0; i < instructions.length(); i++) {
+            char move = instructions.charAt(i);
+            move_1041(move, position);
+        }
+        if (position[0] == 0 && position[1] == 0 || position[2] != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void move_1041(char action, int[] position) {
+        // position[0] = x, position[1] = y, position[2] = direction
+        switch (action) {
+            case 'G':
+                if (position[2] == 0) {
+                    position[1]++;
+                } else if (position[2] == 1) {
+                    position[0]++;
+                } else if (position[2] == 2) {
+                    position[1]--;
+                } else {
+                    position[0]--;
+                }
+                break;
+            case 'L':
+                position[2] = (position[2] + 3) % 4;
+                break;
+            case 'R':
+                position[2] = (position[2] + 1) % 4;
+                break;
+        }
+    }
+
     /**
      * No. 1047 删除字符串中所有相邻重复项
      * Tips 使用栈来实现相邻重复字符的删除，这里使用StringBuilder的append和deleteCharAt方法

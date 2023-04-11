@@ -9,6 +9,8 @@ import java.security.cert.CollectionCertStoreParameters;
 import java.sql.Array;
 import java.util.*;
 
+import static java.util.Arrays.*;
+
 // https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
 @SuppressWarnings("all")
 public class Solution {
@@ -23,7 +25,7 @@ public class Solution {
     public int[][] spiralMatrixx(int m, int n, ListNode head) {
         int[][] matrix = new int[m][n];
         for (int i = 0; i < m; i++) {
-            Arrays.fill(matrix[i], -1);
+            fill(matrix[i], -1);
         }
         int total = m * n;
         int row = 0, col = 0;
@@ -204,7 +206,7 @@ public class Solution {
      * @return
      */
     public int threeSumClosest(int[] nums, int target) {
-        Arrays.sort(nums);
+        sort(nums);
         int best = Integer.MAX_VALUE;
         int ans = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -2267,7 +2269,7 @@ public class Solution {
 
         String ans = "";
         int maxLen = 0;
-        Arrays.sort(words);
+        sort(words);
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             if (root.hasWord(word) && word.length() > maxLen) {
@@ -2588,7 +2590,7 @@ public class Solution {
     public StringBuilder chsOrder(StringBuilder sb) {
         String s = new String(sb);
         char[] chars = s.toCharArray();
-        Arrays.sort(chars);
+        sort(chars);
         s = new String(chars);
         return new StringBuilder(s);
     }
@@ -2653,7 +2655,7 @@ public class Solution {
      * @return
      */
     public int twoCitySchedCost(int[][] costs) {
-        Arrays.sort(costs, new Comparator<int[]>() {
+        sort(costs, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
                 return o1[0] - o1[1] - (o2[0] - o2[1]);
@@ -2788,7 +2790,7 @@ public class Solution {
         int[] curNode = new int[2];
         Queue<int[]> queue = new LinkedList<>();
 
-        Arrays.fill(ans, -1);
+        fill(ans, -1);
 
         // redEdges value = 1
         for (int i = 0; i < redEdges.length; i++) {
@@ -3028,7 +3030,7 @@ public class Solution {
         // 初始化棋盘
         char[][] pad = new char[3][3];
         for (int i = 0; i < 3; i++) {
-            Arrays.fill(pad[i], '*');
+            fill(pad[i], '*');
         }
 
         int row, cow;
@@ -3145,7 +3147,7 @@ public class Solution {
      * @return
      */
     public int findBestValue(int[] var, int target) {
-        Arrays.sort(var);
+        sort(var);
         int len = var.length;
         int cur_sum = 0;
 
@@ -3197,10 +3199,10 @@ public class Solution {
      * @return
      */
     public int[] arrayRankTransform(int[] arr) {
-        int[] copyedArr = Arrays.copyOf(arr, arr.length);
+        int[] copyedArr = copyOf(arr, arr.length);
         int[] res = new int[arr.length];
         HashMap<Integer, Integer> hashMap = new HashMap<>();
-        Arrays.sort(copyedArr);
+        sort(copyedArr);
 
         for (int i = 0; i < copyedArr.length; i++) {
             if (!hashMap.containsKey(copyedArr[i])) {
@@ -3264,8 +3266,8 @@ public class Solution {
      */
     public int maxArea(int h, int w, int[] horizontalCuts, int[] verticalCuts) {
         int MOD = 1000000007;
-        Arrays.sort(horizontalCuts);
-        Arrays.sort(verticalCuts);
+        sort(horizontalCuts);
+        sort(verticalCuts);
         long max_h = Integer.MIN_VALUE, max_v = Integer.MIN_VALUE;
         max_h = Math.max(max_h, horizontalCuts[0]);
         max_v = Math.max(max_v, verticalCuts[0]);
@@ -3337,7 +3339,7 @@ public class Solution {
         if (nums.length <= 4) {
             return 0;
         }
-        Arrays.sort(nums);
+        sort(nums);
         int min = Integer.MAX_VALUE;
         min = Math.min(min, nums[nums.length - 1] - nums[3]);
         min = Math.min(min, nums[nums.length - 4] - nums[0]);
@@ -3351,7 +3353,7 @@ public class Solution {
         if (nums.length <= 4) {
             return 0;
         }
-        Arrays.sort(nums);
+        sort(nums);
         int ret = Integer.MAX_VALUE;
         for (int i = 0; i < 4; i++) {
             ret = Math.min(ret, nums[n - 4 + i] - nums[i]);
@@ -3418,7 +3420,7 @@ public class Solution {
     public int countRoutes(int[] locations, int start, int finish, int fuel) {
         f = new int[locations.length][fuel + 1];
         for (int[] row : f) {
-            Arrays.fill(row, -1);
+            fill(row, -1);
         }
         return dfs_1575(locations, start, finish, fuel);
     }
@@ -3587,7 +3589,7 @@ public class Solution {
             people[i] = new int[]{scores[i], ages[i]};
         }
 
-        Arrays.sort(people, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
+        sort(people, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
 
         int[] dp = new int[n];
         int res = 0;
@@ -3617,8 +3619,8 @@ public class Solution {
             boolean isFalse = false;
             int left = l[i];
             int right = r[i];
-            int[] zoom = Arrays.copyOfRange(nums, left, right + 1);
-            Arrays.sort(zoom);
+            int[] zoom = copyOfRange(nums, left, right + 1);
+            sort(zoom);
             int step = zoom[1] - zoom[0];
             for (int j = 1; j < zoom.length; j++) {
                 if (zoom[j] - zoom[j-1] != step) {
@@ -3638,7 +3640,7 @@ public class Solution {
      * @return
      */
     public int maxWidthOfVerticalArea(int[][] points) {
-        Arrays.sort(points, new Comparator<int[]>() {
+        sort(points, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
                 return o1[0] - o2[0];
@@ -3660,7 +3662,7 @@ public class Solution {
      */
     public int countVowelStrings(int n) {
         int[] dp = new int[5];
-        Arrays.fill(dp, 1);
+        fill(dp, 1);
 
         for (int i = 1; i < n; i++) {
             for (int j = 1; j < 5; j++) {
@@ -3775,7 +3777,7 @@ public class Solution {
      * @return
      */
     public int getMaximumConsecutive(int[] coins) {
-        Arrays.sort(coins);
+        sort(coins);
         int x = 0;
         for (int y : coins) {
             if (y > x + 1) {
@@ -3959,7 +3961,7 @@ public class Solution {
         if (nums1.length == 1) {
             return origin_minus_abs[0];
         }
-        Arrays.sort(nums1);
+        sort(nums1);
 
         int potential_index;
         int potential_index_result;
@@ -4026,7 +4028,7 @@ public class Solution {
      * @return
      */
     public int minPairSum(int[] nums) {
-        Arrays.sort(nums);
+        sort(nums);
         int max = Integer.MIN_VALUE;
         int temp = 0;
         for (int left = 0, right = nums.length - 1; left < right; right--, right++) {
@@ -4131,7 +4133,7 @@ public class Solution {
      * @return
      */
     public List<Integer> targetIndices(int[] nums, int target) {
-        Arrays.sort(nums);
+        sort(nums);
         List<Integer> ans = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] == target) {
@@ -4500,7 +4502,7 @@ public class Solution {
             return "";
         }
         char[] chars = resStr.toString().toCharArray();
-        Arrays.sort(chars);
+        sort(chars);
         return String.valueOf(chars[chars.length]);
     }
 
@@ -4543,7 +4545,7 @@ public class Solution {
         int[][] res = new int[m][n];
 
         for (int i = 0; i < m; i++) {
-            Arrays.fill(res[i], -1);
+            fill(res[i], -1);
         }
 
         int count = 0;
@@ -4666,7 +4668,7 @@ public class Solution {
      * @return
      */
     public int fillCups(int[] amount) {
-        Arrays.sort(amount);
+        sort(amount);
         if (amount[2] > amount[1] + amount[0]) {
             return amount[2];
         }

@@ -1,4 +1,3 @@
-import apple.laf.JRSUIUtils;
 import com.leetcode.tools.*;
 import org.junit.Test;
 //import org.junit.jupiter.api.Test;
@@ -8,7 +7,6 @@ import org.omg.PortableServer.POAHelper;
 import java.security.cert.CollectionCertStoreParameters;
 import java.sql.Array;
 import java.util.*;
-
 import static java.util.Arrays.*;
 
 // https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
@@ -4926,6 +4924,33 @@ public class Solution {
             }
         }
         return true;
+    }
+
+    /**
+     * No. 2404 出现最频繁的偶数元素
+     * @param nums
+     * @return
+     */
+    public int mostFrequentEven(int[] nums) {
+        int ans_num = -1, ans_count = -1;
+        HashMap<Integer, Integer> hashmap = new HashMap<>();
+        for (int num : nums) {
+            if (num % 2 == 0) {
+                hashmap.put(num, hashmap.getOrDefault(num, 0) + 1);
+            }
+        }
+        Set<Integer> keys = hashmap.keySet();
+        for (int key : keys) {
+            int count = hashmap.get(key);
+            if (count > ans_count) {
+                ans_num = key;
+                ans_count = count;
+            }
+            if (count == ans_count && key < ans_num) {
+                ans_num = key;
+            }
+        }
+        return ans_num;
     }
 
     /**

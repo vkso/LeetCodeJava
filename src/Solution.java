@@ -23,7 +23,7 @@ public class Solution {
     public int[][] spiralMatrixx(int m, int n, ListNode head) {
         int[][] matrix = new int[m][n];
         for (int i = 0; i < m; i++) {
-            fill(matrix[i], -1);
+            Arrays.fill(matrix[i], -1);
         }
         int total = m * n;
         int row = 0, col = 0;
@@ -2645,6 +2645,64 @@ public class Solution {
             }
         }
         return ans;
+    }
+
+    /**
+     * No. 1023 驼峰式匹配
+     * @param queries
+     * @param pattern
+     * @return
+     */
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+        List<Boolean> ans = new ArrayList<>();
+        for (String query : queries) {
+            if (isMatched_1023(query, pattern)) {
+                ans.add(true);
+            } else {
+                ans.add(false);
+            }
+        }
+        return ans;
+    }
+
+    /**
+     *     相等 直接跳过 p + 1, q + 1
+     *     大     小  【无法匹配】直接返回 false
+     *     大     大  【无法匹配】直接返回 false
+     *     小     大  【无法匹配】q 向后移动一位
+     *     小     小  【无法匹配】q 向后移动一位
+     * @param query
+     * @param pattern
+     * @return
+     */
+    public static Boolean isMatched_1023(String query, String pattern) {
+        int q = 0, p = 0;
+        while (q < query.length() && p < pattern.length()) {
+            char ch_q = query.charAt(q);
+            char ch_p = pattern.charAt(p);
+
+            if (ch_q == ch_p) {  // 如果 q 和 p 指向的位置，相等，则 p 和 q 分别向后移动一位
+                q++;
+                p++;
+            } else {
+                if (ch_q <= 90) {    // 如果不相等，q 字符是大写字母，那么一定不能匹配（因为 pattern 只能插入小写字符）
+                    return false;
+                } else {    // 如果 q 字符是小写字符，那么可以将 q 向后移动一位（因为 pattern 可以插入小写字符）
+                    q++;
+                }
+            }
+        }
+        if (q != query.length()) {    // 当 q 没有到达末尾的时候，如果剩下的字符都是小写字符，那么可以认为 成功匹配
+            for (int i = q + 1; i < query.length(); i++) {
+                if (query.charAt(i) <= 90) {
+                    return false;
+                }
+            }
+        }
+        if (p != pattern.length()) {    // 如果 p 没有到达末尾，那么一定无法匹配
+            return false;
+        }
+        return true;    // 其他情况是两者都同时到达末尾，认为成功匹配
     }
 
     /**

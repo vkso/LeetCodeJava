@@ -7,6 +7,7 @@ import org.omg.PortableServer.POAHelper;
 import java.security.cert.CollectionCertStoreParameters;
 import java.sql.Array;
 import java.util.*;
+
 import static java.util.Arrays.*;
 
 // https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
@@ -741,7 +742,8 @@ public class Solution {
 
     /**
      * No. 86 分隔链表
-     *     Tips: 类似归并的方法，最后将两个链表整合在一起
+     * Tips: 类似归并的方法，最后将两个链表整合在一起
+     *
      * @param head
      * @param x
      * @return
@@ -798,8 +800,9 @@ public class Solution {
 
     /**
      * No. 92 翻转链表 II
-     *     Tips: 找到 pre cur next 三个节点的位置，进行尾插法即可，注意新建一个头结点
-     *           用作处理返回。
+     * Tips: 找到 pre cur next 三个节点的位置，进行尾插法即可，注意新建一个头结点
+     * 用作处理返回。
+     *
      * @param head
      * @param left
      * @param right
@@ -1000,6 +1003,7 @@ public class Solution {
 
     /**
      * No. 112 路径总和
+     *
      * @param root
      * @param targetSum
      * @return
@@ -1368,6 +1372,7 @@ public class Solution {
 
     /**
      * No. 229 多数元素 II
+     *
      * @param nums
      * @return
      */
@@ -1737,7 +1742,8 @@ public class Solution {
 
     /**
      * No. 357 统计个位数字都不相同的数字个数
-     *     Tips: 用枚举的方法，从第一位开始统计 9 x 9 x 8 x 7 x 6 x 5 x ... + f(n-1)
+     * Tips: 用枚举的方法，从第一位开始统计 9 x 9 x 8 x 7 x 6 x 5 x ... + f(n-1)
+     *
      * @param n
      * @return
      */
@@ -1832,6 +1838,7 @@ public class Solution {
 
     /**
      * No. 415 字符串相加
+     *
      * @param num1
      * @param num2
      * @return
@@ -2159,6 +2166,7 @@ public class Solution {
 
     /**
      * No. 700 二叉搜索树中的搜索
+     *
      * @param root
      * @param val
      * @return
@@ -2312,6 +2320,7 @@ public class Solution {
 
     /**
      * No. 779 第K个语法符号
+     *
      * @param n
      * @param k
      * @return
@@ -2462,6 +2471,7 @@ public class Solution {
 
     /**
      * No. 831 隐藏个人信息
+     *
      * @param s
      * @return
      */
@@ -2485,7 +2495,7 @@ public class Solution {
     }
 
     public String phoneNumberPress(String s) {
-        StringBuilder ret =  new StringBuilder();
+        StringBuilder ret = new StringBuilder();
         StringBuilder nums = new StringBuilder();
 
         for (int i = 0; i < s.length(); i++) {
@@ -2511,7 +2521,7 @@ public class Solution {
                 break;
         }
 
-        ret.append(nums.substring(nums.length()-4));
+        ret.append(nums.substring(nums.length() - 4));
         return ret.toString();
     }
 
@@ -2619,6 +2629,7 @@ public class Solution {
 
     /**
      * No. 1019 链表中的下一个更大节点
+     *
      * @param head
      * @return
      */
@@ -2649,6 +2660,7 @@ public class Solution {
 
     /**
      * No. 1023 驼峰式匹配
+     *
      * @param queries
      * @param pattern
      * @return
@@ -2666,11 +2678,12 @@ public class Solution {
     }
 
     /**
-     *     相等 直接跳过 p + 1, q + 1
-     *     大     小  【无法匹配】直接返回 false
-     *     大     大  【无法匹配】直接返回 false
-     *     小     大  【无法匹配】q 向后移动一位
-     *     小     小  【无法匹配】q 向后移动一位
+     * 相等 直接跳过 p + 1, q + 1
+     * 大     小  【无法匹配】直接返回 false
+     * 大     大  【无法匹配】直接返回 false
+     * 小     大  【无法匹配】q 向后移动一位
+     * 小     小  【无法匹配】q 向后移动一位
+     *
      * @param query
      * @param pattern
      * @return
@@ -2707,6 +2720,7 @@ public class Solution {
 
     /**
      * No. 1029 两地调度
+     *
      * @param costs
      * @return
      */
@@ -2721,13 +2735,14 @@ public class Solution {
         int total = 0;
         int n = costs.length / 2;
         for (int i = 0; i < n; ++i) {
-            total += costs[i][0] + costs[i+n][1];
+            total += costs[i][0] + costs[i + n][1];
         }
         return total;
     }
 
     /**
      * No. 1041 困于环中的机器人
+     *
      * @param instructions
      * @return
      */
@@ -2771,6 +2786,41 @@ public class Solution {
     }
 
     /**
+     * No. 1042 不临接植花
+     *
+     * @param n
+     * @param paths
+     * @return
+     */
+    public int[] gardenNoAdj(int n, int[][] paths) {
+        int[] ans = new int[n];
+        ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<Integer>());
+        }
+        // 构建邻接表
+        for (int i = 0; i < paths.length; i++) {
+            graph.get(paths[i][0] - 1).add(paths[i][1] - 1);
+            graph.get(paths[i][1] - 1).add(paths[i][0] - 1);
+        }
+
+        for (int i = 0; i < n; i++) {
+            Set<Integer> color = new HashSet<>() {{
+                add(1);
+                add(2);
+                add(3);
+                add(4);
+            }};
+            // 依次从 color set 中移除与自己连接的已经吐涂过的节点颜色（没有涂的颜色为0）
+            for (int j = 0; j < graph.get(i).size(); j++) {
+                color.remove(ans[graph.get(i).get(j)]);
+            }
+            ans[i] = color.iterator().next();
+        }
+        return ans;
+    }
+
+    /**
      * No. 1047 删除字符串中所有相邻重复项
      * Tips 使用栈来实现相邻重复字符的删除，这里使用StringBuilder的append和deleteCharAt方法
      * 来实现栈
@@ -2796,10 +2846,11 @@ public class Solution {
 
     /**
      * No. 1053 交换一次的先前排列
-     *     Tips: 因为交换后的序列需要比原先的序列字典序小，所以，如果原先序列是升序，那么直接返回原先序列即可
-     *           从后往前找到原先序列的第一个降序子序列的起始点，这个起始点可以和后面的某一个值进行交换（降序序列代表后面的值一定小于该点的值）
-     *           从降序序列的起止点开始向后寻找，寻找小于该点值的最大值，进行交换
-     *           交换后的序列，一定是比原来字典序小的最大字典序序列
+     * Tips: 因为交换后的序列需要比原先的序列字典序小，所以，如果原先序列是升序，那么直接返回原先序列即可
+     * 从后往前找到原先序列的第一个降序子序列的起始点，这个起始点可以和后面的某一个值进行交换（降序序列代表后面的值一定小于该点的值）
+     * 从降序序列的起止点开始向后寻找，寻找小于该点值的最大值，进行交换
+     * 交换后的序列，一定是比原来字典序小的最大字典序序列
+     *
      * @param arr
      * @return
      */
@@ -2899,10 +2950,10 @@ public class Solution {
         for (int d = Math.min(m, n); d > 0; d--) {
             for (int i = 0; i <= m - d; i++) {
                 for (int j = 0; j <= n - d; j++) {
-                    if (rs[i][j+d] - rs[i][j] == d &&
-                    cs[j][i+d] - cs[j][i] == d &&
-                    rs[i+d-1][j+d] - rs[i + d - 1][j] == d &&
-                    cs[j + d - 1][i + d] - cs[j + d - 1][i] == d)
+                    if (rs[i][j + d] - rs[i][j] == d &&
+                            cs[j][i + d] - cs[j][i] == d &&
+                            rs[i + d - 1][j + d] - rs[i + d - 1][j] == d &&
+                            cs[j + d - 1][i + d] - cs[j + d - 1][i] == d)
                         return d * d;
                 }
             }
@@ -3059,6 +3110,7 @@ public class Solution {
 
     /**
      * No. 1255 得分最高的单词集合
+     *
      * @param words
      * @param letters
      * @param score
@@ -3341,6 +3393,7 @@ public class Solution {
 
     /**
      * No. 1497 检查数组对是否可以被k整除
+     *
      * @param arr
      * @param K
      * @return
@@ -3360,6 +3413,7 @@ public class Solution {
 
     /**
      * No. 1487 保证文件名唯一
+     *
      * @param names
      * @return
      */
@@ -3419,6 +3473,7 @@ public class Solution {
 
     /**
      * No. 1574 删除最短的子数组使剩余数组有序
+     *
      * @param arr
      * @return
      */
@@ -3440,7 +3495,7 @@ public class Solution {
         int ans = Math.min(n - i - 1, j);
         for (int l = 0; l <= i; ++l) {
             int r = search_1574(arr, arr[l], j);
-            ans = Math.min(ans, r - l -1);
+            ans = Math.min(ans, r - l - 1);
         }
         return ans;
     }
@@ -3551,6 +3606,7 @@ public class Solution {
 
     /**
      * No. 1605 给定行和列的和，求可行的矩阵
+     *
      * @param rowSum
      * @param colSum
      * @return
@@ -3596,8 +3652,9 @@ public class Solution {
 
     /**
      * No. 1615 最大网络秩
-     *     Tips: 直接枚举所有城市对之间的连接数量，如果两个城市之间存在连接，则结果-1
-     *     如果
+     * Tips: 直接枚举所有城市对之间的连接数量，如果两个城市之间存在连接，则结果-1
+     * 如果
+     *
      * @param n
      * @param roads
      * @return
@@ -3633,6 +3690,7 @@ public class Solution {
 
     /**
      * No. 1626 无矛盾的最佳球队
+     *
      * @param scores
      * @param ages
      * @return
@@ -3663,6 +3721,7 @@ public class Solution {
 
     /**
      * No. 1630 等差子数组
+     *
      * @param nums
      * @param l
      * @param r
@@ -3679,7 +3738,7 @@ public class Solution {
             sort(zoom);
             int step = zoom[1] - zoom[0];
             for (int j = 1; j < zoom.length; j++) {
-                if (zoom[j] - zoom[j-1] != step) {
+                if (zoom[j] - zoom[j - 1] != step) {
                     isFalse = true;
                     break;
                 }
@@ -3692,6 +3751,7 @@ public class Solution {
 
     /**
      * No. 1637 两点之间不包含任何点的最宽垂直区域
+     *
      * @param points
      * @return
      */
@@ -3713,6 +3773,7 @@ public class Solution {
 
     /**
      * No. 1641 统计字典序元音字符串的数目
+     *
      * @param n
      * @return
      */
@@ -3736,9 +3797,10 @@ public class Solution {
 
     /**
      * No. 1653 使字符串平衡的最少删除次数
-     *     Tips: 1 如果字符串中存在 "ba"，那么一定不是平衡的串，将其替换为空串，最后字符串的长度
-     *             除以2就是需要删除的操作次数
-     *           2 a a a a | b b b b ，平衡的串一定是 a 在 b 的左边，枚举所有的 | 的位置，计算次数
+     * Tips: 1 如果字符串中存在 "ba"，那么一定不是平衡的串，将其替换为空串，最后字符串的长度
+     * 除以2就是需要删除的操作次数
+     * 2 a a a a | b b b b ，平衡的串一定是 a 在 b 的左边，枚举所有的 | 的位置，计算次数
+     *
      * @param s
      * @return
      */
@@ -3752,12 +3814,13 @@ public class Solution {
 
     /**
      * No. 1695 删除子数组的最大得分
+     *
      * @param nums
      * @return
      */
     public int maximumUniqueSubarray(int[] nums) {
         HashSet<Integer> hashSet = new HashSet<>();
-        int l = 0, r = 0, sum = 0, ans= 0;
+        int l = 0, r = 0, sum = 0, ans = 0;
 
         while (r < nums.length) {
             int num = nums[r];
@@ -4184,6 +4247,7 @@ public class Solution {
 
     /**
      * No. 2089 找出数组排序后的目标下标
+     *
      * @param nums
      * @param target
      * @return
@@ -4758,6 +4822,7 @@ public class Solution {
 
     /**
      * No. 2347 最好的扑克手牌
+     *
      * @param ranks
      * @param suits
      * @return
@@ -4769,7 +4834,7 @@ public class Solution {
         for (int i = 0; i < 5; i++) {
             count_ranks[ranks[i] - 1]++;
             count_suits[suits[i] - 'a']++;
-            max_ranks = Math.max(max_ranks, count_ranks[ranks[i]-1]);
+            max_ranks = Math.max(max_ranks, count_ranks[ranks[i] - 1]);
             max_suits = Math.max(max_suits, count_suits[suits[i] - 'a']);
         }
         if (max_suits == 5) {
@@ -4805,6 +4870,7 @@ public class Solution {
 
     /**
      * No. 2357 使数组中所有元素都等于零
+     *
      * @param nums
      * @return
      */
@@ -4821,6 +4887,7 @@ public class Solution {
 
     /**
      * No. 2363 合并相似的物品
+     *
      * @param items
      * @param items2
      * @return
@@ -4847,6 +4914,7 @@ public class Solution {
 
     /**
      * No. 2367 算数三元组的数目
+     *
      * @param nums
      * @param diff
      * @return
@@ -4873,12 +4941,13 @@ public class Solution {
 
     /**
      * No. 2373 矩阵中的局部最大值
+     *
      * @param grid
      * @return
      */
     public int[][] largestLocal(int[][] grid) {
         int n = grid.length;
-        int[][] ret = new int[n-2][n-2];
+        int[][] ret = new int[n - 2][n - 2];
         for (int i = 0; i < n - 2; i++) {
             for (int j = 0; j < n - 2; j++) {
                 for (int x = i; x < i + 3; x++) {
@@ -4893,7 +4962,8 @@ public class Solution {
 
     /**
      * No. 2379 得到K歌黑块的最少涂色次数
-     *     Tips: 滑动窗口：用K长度的窗口，滑动遍历整个blocks长度，取窗口内的白色块的最小值
+     * Tips: 滑动窗口：用K长度的窗口，滑动遍历整个blocks长度，取窗口内的白色块的最小值
+     *
      * @param blocks
      * @param k
      * @return
@@ -4914,6 +4984,7 @@ public class Solution {
 
     /**
      * No. 2383 赢得比赛需要的最少训练时长
+     *
      * @param initialEnergy
      * @param initialExperience
      * @param energy
@@ -4962,6 +5033,7 @@ public class Solution {
 
     /**
      * No. 2399 检查相同字母间的距离
+     *
      * @param s
      * @param distance
      * @return
@@ -4986,6 +5058,7 @@ public class Solution {
 
     /**
      * No. 2404 出现最频繁的偶数元素
+     *
      * @param nums
      * @return
      */
@@ -5013,6 +5086,7 @@ public class Solution {
 
     /**
      * No. 2427 公因子的数目
+     *
      * @param a
      * @param b
      * @return
@@ -5030,6 +5104,7 @@ public class Solution {
 
     /**
      * No. 2469 温度转换
+     *
      * @param celsius
      * @return
      */

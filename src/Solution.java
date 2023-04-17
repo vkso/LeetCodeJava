@@ -2805,7 +2805,7 @@ public class Solution {
         }
 
         for (int i = 0; i < n; i++) {
-            Set<Integer> color = new HashSet<>() {{
+            Set<Integer> color = new HashSet<Integer>() {{
                 add(1);
                 add(2);
                 add(3);
@@ -5082,6 +5082,37 @@ public class Solution {
             }
         }
         return ans_num;
+    }
+
+    /**
+     * No. 2409 统计共同度过的日子数
+     *     日期字符串格式 MM-DD [08-16]
+     * @param arriveAlice Alice 到达的时间
+     * @param leaveAlice Alice 离开的时间
+     * @param arriveBob Bob 到达的时间
+     * @param leaveBob Bob 离开的时间
+     * @return 返回时间重叠的数量
+     */
+    public int countDaysTogether(String arriveAlice, String leaveAlice, String arriveBob, String leaveBob) {
+        int indexAliceArrive = indexCount_2404(arriveAlice), indexAliceLeave = indexCount_2404(leaveAlice);
+        int indexBobArrive = indexCount_2404(arriveBob), indexBobLeave = indexCount_2404(leaveBob);
+
+        int left = Math.max(indexAliceArrive, indexBobArrive);
+        int right = Math.min(indexAliceLeave, indexBobLeave);
+
+        int ans = right - left + 1;
+        return ans > 0 ? ans : 0;
+    }
+    public int indexCount_2404(String date) {
+        int ans = 0;
+        int[] months = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        String[] split = date.split("-");
+        int month = Integer.parseInt(split[0]) - 1;
+        int day = Integer.parseInt(split[1]);
+        for (int i = 0; i < month; i++) {
+            ans += months[i];
+        }
+        return ans + day;
     }
 
     /**

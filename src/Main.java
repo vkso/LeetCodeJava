@@ -1,4 +1,5 @@
 import com.leetcode.tools.MyLinkedList;
+import com.leetcode.tools.TreeNode;
 
 import java.io.*;
 import java.util.Properties;

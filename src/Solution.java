@@ -2719,6 +2719,62 @@ public class Solution {
     }
 
     /**
+     * No. 1026 节点与其祖先之间的最大差值
+     * @param root
+     * @return
+     */
+    public int maxAncestorDiff(TreeNode root) {
+        int ans = 0;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode temp = queue.poll();
+            ans = Math.max(ans, maxOfSingleNode(temp));
+            if (temp.left != null) {
+                queue.add(temp.left);
+            }
+            if (temp.right != null) {
+                queue.add(temp.right);
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 按层次遍历返回 root 节点的所有孩子节点中 最大值与最小值的差值绝对值
+     * A - B = MAX - MIN
+     * 如果 root 节点是叶子节点，则返回 0，因为单节点无法计算
+     * @param root
+     * @return
+     */
+    public int maxOfSingleNode(TreeNode root) {
+        if (root.left == null && root.right == null) {
+            return 0;
+        }
+        int A = Integer.MIN_VALUE;
+        int B = Integer.MAX_VALUE;
+
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode temp = queue.poll();
+            A = Math.max(A, temp.val);
+            B = Math.min(B, temp.val);
+            if (temp.left != null) {
+                queue.add(temp.left);
+            }
+            if (temp.right != null) {
+                queue.add(temp.right);
+            }
+        }
+
+        return Math.max(A - root.val, root.val - B);
+    }
+
+    /**
      * No. 1029 两地调度
      *
      * @param costs

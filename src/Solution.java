@@ -2371,6 +2371,36 @@ public class Solution {
     }
 
     /**
+     * No. 824 山羊拉丁文
+     * @param sentence
+     * @return
+     */
+    public String toGoatLatin(String sentence) {
+        String[] words = sentence.split(" ");
+        String vowel = "aeiouAEIOU";
+        String appends = "a";
+        StringBuilder ans = new StringBuilder();
+
+        for (int i = 0; i < words.length; i++) {
+            char ch = words[i].charAt(0);
+            if (vowel.indexOf(ch) != -1) {
+                words[i] = words[i] + "ma";
+            } else {
+                words[i] = words[i].substring(1) + ch + "ma";
+            }
+            words[i] = words[i] + appends;
+            appends = appends + "a";
+        }
+
+        for (String word : words) {
+            ans.append(word);
+            ans.append(" ");
+        }
+
+        return ans.toString().substring(0, ans.length()-1);
+    }
+
+    /**
      * No. 827 最大人工岛
      * Tips: 两次DFS遍历
      * 1. 第一次遍历岛屿，计算每个岛屿的面积并标记该岛屿

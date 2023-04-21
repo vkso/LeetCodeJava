@@ -5202,6 +5202,15 @@ public class Solution {
     }
 
     /**
+     * No. 2413 最小偶倍数
+     * @param n
+     * @return
+     */
+    public int smallestEvenMultiple(int n) {
+        return n % 2 == 0 ? n : 2 * n;
+    }
+
+    /**
      * No. 2427 公因子的数目
      *
      * @param a
@@ -5348,21 +5357,6 @@ public class Solution {
 
 
 // No. 1575 统计所有可行路径，需要重新逐步推算
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

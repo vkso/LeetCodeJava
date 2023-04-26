@@ -5211,6 +5211,36 @@ public class Solution {
     }
 
     /**
+     * No. 2418 按身高排序
+     * @param names
+     * @param heights
+     * @return
+     */
+    public String[] sortPeople(String[] names, int[] heights) {
+        int n = names.length;
+        Integer[] indices = new Integer[n];
+
+        for (int i = 0; i < n; i++) {
+            indices[i] = i;
+        }
+
+        Arrays.sort(indices, (a, b) -> heights[b] - heights[a]);
+        String[] res = new String[n];
+        for (int i = 0; i < n; i++) {
+            res[i] = names[indices[i]];
+        }
+        return res;
+    }
+
+    @Test
+    public void tttt() {
+        String[] names = new String[]{"Mary", "John", "Emma"};
+        int[] heights = new int[]{180, 165, 170};
+        String[] strings = sortPeople(names, heights);
+        System.out.println(Arrays.toString(strings));
+    }
+
+    /**
      * No. 2427 公因子的数目
      *
      * @param a

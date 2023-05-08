@@ -2,10 +2,7 @@ import com.leetcode.tools.*;
 import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
-import org.omg.PortableServer.POAHelper;
 
-import java.security.cert.CollectionCertStoreParameters;
-import java.sql.Array;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -2658,6 +2655,41 @@ public class Solution {
     }
 
     /**
+     * No. 1010 总持续时间可以被60整除的歌曲
+     * @param time
+     * @return
+     */
+    public int numPairsDivisibleBy60(int[] time) {
+        int ans = 0;
+        int[] timeCount = new int[60];
+
+        for (int i : time) {
+            timeCount[i % 60]++;
+        }
+
+        for (int i = 1; i < 30; i++) {
+            ans += (timeCount[i] * timeCount[60 - i]);
+        }
+
+//        ans += timeCount[0] / 2 * (timeCount[0] - 1);
+//        ans += timeCount[30] / 2 * (timeCount[30] - 1);
+
+        if (timeCount[0] % 2 == 0) {
+            ans += timeCount[0] / 2 * (timeCount[0] - 1);
+        } else {
+            ans += (timeCount[0] - 1) / 2 * timeCount[0];
+        }
+
+        if (timeCount[30] % 2 == 0) {
+            ans += timeCount[30] / 2 * (timeCount[30] - 1);
+        } else {
+            ans += (timeCount[30] - 1) / 2 * timeCount[30];
+        }
+
+        return ans;
+    }
+
+    /**
      * No. 1019 链表中的下一个更大节点
      *
      * @param head
@@ -5239,6 +5271,45 @@ public class Solution {
         String[] strings = sortPeople(names, heights);
         System.out.println(Arrays.toString(strings));
     }
+
+
+    /**
+     * No. 2423 删除字符使频率相同
+     *
+     */
+    public boolean equalFrequency(String word) {
+        int[] charCount = new int[26];
+        int n = word.length();
+        for (int i = 0; i < n; i++) {
+            charCount[word.charAt(i) - 'a']++;
+        }
+
+        for (int i = 0; i < 26; i++) {
+            if (charCount[i] == 0) {
+                continue;
+            }
+            charCount[i]--;
+            HashSet<Integer> frequency = new HashSet<>();
+            for (int f : charCount) {
+                if (f > 0) {
+                    frequency.add(f);
+                }
+            }
+            if (frequency.size() == 1) {
+                return true;
+            }
+            charCount[i]++;
+        }
+        return false;
+    }
+
+    @Test
+    public void test2423() {
+        System.out.println(equalFrequency("aazz"));
+    }
+
+
+
 
     /**
      * No. 2427 公因子的数目

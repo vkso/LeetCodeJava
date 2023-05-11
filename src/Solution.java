@@ -1,3 +1,4 @@
+import apple.laf.JRSUIUtils;
 import com.leetcode.tools.*;
 import org.junit.Test;
 //import org.junit.jupiter.api.Test;
@@ -192,6 +193,28 @@ public class Solution {
     public int myAtoi(String columnTitle) {
 
         return 0;
+    }
+
+    /**
+     * No. 回文数
+     * @param x
+     * @return
+     */
+    public boolean isPalindrome(int x) {
+        if (x == 0) {
+            return true;
+        }
+
+        if (x < 0 || x % 10 == 0) {
+            return false;
+        }
+
+        int half = 0;
+        while (x > half) {
+            half = half * 10 + x % 10;
+            x /= 10;
+        }
+        return x == half || x == half / 10;
     }
 
     /**
@@ -425,6 +448,31 @@ public class Solution {
             }
         }
         return balance == 0;
+    }
+
+    /**
+     * No. 24 两两交换链表中的节点
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs(ListNode head) {
+        ListNode cur = new ListNode(0);
+        cur.next = head;
+        ListNode resHead = cur;
+
+        while (cur.next != null && cur.next.next != null) {
+            ListNode p = cur.next;
+            ListNode pp = p.next;
+            ListNode next = pp.next;
+
+            p.next = next;
+            pp.next = p;
+            cur.next = pp;
+
+            cur = pp.next;
+        }
+
+        return resHead.next;
     }
 
     /**
@@ -738,6 +786,35 @@ public class Solution {
     }
 
     /**
+     * No. 83 删除排序链表中的重复元素
+     * @param head
+     * @return
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode cur = head;
+        ListNode next = cur.next;
+
+        while (next.next != null) {
+            if (cur.val == next.val) {
+                cur.next = next.next;
+            } else {
+                cur = next;
+            }
+            next = next.next;
+        }
+
+        if (cur.val == next.val) {
+            cur.next = null;
+        }
+
+        return head;
+    }
+
+    /**
      * No. 86 分隔链表
      * Tips: 类似归并的方法，最后将两个链表整合在一起
      *
@@ -970,6 +1047,18 @@ public class Solution {
     }
 
     /**
+     * No. 104 二叉树的最大深度
+     * @param root
+     * @return
+     */
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+
+    /**
      * No. 108 将有序数组转换为二叉搜索树
      * Tips: 二叉搜索树的中序遍历是一个递增数列，那么数列的中间节点可以作为 root 节点，
      * 左边节点作为左子树节点，右边节点作为右子树节点
@@ -996,6 +1085,49 @@ public class Solution {
         root.left = sortedArrayToBST(nums, start, mid - 1);
         root.right = sortedArrayToBST(nums, mid + 1, end);
         return root;
+    }
+
+    /**
+     * No. 110 平衡二叉树
+     * @param root
+     * @return
+     */
+    boolean isBalanced = true;
+    public boolean isBalanced(TreeNode root) {
+        maxDepthX(root);
+        return isBalanced;
+    }
+
+    public int maxDepthX(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int lDepth = maxDepthX(root.left);
+        int rDepth = maxDepthX(root.right);
+        if (Math.abs(lDepth - rDepth) > 1) {
+            isBalanced = false;
+        }
+        return 1 + Math.max(lDepth, rDepth);
+    }
+
+    /**
+     * No. 111 二叉树最小深度
+     * @param root
+     * @return
+     */
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int lDepth = minDepth(root.left);
+        int rDepth = minDepth(root.right);
+
+        // 如果左右子数其中一个为空的时候，深度为另一个数的深度 + 1
+        if (lDepth == 0 || rDepth == 0) {
+            return lDepth + rDepth + 1;
+        }
+
+        return Math.min(lDepth, rDepth) + 1;
     }
 
     /**
@@ -1185,6 +1317,25 @@ public class Solution {
     }
 
     /**
+     * No. 160 相交链表
+     * @param headA
+     * @param headB
+     * @return
+     */
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode l1 = headA, l2 = headB;
+        if (l1 == null || l2 == null) {
+            return null;
+        }
+        while (l1 != l2) {
+            l1 = (l1 != null) ? l1.next : headB;
+            l2 = (l2 != null) ? l2.next : headA;
+        }
+
+        return l1;
+    }
+
+    /**
      * No. 171 Excel表序列号
      * <p>
      * 这里，直接按照26进制，从头开始计算更方便：
@@ -1316,6 +1467,77 @@ public class Solution {
             hashMap_t2s.put(ch_t, ch_s);
         }
         return true;
+    }
+
+    public boolean xxx(String s, String t) {
+        Map<Character, Character> map = new HashMap<>();
+        int length = s.length();
+
+        for (int i = 0; i < length; i++) {
+            char ch_s = s.charAt(i);
+            char ch_t = t.charAt(i);
+            if (!map.containsKey(ch_s)) {
+                map.put(ch_s, ch_t);
+            } else {
+                if (map.get(ch_s) != ch_t) {
+                    return false;
+                }
+            }
+        }
+
+        map.clear();
+
+        for (int i = 0; i < length; i++) {
+            char ch_s = s.charAt(i);
+            char ch_t = t.charAt(i);
+            if (!map.containsKey(ch_t)) {
+                map.put(ch_t, ch_s);
+            } else {
+                if (map.get(ch_t) != ch_s) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * No. 206 反转链表
+     * @param head
+     * @return
+     */
+    public ListNode reverseList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode resHead = new ListNode(0, null);
+        ListNode temp = new ListNode(0);
+
+        while (head != null) {
+            temp = head.next;
+            head.next = resHead.next;
+            resHead.next = head;
+            head = temp;
+        }
+        return resHead.next;
+    }
+
+    /**
+     * No. 226 翻转二叉树
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        TreeNode left = new TreeNode();
+        left = root.left;
+        root.left = invertTree(root.right);
+        root.right = invertTree(left);
+        return root;
     }
 
     /**
@@ -1666,6 +1888,38 @@ public class Solution {
     }
 
     /**
+     * No. 337 打家劫舍III
+     * @param root
+     * @return
+     */
+    public int rob(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        if (map337.containsKey(root)) {
+            return map337.get(root);
+        }
+        int total1 = root.val;
+
+        if (root.left != null) {
+            total1 += rob(root.left.left) + rob(root.left.right);
+        }
+        if (root.right != null) {
+            total1 += rob(root.right.left) + rob(root.right.right);
+        }
+
+        int total2 = 0;
+        total2 = rob(root.left) + rob(root.right);
+
+        int max = Math.max(total1, total2);
+        map337.put(root, max);
+
+        return max;
+    }
+
+    HashMap<TreeNode, Integer> map337 = new HashMap<>();
+
+    /**
      * No. 345 翻转字符串中的元音字母
      *
      * @param s
@@ -1834,6 +2088,30 @@ public class Solution {
     }
 
     /**
+     * No. 409 最长回文串
+     * @param s
+     * @return
+     */
+    public int longestPalindrome(String s) {
+        int res = 0, Odd = 0;
+        int[] map = new int['z' - 'A'];
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map[ch - 'A']++;
+        }
+
+        for (int item : map) {
+            if (item % 2 == 0) {
+                res += item;
+            } else {
+                res += item - 1;
+                Odd = 1;
+            }
+        }
+        return Odd == 0 ? res : res + 1;
+    }
+
+    /**
      * No. 415 字符串相加
      *
      * @param num1
@@ -1856,6 +2134,81 @@ public class Solution {
             ans.append(temp % 10);
         }
         return ans.reverse().toString();
+    }
+
+    /**
+     * No. 437 路径总和III
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return 0;
+        }
+
+        int res = pathSumStartWithRoot(root, targetSum) +
+                pathSum(root.left, targetSum) +
+                pathSum(root.right, targetSum);
+
+        return res;
+    }
+
+    public int pathSumStartWithRoot(TreeNode root, long targetSum) {
+        if (root == null) {
+            return 0;
+        }
+        int res = 0;
+
+        if (root.val == targetSum) {
+            res += 1;
+        }
+
+        res += pathSumStartWithRoot(root.left, targetSum - root.val) +
+                pathSumStartWithRoot(root.right, targetSum - root.val);
+
+        return res;
+    }
+
+    /**
+     * No. 445 两数相加II
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode addTwoNumbersI(ListNode l1, ListNode l2) {
+        ArrayDeque<Integer> stack1 = new ArrayDeque<>();
+        ArrayDeque<Integer> stack2 = new ArrayDeque<>();
+
+        while (l1 != null) {
+            stack1.push(l1.val);
+            l1 = l1.next;
+        }
+
+        while (l2 != null) {
+            stack2.push(l2.val);
+            l2 = l2.next;
+        }
+
+        int total = 0;
+        ListNode resFirst = new ListNode();
+        while (!stack1.isEmpty() || !stack2.isEmpty()) {
+            if (!stack1.isEmpty()) {
+                total += stack1.pop();
+            }
+            if (!stack2.isEmpty()) {
+                total += stack2.pop();
+            }
+
+            resFirst.val = total % 10;
+            total /= 10;
+            ListNode tmp = new ListNode();
+            tmp.val = total;
+            tmp.next = resFirst;
+            resFirst = tmp;
+        }
+
+        return resFirst.val == 0 ? resFirst.next : resFirst;
     }
 
     /**
@@ -2026,6 +2379,33 @@ public class Solution {
     }
 
     /**
+     * No. 503 下一个更大元素II
+     * @param nums
+     * @return
+     */
+    public int[] nextGreaterElements(int[] nums) {
+        int length = nums.length;
+        int[] ans = new int[length * 2];
+        Arrays.fill(ans, -1);
+        int[] copyNums = new int[length * 2];
+        for (int i = 0; i < length * 2; i++) {
+            copyNums[i] = nums[i % length];
+        }
+
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < length * 2; i++) {
+            int curNumber = copyNums[i];
+            while (!stack.isEmpty() && curNumber > copyNums[stack.peek()]) {
+                int prevIndex = stack.pop();
+                ans[prevIndex] = curNumber;
+            }
+            stack.push(i);
+        }
+
+        return Arrays.copyOf(ans, length);
+    }
+
+    /**
      * No. 504 七进制数
      *
      * @param num
@@ -2055,6 +2435,28 @@ public class Solution {
     }
 
     /**
+     * No. 513 找数左下角的值
+     * @param root
+     * @return
+     */
+    public int findBottomLeftValue(TreeNode root) {
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+
+        TreeNode cur = null;
+        while (!queue.isEmpty()) {
+            cur = queue.poll();
+            if (cur.right != null) {
+                queue.offer(cur.right);
+            }
+            if (cur.left != null) {
+                queue.offer(cur.left);
+            }
+        }
+        return cur.val;
+    }
+
+    /**
      * No. 543 二叉树的直径
      * Tips: 设置全局变量 depth，每次递归的时候，判断 depth 是不是最长的
      * 递归遍历过程中，其实是计算left, right 的深度
@@ -2079,6 +2481,133 @@ public class Solution {
         // 没有下面这条语句，这是一个标准的计算二叉树深度的递归函数
         depth = Math.max(depth, L + R + 1);
         return Math.max(L, R) + 1;
+    }
+
+    /**
+     * No. 566 重塑矩阵
+     * @param mat
+     * @param r
+     * @param c
+     * @return
+     */
+    public int[][] matrixReshape(int[][] mat, int r, int c) {
+        int old_r = mat.length;
+        int old_c = mat[0].length;
+
+        if (old_r * old_c != r * c) {
+            return mat;
+        }
+
+        int[][] res = new int[r][c];
+        int count = 0;
+        for (int i = 0; i < old_r; i++) {
+            for (int j = 0; j < old_c; j++) {
+                res[count / c][count % c] = mat[i][j];
+                count++;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * No. 594 最长和谐子序列
+     * @param nums
+     * @return
+     */
+    public int findLHS(int[] nums) {
+        HashMap<Integer, Integer> cnt = new HashMap<>();
+        int res = 0;
+        for (int num : nums) {
+            cnt.put(num, cnt.getOrDefault(num, 0) + 1);
+        }
+
+        for (int key : cnt.keySet()) {
+            if (cnt.containsKey(key + 1)) {
+                res = Math.max(res, cnt.get(key) + cnt.get(key + 1));
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * No. 617 合并二叉树
+     * @param root1
+     * @param root2
+     * @return
+     */
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null) {
+            return root2;
+        }
+        if (root2 == null) {
+            return root1;
+        }
+        root1.val += root2.val;
+        root1.left = mergeTrees(root1.left, root2.left);
+        root1.right = mergeTrees(root1.right, root2.right);
+
+        return root1;
+    }
+
+    /**
+     * No. 637 二叉树的层平均值
+     * @param root
+     * @return
+     */
+    public List<Double> averageOfLevels(TreeNode root) {
+        ArrayDeque<TreeNode> queue = new ArrayDeque<>();
+        List<Double> res = new ArrayList<>();
+        TreeNode mark = new TreeNode();
+        queue.offer(root);
+        queue.offer(mark);
+
+        double sum = 0, count = 0;
+
+        while (!queue.isEmpty()) {
+            TreeNode poll = queue.poll();
+            if (poll != mark) {
+                sum += poll.val;
+                count += 1;
+                if (poll.left != null) {
+                    queue.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    queue.offer(poll.right);
+                }
+            } else {
+                res.add(sum / count);
+                sum = 0;
+                count = 0;
+                if (queue.isEmpty()) {
+                    break;
+                }
+                queue.offer(mark);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * No. 647 回文子串
+     * @param s
+     * @return
+     */
+    int cnt_647 = 0;
+    public int countSubstrings(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            extend(s, i, i);
+            extend(s, i, i + 1);
+        }
+        return cnt_647;
+    }
+
+    public void extend(String s, int start, int end) {
+        while (start >= 0 && end < s.length() && s.charAt(start) == s.charAt(end)) {
+            --start;
+            ++end;
+            cnt_647++;
+        }
     }
 
     /**
@@ -2124,6 +2653,35 @@ public class Solution {
     }
 
     /**
+     * No. 687 最长同值的路径
+     * @param root
+     * @return
+     */
+    int length_687 = 0;
+
+    public int longestUnivaluePath(TreeNode root) {
+        dfs_687(root);
+        return length_687;
+    }
+
+    public int dfs_687(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = dfs_687(root.left);
+        int right = dfs_687(root.right);
+
+        int left_len = 0, right_len = 0;
+
+        left_len = root.left != null && root.left.val == root.val ? left + 1 : 0;
+        right_len = root.right != null && root.right.val == root.val ? right + 1 : 0;
+
+        length_687 = Math.max(length_687, left_len + right_len);
+
+        return Math.max(left_len, right_len);
+    }
+
+    /**
      * No. 695 岛屿的最大面积
      * Tips: 二叉树DFS的变形，二维矩阵的DFS搜索
      *
@@ -2159,6 +2717,25 @@ public class Solution {
 
     public boolean isValid(int[][] grid, int row, int cow) {
         return row >= 0 && row < grid.length && cow >= 0 && cow < grid[0].length;
+    }
+
+    /**
+     * No. 696 计数二进制子串
+     * @param s
+     * @return
+     */
+    public int countBinarySubstrings(String s) {
+        int ans = 0, prev = 0, cur = 1;
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i - 1) != s.charAt(i)) {
+                ans += Math.min(prev, cur);
+                prev = cur;
+                cur = 1;
+            } else {
+                cur += 1;
+            }
+        }
+        return ans + Math.min(prev, cur);
     }
 
     /**
@@ -2279,6 +2856,29 @@ public class Solution {
                 ans = word;
                 maxLen = word.length();
             }
+        }
+        return ans;
+    }
+
+    /**
+     * No. 739 每日温度
+     *     遍历每日温度，若当日温度大于栈顶索引日的温度，说明当日是栈顶元素的升温日，因此
+     *     将栈顶元素出栈，计算其与当日的天数差，存放与结果数组中。遍历结束，栈中剩余的元
+     *     素没有升温日，保持默认值为 0
+     * @param temperatures
+     * @return
+     */
+    public int[] dailyTemperatures(int[] temperatures) {
+        int length = temperatures.length;
+        int[] ans = new int[length];
+        ArrayDeque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < length; i++) {
+            int temperature = temperatures[i];
+            while (!stack.isEmpty() && temperature > temperatures[stack.peek()]) {
+                int prevIndex = stack.pop();
+                ans[prevIndex] = i - prevIndex;
+            }
+            stack.push(i);
         }
         return ans;
     }
@@ -2687,6 +3287,36 @@ public class Solution {
         }
 
         return ans;
+    }
+
+    /**
+     * No. 970 强整数
+     * @param x
+     * @param y
+     * @param bountd
+     * @return
+     */
+    public List<Integer> powerfulIntegers(int x, int y, int bountd) {
+        HashSet<Integer> set = new HashSet<>();
+        int value1 = 1;
+
+        for (int i = 0; i < 21; i++) {
+            int value2 = 1;
+            for (int j = 0; j < 21; j++) {
+                int value = value1 + value2;
+                if (value <= bountd) {
+                    set.add(value);
+                } else {
+                    break;
+                }
+                value2 *= y;
+            }
+            if (value1 > bountd) {
+                break;
+            }
+            value1 *= x;
+        }
+        return new ArrayList<Integer>(set);
     }
 
     /**

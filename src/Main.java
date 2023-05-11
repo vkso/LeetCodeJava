@@ -30,5 +30,49 @@ public class Main {
         fileInputStream.close();
         br.close();
     }
+
+    /**
+     * 文件字节流的读与写
+     */
+    @Test
+    public void ioTest() {
+        try (FileInputStream fis = new FileInputStream("/Users/yuchen/Downloads/girl.jpg");
+        FileOutputStream fos = new FileOutputStream("/Users/yuchen/Downloads/girl-copy.jpg")) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                fos.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 文件字符流读与写
+     */
+    public void ioTestt() {
+        try (FileReader fr = new FileReader("input.txt");
+        FileWriter fw = new FileWriter("output.txt")) {
+            char[] buffer = new char[1024];
+            int len;
+            while ((len = fr.read(buffer)) != -1) {
+                fw.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void threadTest() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("test start");
+            }
+        });
+        thread.run();
+    }
 }
 

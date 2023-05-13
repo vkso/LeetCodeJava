@@ -22,7 +22,7 @@ public class Solution {
     public int[][] spiralMatrixx(int m, int n, ListNode head) {
         int[][] matrix = new int[m][n];
         for (int i = 0; i < m; i++) {
-            Arrays.fill(matrix[i], -1);
+            fill(matrix[i], -1);
         }
         int total = m * n;
         int row = 0, col = 0;
@@ -2386,7 +2386,7 @@ public class Solution {
     public int[] nextGreaterElements(int[] nums) {
         int length = nums.length;
         int[] ans = new int[length * 2];
-        Arrays.fill(ans, -1);
+        fill(ans, -1);
         int[] copyNums = new int[length * 2];
         for (int i = 0; i < length * 2; i++) {
             copyNums[i] = nums[i % length];
@@ -2402,7 +2402,7 @@ public class Solution {
             stack.push(i);
         }
 
-        return Arrays.copyOf(ans, length);
+        return copyOf(ans, length);
     }
 
     /**
@@ -5886,7 +5886,7 @@ public class Solution {
             indices[i] = i;
         }
 
-        Arrays.sort(indices, (a, b) -> heights[b] - heights[a]);
+        sort(indices, (a, b) -> heights[b] - heights[a]);
         String[] res = new String[n];
         for (int i = 0; i < n; i++) {
             res[i] = names[indices[i]];
@@ -5957,6 +5957,27 @@ public class Solution {
             }
         }
         return count;
+    }
+
+    /**
+     * No. 与对应负数同时存在的最大正整数
+     * @param nums
+     * @return
+     */
+    public int findMaxK(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        int max = -1;
+        for (int num : nums) {
+            set.add(num);
+        }
+        for (int num: nums) {
+            if (num > 0) {
+               if (set.contains(0 - num)) {
+                   max = Math.max(max, num);
+               }
+            }
+        }
+        return max;
     }
 
     /**

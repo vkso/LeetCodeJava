@@ -3630,6 +3630,183 @@ public class Solution {
     }
 
     /**
+     * No. 1054 距离相等的条形码
+     * @param barcodes
+     * @return
+     */
+//    public int[] rearrangeBarcodes(int[] barcodes) {
+//
+//    }
+
+    /**
+     * No. 1072 按列翻转得到的最大值等行数
+     *     如果一个行的所有元素值和另外一行完全相同或者完全相反，那么这两行是等值的（001 == 110），因为他们可以完全由对方完全翻转获得
+     * @param matrix
+     * @return
+     */
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+        int maxCount = 0;
+        int m = matrix.length, n = matrix[0].length;
+        HashMap<String, Integer> hashmap = new HashMap<>();
+
+        for (int i = 0; i < m; i++) {
+            int firstColValue = matrix[i][0];
+            if (firstColValue == 1) {
+                for (int j = 0; j < n; j++) {
+                    matrix[i][j] = 1 - matrix[i][j];
+                }
+            }
+            String stringRow = Arrays.toString(matrix[i]);
+            hashmap.put(stringRow, hashmap.getOrDefault(stringRow, 0) + 1);
+            maxCount = Math.max(maxCount, hashmap.get(stringRow));
+        }
+
+        return maxCount;
+    }
+
+    /**
+     * No. 1079 活字印刷
+     * @param tiles
+     * @return
+     */
+    public int numTilePossibilities(String tiles) {
+        HashMap<Character, Integer> count = new HashMap<>();
+        for (char t : tiles.toCharArray()) {
+            count.put(t, count.getOrDefault(t, 0) + 1);
+        }
+        Set<Character> tile = new HashSet<>(count.keySet());
+        return dfs_1079(tiles.length(), count, tile) - 1;
+    }
+
+    public int dfs_1079(int i, Map<Character, Integer> count, Set<Character> tile) {
+        if (i == 0) {
+            return 1;
+        }
+        int res = 1;
+        for (char t : tile) {
+            if (count.get(t) > 0) {
+                count.put(t, count.get(t) - 1);
+                res += dfs_1079(i -1, count, tile);
+                count.put(t, count.get(t) + 1);
+            }
+        }
+        return res;
+    }
+
+    /**
+     * No. 1080 根到叶路径上不足节点
+     * @param root
+     * @param limit
+     * @return
+     */
+    public TreeNode sufficientSubset(TreeNode root, int limit) {
+
+        if (root == null) {
+            return null;
+        }
+
+        if (root.left == root.right) {
+            if (root.val < limit) {
+                return null;
+            }
+            return root;
+        }
+
+        root.left = sufficientSubset(root.left, limit - root.val);
+        root.right = sufficientSubset(root.right, limit - root.val);
+
+        if (root.left == null && root.right == null) {
+            return null;
+        }
+
+        return root;
+    }
+
+    /**
+     * No. 1090 受标签影响的最大值
+     * @param values
+     * @param labels
+     * @param numWanted
+     * @param useLimit
+     * @return
+     */
+    public int largestValsFromLabels(int[] values, int[] labels, int numWanted, int useLimit) {
+        int n = values.length;
+        Integer[] id = new Integer[n];
+
+        for (int i = 0; i < n; i++) {
+            id[i] = i;
+        }
+
+        Arrays.sort(id, (a, b) -> values[b] - values[a]);
+
+        int ans = 0, choose = 0;
+
+        HashMap<Integer, Integer> cnt = new HashMap<>();
+        for (int i = 0; i < n && choose < numWanted; ++i) {
+            int label = labels[id[i]];
+            if (cnt.getOrDefault(label, 0) == useLimit) {
+                continue;
+            }
+            ++choose;
+            ans += values[id[i]];
+            cnt.put(label, cnt.getOrDefault(label, 0) + 1);
+        }
+        return ans;
+    }
+
+    @Test
+    public void testlarge() {
+        int[] values = new int[] {5, 4, 3, 2, 1};
+        int[] labels = new int[] {1, 1, 2, 2, 3};
+        System.out.println(largestValsFromLabels(values, labels, 3, 1));
+    }
+
+    /**
+     * No. 1091 二进制矩阵中的最短路径
+     * @param grid
+     * @return
+     */
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        if (grid[0][0] == 1) {
+            return -1;
+        }
+        int n = grid.length;
+        int[][] dist = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dist[i], Integer.MAX_VALUE);
+        }
+        Queue<int[]> queue = new ArrayDeque<>();
+        queue.offer(new int[]{0, 0});
+        dist[0][0] = 1;
+
+        while (!queue.isEmpty()) {
+            int[] arr = queue.poll();
+            int x = arr[0], y = arr[1];
+            if (x == n - 1 && y == n - 1) {
+                return dist[x][y];
+            }
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    if (!isInGrid(grid, x + dx, y + dy) || grid[x + dx][y + dy] == 1) {  // 越界或值为1
+                        continue;
+                    }
+                    if (dist[x + dx][y + dy] <= dist[x][y] + 1) {  // 已经访问过（因为初始值是Ingeter.MAX_VALUE）
+                        continue;
+                    }
+                    dist[x + dx][y + dy] = dist[x][y] + 1;
+                    queue.offer(new int[]{x + dx, y + dy});
+                }
+            }
+        }
+        return -1;
+    }
+
+    public boolean isInGrid(int[][] grid, int row, int col) {
+        return row >= 0 && row < grid.length && col >= 0 && col < grid.length;
+    }
+
+    /**
      * No. 1129 颜色交替的最短路径
      *
      * @param n
@@ -5938,9 +6115,6 @@ public class Solution {
         System.out.println(equalFrequency("aazz"));
     }
 
-
-
-
     /**
      * No. 2427 公因子的数目
      *
@@ -5960,7 +6134,7 @@ public class Solution {
     }
 
     /**
-     * No. 与对应负数同时存在的最大正整数
+     * No. 2441 与对应负数同时存在的最大正整数
      * @param nums
      * @return
      */
@@ -5978,6 +6152,62 @@ public class Solution {
             }
         }
         return max;
+    }
+
+    /**
+     * No. 判断两个事件是否存在冲突
+     * @param event1
+     * @param event2
+     * @return
+     */
+    public boolean haveConflict(String[] event1, String[] event2) {
+//        int event1_start = timeStrToInt(event1[0]);
+//        int event1_end = timeStrToInt(event1[1]);
+//        int event2_start = timeStrToInt(event2[0]);
+//        int event2_end = timeStrToInt(event2[1]);
+//
+//        if (event2_start > event1_end || event1_start > event2_end) {
+//            return false;
+//        }
+//        return true;
+        return !(event1[1].compareTo(event2[0]) < 0 || event2[1].compareTo(event1[0]) < 0);
+    }
+
+    public int timeStrToInt(String time) {
+        String[] split = time.split(":");
+        int hour = Integer.parseInt(split[0]);
+        int minutes = Integer.parseInt(split[1]);
+        return hour * 60 + minutes;
+    }
+
+    /**
+     * No. 2451 差值数组不同的字符串
+     *     tips:
+     *         0. 将第一个元素转换成数组后，存入集合当中，并假设它不是要找的元素
+     *         1. 遍历后面的所有元素，如果这个元素已经存在于集合中，那么直接跳过，如果这个元素不存在集合中，则是目标元素
+     * @param words
+     * @return
+     */
+    public String oddString(String[] words) {
+        int[] diff0 = getWord2Array(words[0]);
+        int[] diff1 = getWord2Array(words[1]);
+
+        if (Arrays.equals(diff0, diff1)) {
+            for (int i = 2; i < words.length; i++) {
+                if (!Arrays.equals(diff0, getWord2Array(words[i]))) {
+                    return words[i];
+                }
+            }
+        }
+        return Arrays.equals(diff0, getWord2Array(words[2])) ? words[1] : words[0];
+    }
+
+    public int[] getWord2Array(String word) {
+        int[] diff = new int[word.length() - 1];
+        for (int i = 1; i < word.length(); i++) {
+            diff[i - 1] = word.charAt(i) - word.charAt(i - 1);
+        }
+        return diff;
     }
 
     /**

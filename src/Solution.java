@@ -3807,6 +3807,90 @@ public class Solution {
     }
 
     /**
+     * No. 1093 大样本统计
+     * @param count
+     * @return
+     */
+    public double[] sampleStats(int[] count) {
+        double[] ans = new double[5];
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] != 0) {
+                ans[0] = i;
+                break;
+            }
+        }
+
+        for (int i = count.length - 1; i >= 0; i--) {
+            if (count[i] != 0) {
+                ans[1] = i;
+                break;
+            }
+        }
+
+        double sum = 0;
+        for (int i = 0; i < count.length; i++) {
+            sum += (double)count[i] * i;
+        }
+        int numbers = 0;
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] != 0) {
+                numbers += count[i];
+            }
+        }
+        ans[2] = sum / numbers;
+
+        if (numbers % 2 == 0) {
+            int mid_left = (numbers - 1) / 2;
+            int mid_right = mid_left + 1;
+            int current_index = -1;
+            double left = 0;
+            double right = 0;
+            for (int i = 0; i < count.length; i++) {
+                if (count[i] != 0) {
+                    current_index += count[i];
+                    if (current_index >= mid_left) {
+                        left = i;
+                        break;
+                    }
+                }
+            }
+            current_index = -1;
+            for (int i = 0; i < count.length; i++) {
+                if (count[i] != 0) {
+                    current_index += count[i];
+                    if (current_index >= mid_right) {
+                        right = i;
+                        break;
+                    }
+                }
+            }
+            ans[3] = (left + right) / 2;
+        } else {
+            int currentIndex = -1;
+            for (int i = 0; i < count.length; i++) {
+                if (count[i] != 0) {
+                    currentIndex += count[i];
+                    if (currentIndex >= (numbers - 1) / 2 ) {
+                        ans[3] = i;
+                        break;
+                    }
+                }
+            }
+        }
+
+        int maxExist = 0, maxExistIndex = 0;
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] > maxExist) {
+                maxExist = count[i];
+                maxExistIndex = i;
+            }
+        }
+        ans[4] = maxExistIndex;
+
+        return ans;
+    }
+
+    /**
      * No. 1129 颜色交替的最短路径
      *
      * @param n

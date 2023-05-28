@@ -1,4 +1,3 @@
-import apple.laf.JRSUIUtils;
 import com.leetcode.tools.*;
 import org.junit.Test;
 //import org.junit.jupiter.api.Test;
@@ -13,8 +12,6 @@ import static java.util.Arrays.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] arr = new int[]{3, 1, 1, 3};
-        System.out.println(Arrays.toString(prevPermOpt1(arr)));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -197,6 +194,7 @@ public class Solution {
 
     /**
      * No. 回文数
+     *
      * @param x
      * @return
      */
@@ -452,6 +450,7 @@ public class Solution {
 
     /**
      * No. 24 两两交换链表中的节点
+     *
      * @param head
      * @return
      */
@@ -787,6 +786,7 @@ public class Solution {
 
     /**
      * No. 83 删除排序链表中的重复元素
+     *
      * @param head
      * @return
      */
@@ -1048,6 +1048,7 @@ public class Solution {
 
     /**
      * No. 104 二叉树的最大深度
+     *
      * @param root
      * @return
      */
@@ -1089,10 +1090,12 @@ public class Solution {
 
     /**
      * No. 110 平衡二叉树
+     *
      * @param root
      * @return
      */
     boolean isBalanced = true;
+
     public boolean isBalanced(TreeNode root) {
         maxDepthX(root);
         return isBalanced;
@@ -1112,6 +1115,7 @@ public class Solution {
 
     /**
      * No. 111 二叉树最小深度
+     *
      * @param root
      * @return
      */
@@ -1318,6 +1322,7 @@ public class Solution {
 
     /**
      * No. 160 相交链表
+     *
      * @param headA
      * @param headB
      * @return
@@ -1396,8 +1401,8 @@ public class Solution {
         int count = 0;
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == 1) {
-                    countIsland(grid, i, j);
+                if (grid[i][j] == '1') {
+                    markIsland(grid, i, j);
                     count++;
                 }
             }
@@ -1405,7 +1410,7 @@ public class Solution {
         return count;
     }
 
-    public void countIsland(char[][] grid, int row, int cow) {
+    public void markIsland(char[][] grid, int row, int cow) {
         if (!isValid(grid, row, cow)) {
             return;
         }
@@ -1413,10 +1418,10 @@ public class Solution {
             return;
         }
         grid[row][cow] = '2';
-        countIsland(grid, row, cow - 1);
-        countIsland(grid, row, cow + 1);
-        countIsland(grid, row - 1, cow);
-        countIsland(grid, row + 1, cow);
+        markIsland(grid, row, cow - 1);
+        markIsland(grid, row, cow + 1);
+        markIsland(grid, row - 1, cow);
+        markIsland(grid, row + 1, cow);
     }
 
     public boolean isValid(char[][] grid, int row, int cow) {
@@ -1504,6 +1509,7 @@ public class Solution {
 
     /**
      * No. 206 反转链表
+     *
      * @param head
      * @return
      */
@@ -1526,6 +1532,7 @@ public class Solution {
 
     /**
      * No. 226 翻转二叉树
+     *
      * @param root
      * @return
      */
@@ -1889,6 +1896,7 @@ public class Solution {
 
     /**
      * No. 337 打家劫舍III
+     *
      * @param root
      * @return
      */
@@ -2089,6 +2097,7 @@ public class Solution {
 
     /**
      * No. 409 最长回文串
+     *
      * @param s
      * @return
      */
@@ -2138,6 +2147,7 @@ public class Solution {
 
     /**
      * No. 437 路径总和III
+     *
      * @param root
      * @param targetSum
      * @return
@@ -2172,6 +2182,7 @@ public class Solution {
 
     /**
      * No. 445 两数相加II
+     *
      * @param l1
      * @param l2
      * @return
@@ -2209,6 +2220,51 @@ public class Solution {
         }
 
         return resFirst.val == 0 ? resFirst.next : resFirst;
+    }
+
+    /**
+     * No. 457 环形数组是否存在循环
+     *
+     * @param nums
+     * @return
+     */
+    public boolean circularArrayLoop(int[] nums) {
+        int n = nums.length;
+
+        for (int i = 0; i < nums.length; i++) {
+            // 如果当前元素已经访问过，那么可以直接跳过（因为，前面已经访问过，并没有跳出循环，那么该节点可以不用重复判断了）
+            if (nums[i] == 0) {
+                continue;
+            }
+
+            int slow = i, fast = next457(nums, i);
+
+            while (nums[slow] * nums[fast] > 0 && nums[slow] * nums[next457(nums, fast)] > 0) {
+                if (slow == fast) {
+                    // 判断是否原地循环了
+                    if (slow != next457(nums, slow)) {
+                        return true;
+                    } else {
+                        break;
+                    }
+                }
+                slow = next457(nums, slow);
+                fast = next457(nums, next457(nums, fast));
+            }
+            // 将失败的路径全部置0，用以优化下次走到该节点，直接跳过
+            int add = i;
+            while (nums[add] * nums[next457(nums, add)] > 0) {
+                int tmp = add;
+                add = next457(nums, add);
+                nums[tmp] = 0;
+            }
+        }
+        return false;
+    }
+
+    public int next457(int[] nums, int cur) {
+        int length = nums.length;
+        return ((cur + nums[cur]) % length + length) % length;
     }
 
     /**
@@ -2380,6 +2436,7 @@ public class Solution {
 
     /**
      * No. 503 下一个更大元素II
+     *
      * @param nums
      * @return
      */
@@ -2436,6 +2493,7 @@ public class Solution {
 
     /**
      * No. 513 找数左下角的值
+     *
      * @param root
      * @return
      */
@@ -2485,6 +2543,7 @@ public class Solution {
 
     /**
      * No. 566 重塑矩阵
+     *
      * @param mat
      * @param r
      * @param c
@@ -2511,6 +2570,7 @@ public class Solution {
 
     /**
      * No. 594 最长和谐子序列
+     *
      * @param nums
      * @return
      */
@@ -2532,6 +2592,7 @@ public class Solution {
 
     /**
      * No. 617 合并二叉树
+     *
      * @param root1
      * @param root2
      * @return
@@ -2552,6 +2613,7 @@ public class Solution {
 
     /**
      * No. 637 二叉树的层平均值
+     *
      * @param root
      * @return
      */
@@ -2590,10 +2652,12 @@ public class Solution {
 
     /**
      * No. 647 回文子串
+     *
      * @param s
      * @return
      */
     int cnt_647 = 0;
+
     public int countSubstrings(String s) {
         for (int i = 0; i < s.length(); i++) {
             extend(s, i, i);
@@ -2654,6 +2718,7 @@ public class Solution {
 
     /**
      * No. 687 最长同值的路径
+     *
      * @param root
      * @return
      */
@@ -2721,6 +2786,7 @@ public class Solution {
 
     /**
      * No. 696 计数二进制子串
+     *
      * @param s
      * @return
      */
@@ -2862,9 +2928,10 @@ public class Solution {
 
     /**
      * No. 739 每日温度
-     *     遍历每日温度，若当日温度大于栈顶索引日的温度，说明当日是栈顶元素的升温日，因此
-     *     将栈顶元素出栈，计算其与当日的天数差，存放与结果数组中。遍历结束，栈中剩余的元
-     *     素没有升温日，保持默认值为 0
+     * 遍历每日温度，若当日温度大于栈顶索引日的温度，说明当日是栈顶元素的升温日，因此
+     * 将栈顶元素出栈，计算其与当日的天数差，存放与结果数组中。遍历结束，栈中剩余的元
+     * 素没有升温日，保持默认值为 0
+     *
      * @param temperatures
      * @return
      */
@@ -2969,6 +3036,7 @@ public class Solution {
 
     /**
      * No. 824 山羊拉丁文
+     *
      * @param sentence
      * @return
      */
@@ -2994,7 +3062,7 @@ public class Solution {
             ans.append(" ");
         }
 
-        return ans.toString().substring(0, ans.length()-1);
+        return ans.toString().substring(0, ans.length() - 1);
     }
 
     /**
@@ -3256,6 +3324,7 @@ public class Solution {
 
     /**
      * No. 1010 总持续时间可以被60整除的歌曲
+     *
      * @param time
      * @return
      */
@@ -3291,6 +3360,7 @@ public class Solution {
 
     /**
      * No. 970 强整数
+     *
      * @param x
      * @param y
      * @param bountd
@@ -3412,6 +3482,7 @@ public class Solution {
 
     /**
      * No. 1026 节点与其祖先之间的最大差值
+     *
      * @param root
      * @return
      */
@@ -3437,6 +3508,7 @@ public class Solution {
      * 按层次遍历返回 root 节点的所有孩子节点中 最大值与最小值的差值绝对值
      * A - B = MAX - MIN
      * 如果 root 节点是叶子节点，则返回 0，因为单节点无法计算
+     *
      * @param root
      * @return
      */
@@ -3640,7 +3712,8 @@ public class Solution {
 
     /**
      * No. 1072 按列翻转得到的最大值等行数
-     *     如果一个行的所有元素值和另外一行完全相同或者完全相反，那么这两行是等值的（001 == 110），因为他们可以完全由对方完全翻转获得
+     * 如果一个行的所有元素值和另外一行完全相同或者完全相反，那么这两行是等值的（001 == 110），因为他们可以完全由对方完全翻转获得
+     *
      * @param matrix
      * @return
      */
@@ -3666,6 +3739,7 @@ public class Solution {
 
     /**
      * No. 1079 活字印刷
+     *
      * @param tiles
      * @return
      */
@@ -3686,7 +3760,7 @@ public class Solution {
         for (char t : tile) {
             if (count.get(t) > 0) {
                 count.put(t, count.get(t) - 1);
-                res += dfs_1079(i -1, count, tile);
+                res += dfs_1079(i - 1, count, tile);
                 count.put(t, count.get(t) + 1);
             }
         }
@@ -3695,6 +3769,7 @@ public class Solution {
 
     /**
      * No. 1080 根到叶路径上不足节点
+     *
      * @param root
      * @param limit
      * @return
@@ -3724,6 +3799,7 @@ public class Solution {
 
     /**
      * No. 1090 受标签影响的最大值
+     *
      * @param values
      * @param labels
      * @param numWanted
@@ -3757,13 +3833,14 @@ public class Solution {
 
     @Test
     public void testlarge() {
-        int[] values = new int[] {5, 4, 3, 2, 1};
-        int[] labels = new int[] {1, 1, 2, 2, 3};
+        int[] values = new int[]{5, 4, 3, 2, 1};
+        int[] labels = new int[]{1, 1, 2, 2, 3};
         System.out.println(largestValsFromLabels(values, labels, 3, 1));
     }
 
     /**
      * No. 1091 二进制矩阵中的最短路径
+     *
      * @param grid
      * @return
      */
@@ -3808,6 +3885,7 @@ public class Solution {
 
     /**
      * No. 1093 大样本统计
+     *
      * @param count
      * @return
      */
@@ -3829,7 +3907,7 @@ public class Solution {
 
         double sum = 0;
         for (int i = 0; i < count.length; i++) {
-            sum += (double)count[i] * i;
+            sum += (double) count[i] * i;
         }
         int numbers = 0;
         for (int i = 0; i < count.length; i++) {
@@ -3870,7 +3948,7 @@ public class Solution {
             for (int i = 0; i < count.length; i++) {
                 if (count[i] != 0) {
                     currentIndex += count[i];
-                    if (currentIndex >= (numbers - 1) / 2 ) {
+                    if (currentIndex >= (numbers - 1) / 2) {
                         ans[3] = i;
                         break;
                     }
@@ -6095,11 +6173,12 @@ public class Solution {
 
     /**
      * No. 2409 统计共同度过的日子数
-     *     日期字符串格式 MM-DD [08-16]
+     * 日期字符串格式 MM-DD [08-16]
+     *
      * @param arriveAlice Alice 到达的时间
-     * @param leaveAlice Alice 离开的时间
-     * @param arriveBob Bob 到达的时间
-     * @param leaveBob Bob 离开的时间
+     * @param leaveAlice  Alice 离开的时间
+     * @param arriveBob   Bob 到达的时间
+     * @param leaveBob    Bob 离开的时间
      * @return 返回时间重叠的数量
      */
     public int countDaysTogether(String arriveAlice, String leaveAlice, String arriveBob, String leaveBob) {
@@ -6112,6 +6191,7 @@ public class Solution {
         int ans = right - left + 1;
         return ans > 0 ? ans : 0;
     }
+
     public int indexCount_2404(String date) {
         int ans = 0;
         int[] months = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -6126,6 +6206,7 @@ public class Solution {
 
     /**
      * No. 2413 最小偶倍数
+     *
      * @param n
      * @return
      */
@@ -6135,6 +6216,7 @@ public class Solution {
 
     /**
      * No. 2418 按身高排序
+     *
      * @param names
      * @param heights
      * @return
@@ -6166,7 +6248,6 @@ public class Solution {
 
     /**
      * No. 2423 删除字符使频率相同
-     *
      */
     public boolean equalFrequency(String word) {
         int[] charCount = new int[26];
@@ -6219,6 +6300,7 @@ public class Solution {
 
     /**
      * No. 2441 与对应负数同时存在的最大正整数
+     *
      * @param nums
      * @return
      */
@@ -6228,11 +6310,11 @@ public class Solution {
         for (int num : nums) {
             set.add(num);
         }
-        for (int num: nums) {
+        for (int num : nums) {
             if (num > 0) {
-               if (set.contains(0 - num)) {
-                   max = Math.max(max, num);
-               }
+                if (set.contains(0 - num)) {
+                    max = Math.max(max, num);
+                }
             }
         }
         return max;
@@ -6240,6 +6322,7 @@ public class Solution {
 
     /**
      * No. 判断两个事件是否存在冲突
+     *
      * @param event1
      * @param event2
      * @return
@@ -6266,9 +6349,10 @@ public class Solution {
 
     /**
      * No. 2451 差值数组不同的字符串
-     *     tips:
-     *         0. 将第一个元素转换成数组后，存入集合当中，并假设它不是要找的元素
-     *         1. 遍历后面的所有元素，如果这个元素已经存在于集合中，那么直接跳过，如果这个元素不存在集合中，则是目标元素
+     * tips:
+     * 0. 将第一个元素转换成数组后，存入集合当中，并假设它不是要找的元素
+     * 1. 遍历后面的所有元素，如果这个元素已经存在于集合中，那么直接跳过，如果这个元素不存在集合中，则是目标元素
+     *
      * @param words
      * @return
      */

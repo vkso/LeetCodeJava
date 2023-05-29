@@ -265,6 +265,46 @@ public class Solution {
     }
 
     /**
+     * No. 15 三数之和
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if (nums == null || nums.length <= 2) {
+            return ans;
+        }
+
+        Arrays.sort(nums);
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) { // 由于已经升序排列过了，第一个数都大于0，那么后面的数加起来一定是大于0，循环可以退出了
+                break;
+            }
+            if (i > 0 && nums[i] == nums[i - 1]) {  // 如果当前值和前一个位置的值相同，则跳过
+                continue;
+            }
+            int target = -nums[i];
+            int left = i + 1, right = nums.length - 1;
+            while (left < right) {
+                if (nums[left] + nums[right] == target) {
+                    ans.add(new ArrayList<>(Arrays.asList(nums[i], nums[left], nums[right])));
+
+                    ++left;
+                    --right;
+                    while (left < right && nums[left] == nums[left-1]) left++;
+                    while (left < right && nums[right] == nums[right+1]) right--;
+                } else if (nums[left] + nums[right] < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 16 最接近的三数之和
      *
      * @param nums

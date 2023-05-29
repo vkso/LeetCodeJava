@@ -182,6 +182,35 @@ public class Solution {
     }
 
     /**
+     * No. 4 寻找两个正序数组的中位数
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        int[] mergeNums = new int[n1 + n2];
+        int currentIndex = 0;
+        for (int i = 0; i < nums1.length; i++) {
+            mergeNums[currentIndex++] = nums1[i];
+        }
+        for (int i = 0; i < nums2.length; i++) {
+            mergeNums[currentIndex++] = nums2[i];
+        }
+
+        Arrays.sort(mergeNums);
+
+        if ((n1 + n2) % 2 == 0) {
+            int left = (n1 + n2 - 1) / 2;
+            int right = left + 1;
+            return (double) (mergeNums[left] + mergeNums[right]) / 2;
+        } else {
+            return (double) mergeNums[(n1 + n2 - 1) / 2];
+        }
+    }
+
+    /**
      * No. 8 字符串转换整数(atoi)
      *
      * @param columnTitle
@@ -213,6 +242,26 @@ public class Solution {
             x /= 10;
         }
         return x == half || x == half / 10;
+    }
+
+    /**
+     * No. 13 整数转罗马数字
+     * @param num
+     * @return
+     */
+    public String intToRoman(int num) {
+        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] ROMA = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < values.length; i++) {
+            while (num >= values[i]) {
+                sb.append(ROMA[i]);
+                num -= values[i];
+            }
+        }
+        return sb.toString();
     }
 
     /**
@@ -449,6 +498,49 @@ public class Solution {
     }
 
     /**
+     * No. 23 合并 K 个升序链表
+     *     Tips: 优先队列（小顶堆）
+     * @param lists
+     * @return
+     */
+    public ListNode mergeKLists(ListNode[] lists) {
+        class Status implements Comparable<Status> {
+            int val;
+            ListNode ptr;
+            public Status(int val, ListNode ptr) {
+                this.val = val;
+                this.ptr = ptr;
+            }
+            @Override
+            public int compareTo(Status o) {
+                return this.val - o.val;
+            }
+        }
+
+        PriorityQueue<Status> queue = new PriorityQueue<>();
+
+        ListNode head = new ListNode();
+        ListNode tail = head;
+
+        for (ListNode node : lists) {
+            if (node != null) {
+                queue.offer(new Status(node.val, node));
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            Status poll = queue.poll();
+            tail.next = poll.ptr;
+            tail = tail.next;
+
+            if (poll.ptr.next != null) {
+                queue.offer(new Status(poll.ptr.next.val, poll.ptr.next));
+            }
+        }
+        return head.next;
+    }
+
+    /**
      * No. 24 两两交换链表中的节点
      *
      * @param head
@@ -650,6 +742,24 @@ public class Solution {
             start = end;
         }
         return res.toString();
+    }
+
+    /**
+     * No. 缺失的第一个正数
+     * @param nums
+     * @return
+     */
+    public int firstMissingPositive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+        for (int i = 1; i <= nums.length + 1; i++) {
+            if (!set.contains(i)) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     /**
@@ -6376,6 +6486,22 @@ public class Solution {
             diff[i - 1] = word.charAt(i) - word.charAt(i - 1);
         }
         return diff;
+    }
+
+    /**
+     * No. 2455 可被3整除的偶数的平均值
+     * @param nums
+     * @return
+     */
+    public int averageValue(int[] nums) {
+         int count = 0, sum = 0;
+        for (int num : nums) {
+            if (num % 2 == 0 && num % 3 == 0) {
+                sum += num;
+                count++;
+            }
+        }
+        return count == 0 ? 0 : sum / count;
     }
 
     /**

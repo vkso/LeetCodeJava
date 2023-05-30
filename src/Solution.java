@@ -183,6 +183,7 @@ public class Solution {
 
     /**
      * No. 4 寻找两个正序数组的中位数
+     *
      * @param nums1
      * @param nums2
      * @return
@@ -246,6 +247,7 @@ public class Solution {
 
     /**
      * No. 13 整数转罗马数字
+     *
      * @param num
      * @return
      */
@@ -266,6 +268,7 @@ public class Solution {
 
     /**
      * No. 15 三数之和
+     *
      * @param nums
      * @return
      */
@@ -292,8 +295,8 @@ public class Solution {
 
                     ++left;
                     --right;
-                    while (left < right && nums[left] == nums[left-1]) left++;
-                    while (left < right && nums[right] == nums[right+1]) right--;
+                    while (left < right && nums[left] == nums[left - 1]) left++;
+                    while (left < right && nums[right] == nums[right + 1]) right--;
                 } else if (nums[left] + nums[right] < target) {
                     left++;
                 } else {
@@ -539,7 +542,8 @@ public class Solution {
 
     /**
      * No. 23 合并 K 个升序链表
-     *     Tips: 优先队列（小顶堆）
+     * Tips: 优先队列（小顶堆）
+     *
      * @param lists
      * @return
      */
@@ -547,10 +551,12 @@ public class Solution {
         class Status implements Comparable<Status> {
             int val;
             ListNode ptr;
+
             public Status(int val, ListNode ptr) {
                 this.val = val;
                 this.ptr = ptr;
             }
+
             @Override
             public int compareTo(Status o) {
                 return this.val - o.val;
@@ -786,6 +792,7 @@ public class Solution {
 
     /**
      * No. 缺失的第一个正数
+     *
      * @param nums
      * @return
      */
@@ -4119,6 +4126,44 @@ public class Solution {
     }
 
     /**
+     * No. 1110 删点成林
+     *
+     * @param root
+     * @param to_delete
+     * @return
+     */
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int i : to_delete) {
+            set.add(i);
+        }
+        List<TreeNode> ans = new ArrayList<>();
+        if (dfs_1110(ans, set, root) != null) {
+            ans.add(root);
+        }
+        return ans;
+    }
+
+    public TreeNode dfs_1110(List<TreeNode> ans, Set<Integer> set, TreeNode node) {
+        if (node == null) {
+            return null;
+        }
+        node.left = dfs_1110(ans, set, node.left);
+        node.right = dfs_1110(ans, set, node.right);
+        if (!set.contains(node.val)) {
+            return node;
+        }
+        if (node.left != null) {
+            ans.add(node.left);
+        }
+        if (node.right != null) {
+            ans.add(node.right);
+        }
+        return null;
+    }
+
+
+    /**
      * No. 1129 颜色交替的最短路径
      *
      * @param n
@@ -6530,11 +6575,12 @@ public class Solution {
 
     /**
      * No. 2455 可被3整除的偶数的平均值
+     *
      * @param nums
      * @return
      */
     public int averageValue(int[] nums) {
-         int count = 0, sum = 0;
+        int count = 0, sum = 0;
         for (int num : nums) {
             if (num % 2 == 0 && num % 3 == 0) {
                 sum += num;

@@ -2672,6 +2672,19 @@ public class Solution {
     }
 
     /**
+     * No. 540 有序数组中的单一元素
+     * @param nums
+     * @return
+     */
+    public int singleNonDuplicate(int[] nums) {
+        int ans = 0;
+        for (int i = 0; i < nums.length; i++) {
+            ans = ans ^ nums[i];
+        }
+        return ans;
+    }
+
+    /**
      * No. 543 二叉树的直径
      * Tips: 设置全局变量 depth，每次递归的时候，判断 depth 是不是最长的
      * 递归遍历过程中，其实是计算left, right 的深度
@@ -6619,6 +6632,40 @@ public class Solution {
             }
         }
         return sum;
+    }
+
+    /**
+     * No. 2517 礼盒的最大甜蜜度
+     *     Tips: 局部最小，全局最大。贪心 + 二分查找
+     *           对甜度区间进行二分查找，二分查找的判定条件采用贪心算法
+     * @param price
+     * @param k
+     * @return
+     */
+    public int maximumTastiness(int[] price, int k) {
+        Arrays.sort(price);
+        int left = 0, right = price[price.length - 1] - price[0];
+        while (left < right) {
+            int mid = (left + right + 1) / 2;
+            if (check_2517(price, k, mid)) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
+    public boolean check_2517(int[] price, int k, int tastiness) {
+        int prev = Integer.MIN_VALUE / 2;
+        int cnt = 0;
+        for (int p : price) {
+            if (p - prev >= tastiness) {
+                ++cnt;
+                prev = p;
+            }
+        }
+        return cnt >= k;
     }
 
     /**

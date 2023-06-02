@@ -4335,6 +4335,38 @@ public class Solution {
     }
 
     /**
+     * No. 1220 统计元音字母序列的数目
+     * @param n
+     * @return
+     */
+    public int countVowelPermutation(int n) {
+        long mod = (long) 1e9 + 7;
+        long[] dp = new long[5];
+        long[] ndp = new long[5];
+
+        for (int i = 0; i < 5; i++) {
+            dp[i] = 1;
+        }
+
+        for (int i = 2; i <= n; i++) {
+            ndp[0] = (dp[1] + dp[2] + dp[4]) % mod;
+            ndp[1] = (dp[0] + dp[2]) % mod;
+            ndp[2] = (dp[1] + dp[3]) % mod;
+            ndp[3] = dp[2];
+            ndp[4] = (dp[2] + dp[3]) % mod;
+
+            System.arraycopy(ndp, 0, dp, 0, 5);
+        }
+
+        long ans = 0;
+        for (int i = 0; i < 5; i++) {
+            ans = (ans + dp[i]) % mod;
+        }
+
+        return (int) ans;
+    }
+
+    /**
      * No. 1233 删除子文件夹
      *
      * @param folder
@@ -5522,6 +5554,31 @@ public class Solution {
             }
         }
         return left;
+    }
+
+    /**
+     * No. 1828 统计一个圆中点的个数
+     * @param points
+     * @param queries
+     * @return
+     */
+    public int[] countPoints(int[][] points, int[][] queries) {
+        int queryTimes = queries.length;
+        int[] ans = new int[queryTimes];
+        for (int i = 0; i < queryTimes; i++) {
+            for (int j = 0; j < points.length; j++) {
+                if (pointInCircle(points[j], queries[i])) {
+                    ans[i]++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public boolean pointInCircle(int[] point, int[] circle) {
+        float x1 = point[0], y1 = point[1];
+        float x2 = circle[0], y2 = circle[1];
+        return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)) <= circle[2];
     }
 
     /**

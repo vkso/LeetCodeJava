@@ -2674,6 +2674,7 @@ public class Solution {
 
     /**
      * No. 540 有序数组中的单一元素
+     *
      * @param nums
      * @return
      */
@@ -4576,6 +4577,7 @@ public class Solution {
 
     /**
      * No. 1306 跳跃游戏III
+     *
      * @param arr
      * @param start
      * @return
@@ -5219,6 +5221,56 @@ public class Solution {
             n = n >> 1;
         }
         return true;
+    }
+
+    /**
+     * No. 1775 通过最少操作次数使数组的和相等
+     * nums1 的最小值 1 * nums1.length，最大值： 6 * nums1.length;
+     * nums2 的最小值 1 * nums2.length，最大值： 6 * nums2.length;
+     * 如果 nums1[min, max] 和 nums2[min, max] 没有交集，那么，两个数组和不可能相等
+     *
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int minOperations(int[] nums1, int[] nums2) {
+        int n = nums1.length, m = nums2.length;
+        if (6 * n < m || 6 * m < n) {
+            return -1;
+        }
+        int[] cnt1 = new int[7];
+        int[] cnt2 = new int[7];
+        int diff = 0;
+        for (int i : nums1) {
+            ++cnt1[i];
+            diff += i;
+        }
+        for (int i : nums2) {
+            ++cnt2[i];
+            diff -= i;
+        }
+        if (diff == 0) {
+            return 0;
+        }
+        if (diff > 0) {
+            return help(cnt2, cnt1, diff);
+        }
+        return help(cnt1, cnt2, -diff);
+    }
+
+    public int help(int[] h1, int[] h2, int diff) {
+        int[] h = new int[7];
+        for (int i = 1; i < 7; ++i) {
+            h[6 - i] += h1[i];
+            h[i - 1] += h2[i];
+        }
+        int res = 0;
+        for (int i = 5; i > 0 && diff > 0; --i) {
+            int t = Math.min((diff + i - 1) / i, h[i]);
+            res += t;
+            diff -= t * i;
+        }
+        return res;
     }
 
     /**
@@ -6673,8 +6725,9 @@ public class Solution {
 
     /**
      * No. 2517 礼盒的最大甜蜜度
-     *     Tips: 局部最小，全局最大。贪心 + 二分查找
-     *           对甜度区间进行二分查找，二分查找的判定条件采用贪心算法
+     * Tips: 局部最小，全局最大。贪心 + 二分查找
+     * 对甜度区间进行二分查找，二分查找的判定条件采用贪心算法
+     *
      * @param price
      * @param k
      * @return
@@ -6707,6 +6760,7 @@ public class Solution {
 
     /**
      * No. 2559 统计范围内的原因字符串数
+     *
      * @param words
      * @param queries
      * @return
@@ -6716,7 +6770,7 @@ public class Solution {
         int[] prefixSums = new int[n + 1];
 
         for (int i = 0; i < n; i++) {
-            int value = isVowelString(words[i]) ? 1: 0;
+            int value = isVowelString(words[i]) ? 1 : 0;
             prefixSums[i + 1] = prefixSums[i] + value;
         }
 

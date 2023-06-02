@@ -3,6 +3,7 @@ import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
+import javax.swing.*;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -4574,6 +4575,42 @@ public class Solution {
     }
 
     /**
+     * No. 1306 跳跃游戏III
+     * @param arr
+     * @param start
+     * @return
+     */
+    public boolean canReach(int[] arr, int start) {
+        Queue<Integer> queue = new ArrayDeque<>();
+        int[] visited = new int[arr.length];
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            Integer poll = queue.poll();
+            if (arr[poll] == 0) {
+                return true;
+            }
+            if (visited[poll] == 1) {
+                continue;
+            }
+            visited[poll] = 1;
+            if (poll + arr[poll] >= 0 && poll + arr[poll] < arr.length) {
+                queue.add(poll + arr[poll]);
+            }
+            if (poll - arr[poll] >= 0 && poll - arr[poll] < arr.length) {
+                queue.add(poll - arr[poll]);
+            }
+        }
+        return false;
+    }
+
+    @Test
+    public void mmmtest() {
+        int[] arr = new int[]{4, 2, 3, 0, 3, 1, 2};
+        System.out.println(canReach(arr, 5));
+    }
+
+    /**
      * No. 1323 6和9组成的最大数字
      *
      * @param num
@@ -6666,6 +6703,39 @@ public class Solution {
             }
         }
         return cnt >= k;
+    }
+
+    /**
+     * No. 2559 统计范围内的原因字符串数
+     * @param words
+     * @param queries
+     * @return
+     */
+    public int[] vowelStrings(String[] words, int[][] queries) {
+        int n = words.length;
+        int[] prefixSums = new int[n + 1];
+
+        for (int i = 0; i < n; i++) {
+            int value = isVowelString(words[i]) ? 1: 0;
+            prefixSums[i + 1] = prefixSums[i] + value;
+        }
+
+        int q = queries.length;
+        int[] ans = new int[q];
+        for (int i = 0; i < q; i++) {
+            int start = queries[i][0], end = queries[i][1];
+            ans[i] = prefixSums[end + 1] - prefixSums[start];
+        }
+
+        return ans;
+    }
+
+    public boolean isVowelString(String word) {
+        return isVowelLetter(word.charAt(0)) && isVowelLetter(word.charAt(word.length() - 1));
+    }
+
+    public boolean isVowelLetter(char c) {
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
     }
 
     /**

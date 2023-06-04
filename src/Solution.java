@@ -4336,6 +4336,7 @@ public class Solution {
 
     /**
      * No. 1220 统计元音字母序列的数目
+     *
      * @param n
      * @return
      */
@@ -4758,23 +4759,46 @@ public class Solution {
     }
 
     /**
-     * No. 1497 检查数组对是否可以被k整除
+     * No. 不同整数的最少数目
      *
      * @param arr
-     * @param K
+     * @param k
      * @return
      */
-    public boolean canArrange(int[] arr, int K) {
-        int[] count = new int[K];
-        for (int num : arr) {
-            count[(num % K + K) % K]++;  // 这里保证负数也可以被取余数
+    public int findLeastNumOfUniqueInts(int[] arr, int k) {
+        // 创建哈希表，并统计每个数字出现的次数
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i : arr) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
         }
-        for (int i = 1; i + i < K; i++) {
-            if (count[i] != count[K - i]) {
-                return false;
+
+        // 创建比较器，用于优先队列的元素比较大小
+        Comparator<Map.Entry<Integer, Integer>> comparator = new Comparator<Map.Entry<Integer, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Integer> o1, Map.Entry<Integer, Integer> o2) {
+                return o1.getValue() - o2.getValue();
+            }
+        };
+
+        // 创建优先队列，队列的前端次数最少，队列的尾端，次数最大
+        PriorityQueue<Map.Entry<Integer, Integer>> priorityQueue = new PriorityQueue<>(comparator);
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            priorityQueue.offer(entry);
+        }
+
+        // 优先队列的顶部元素出队判断，如果value值大于1，那么当前元素出队后，需要再次入队。否则直接出队
+        // 出队入队的操作可以根据 value 值的大小，进行优化【未实现】
+        for (int i = 0; i < k; i++) {
+            Map.Entry<Integer, Integer> poll = priorityQueue.poll();
+            Integer value = poll.getValue();
+            if (value > 1) {
+                poll.setValue(value - 1);
+                priorityQueue.offer(poll);
             }
         }
-        return count[0] % 2 == 0;  // 如果 0 位置的统计数量为奇数，那么 剩下的一个位置的数，也一定为奇数，则找不到与其对应的配对数
+
+        // 最终队列的长度，就是调整后，不同数字的个数
+        return priorityQueue.size();
     }
 
     /**
@@ -4803,6 +4827,26 @@ public class Solution {
         String[] ans = new String[ret.size()];
         ans = ret.toArray(ans);
         return ans;
+    }
+
+    /**
+     * No. 1497 检查数组对是否可以被k整除
+     *
+     * @param arr
+     * @param K
+     * @return
+     */
+    public boolean canArrange(int[] arr, int K) {
+        int[] count = new int[K];
+        for (int num : arr) {
+            count[(num % K + K) % K]++;  // 这里保证负数也可以被取余数
+        }
+        for (int i = 1; i + i < K; i++) {
+            if (count[i] != count[K - i]) {
+                return false;
+            }
+        }
+        return count[0] % 2 == 0;  // 如果 0 位置的统计数量为奇数，那么 剩下的一个位置的数，也一定为奇数，则找不到与其对应的配对数
     }
 
     /**
@@ -5558,6 +5602,7 @@ public class Solution {
 
     /**
      * No. 1828 统计一个圆中点的个数
+     *
      * @param points
      * @param queries
      * @return
@@ -6747,6 +6792,22 @@ public class Solution {
             }
         }
         return count == 0 ? 0 : sum / count;
+    }
+
+    /**
+     * No. 2465 不同的平均值数目
+     *
+     * @param nums
+     * @return
+     */
+    public int distinctAverages(int[] nums) {
+        HashSet<Float> set = new HashSet<>();
+        Arrays.sort(nums);
+        for (int i = 0, j = nums.length - 1; i < j; i++, j--) {
+            float ave = ((float) nums[i] + (float) nums[j]) / 2;
+            set.add(ave);
+        }
+        return set.size();
     }
 
     /**

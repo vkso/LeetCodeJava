@@ -5627,6 +5627,23 @@ public class Solution {
     }
 
     /**
+     * No. 1844 将所有数字用字符替换
+     * @param s
+     * @return
+     */
+    public String replaceDigits(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        for (int i = 0; i < s.length() - 1; i += 2) {
+            sb.setCharAt(i + 1, shift_1844(s.charAt(i), Integer.parseInt(s.substring(i + 1, i + 2))));
+        }
+        return sb.toString();
+    }
+
+    public char shift_1844(char ch, int step) {
+        return (char) (ch + step);
+    }
+
+    /**
      * No. 1877 数组中最大数对和的最小值
      *
      * @param nums

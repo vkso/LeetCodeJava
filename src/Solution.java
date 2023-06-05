@@ -3155,6 +3155,49 @@ public class Solution {
     }
 
     /**
+     * No. 748 最短补全词
+     * @param licensePlate
+     * @param words
+     * @return
+     */
+    public String shortestCompletingWord(String licensePlate, String[] words) {
+        String ans = null;
+        int ansSize = Integer.MAX_VALUE;
+        String lowerCase = licensePlate.toLowerCase();
+        int[] count = new int[26];
+        countCharactor(lowerCase, count);
+
+        for (String str : words) {
+            int[] tempCount = new int[26];
+            countCharactor(str, tempCount);
+            boolean isCover = true;
+
+            for (int i = 0; i < 26; i++) {
+                if (tempCount[i] < count[i]) {
+                    isCover = false;
+                    break;
+                }
+            }
+
+            if (isCover && str.length() < ansSize) {
+                ans = str;
+                ansSize = str.length();
+            }
+        }
+
+        return ans;
+    }
+
+    public void countCharactor(String str, int[] count) {
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            if (ch >= 'a' && ch <= 'z') {
+                count[ch - 'a']++;
+            }
+        }
+    }
+
+    /**
      * No. 779 第K个语法符号
      *
      * @param n

@@ -2341,6 +2341,73 @@ public class Solution {
     }
 
     /**
+     * No. 433 最小基因变化
+     * @param startGene
+     * @param endGene
+     * @param bank
+     * @return
+     */
+    public int minMutation(String startGene, String endGene, String[] bank) {
+        // 如果 start 和 end 相同，不需要调整，直接返回
+        if (startGene.equals(endGene)) {
+            return 0;
+        }
+        // 将合法的基因序列，添加到hash表中，用于判断
+        HashSet<String> validGene = new HashSet<>();
+        for (String s : bank) {
+            validGene.add(s);
+        }
+        // 如果 end 不在 bank 中，start 则不可能突变成 end 序列
+        if (!validGene.contains(endGene)) {
+            return -1;
+        }
+        char[] keys = {'A', 'C', 'G', 'T'};
+        ArrayDeque<String> queue = new ArrayDeque<>();
+        // hash 表，用于存储是 bank 中的序列，但是已经出现过，且不是 end 序列
+        HashSet<String> appeared = new HashSet<>();
+        // 将 start 序列，添加到集合和队列中
+        appeared.add(startGene);
+        queue.offer(startGene);
+        int step = 1;
+
+        while (!queue.isEmpty()) {
+            // 对当前队列中全部的序列，进行遍历，每次调整其中的一位字符（[0-7])），遍历完成，步数 +1
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String poll = queue.poll();
+                for (int j = 0; j < 8; j++) {
+                    for (int k = 0; k < 4; k++) {
+                        if (poll.charAt(j) != keys[k]) {
+                            StringBuilder sb = new StringBuilder(poll);
+                            sb.setCharAt(j, keys[k]);
+                            String tempJudge = sb.toString();
+                            // 对调整一个字符后的序列进行判断，该序列没有出现过，且是 bank 中的合规序列
+                            if (!appeared.contains(tempJudge) && validGene.contains(tempJudge)) {
+                                if (tempJudge.equals(endGene)) {
+                                    return step;
+                                }
+                                // 如果不是 end 序列，则将序列添加到队列中（下次可以依据当前序列进行调整）
+                                queue.offer(tempJudge);
+                                // 添加到已经出现过的序列中
+                                appeared.add(tempJudge);
+                            }
+                        }
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+
+    @Test
+    public void testaaa() {
+        String start = "AACCGGTT", end = "AACCGGTA";
+        String[] bank = {"AACCGGTA"};
+        System.out.println(minMutation(start, end, bank));
+    }
+
+    /**
      * No. 437 路径总和III
      *
      * @param root

@@ -3,7 +3,6 @@ import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
-import javax.swing.*;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -1842,6 +1841,44 @@ public class Solution {
     }
 
     /**
+     * No. 236 二叉树的最近公共祖先
+     *
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        dfs_236(root);
+        HashSet<Integer> visited = new HashSet<>();
+        while (p != null) {
+            visited.add(p.val);
+            p = map_236.get(p.val);
+        }
+        while (q != null) {
+            if (visited.contains(q.val)) {
+                return q;
+            }
+            q = map_236.get(q.val);
+        }
+        return null;
+    }
+
+    //递归，存储每个节点的父节点到map中
+    Map<Integer, TreeNode> map_236 = new HashMap<>();
+
+    public void dfs_236(TreeNode root) {
+        if (root.left != null) {
+            map_236.put(root.left.val, root);
+            dfs_236(root.left);
+        }
+        if (root.right != null) {
+            map_236.put(root.right.val, root);
+            dfs_236(root.right);
+        }
+    }
+
+    /**
      * No. 237 删除链表中的节点
      *
      * @param node
@@ -3156,6 +3193,7 @@ public class Solution {
 
     /**
      * No. 748 最短补全词
+     *
      * @param licensePlate
      * @param words
      * @return
@@ -4684,8 +4722,6 @@ public class Solution {
 
     @Test
     public void mmmtest() {
-        int[] arr = new int[]{4, 2, 3, 0, 3, 1, 2};
-        System.out.println(canReach(arr, 5));
     }
 
     /**
@@ -5671,6 +5707,7 @@ public class Solution {
 
     /**
      * No. 1844 将所有数字用字符替换
+     *
      * @param s
      * @return
      */
@@ -5810,6 +5847,66 @@ public class Solution {
             }
         }
         return ans;
+    }
+
+    /**
+     * No. 2096 从二叉树一个节点到另一个节点每一步的方向
+     *
+     * @param root
+     * @param startValue
+     * @param destValue
+     * @return
+     */
+    String path = "";
+
+    public String getDirections(TreeNode root, int startValue, int destValue) {
+
+        dfs(root, startValue, new StringBuilder());
+        String path1 = path;
+        path = "";
+        dfs(root, destValue, new StringBuilder());
+        String path2 = path;
+
+        char[] c1 = path1.toCharArray();
+        char[] c2 = path2.toCharArray();
+        int index = 0;
+
+        // 找出公共路径
+        while (index < c1.length && index < c2.length && c1[index] == c2[index]) {
+            index++;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < c1.length - index; ++i) {
+            sb.append("U");
+        }
+
+        sb.append(path2.substring(index));
+
+        return sb.toString();
+    }
+
+    // 找出根节点到目标节点的路径
+    public boolean dfs(TreeNode root, int target, StringBuilder sb) {
+
+        if (root.val == target) {
+            path = sb.toString();
+            return true;
+        }
+
+        if (root.left != null) {
+            sb.append("L");
+            if (dfs(root.left, target, sb)) return true;
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        if (root.right != null) {
+            sb.append("R");
+            if (dfs(root.right, target, sb)) return true;
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        return false;
     }
 
     /**
@@ -6415,6 +6512,32 @@ public class Solution {
     }
 
     /**
+     * No. 2352 相等行列对
+     *
+     * @param grid
+     * @return
+     */
+    public int equalPairs(int[][] grid) {
+        int n = grid.length;
+        int ans = 0;
+        int[][] gridT = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                gridT[j][i] = grid[i][j];
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (Arrays.equals(grid[i], gridT[j])) {
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 2357 使数组中所有元素都等于零
      *
      * @param nums
@@ -6856,6 +6979,7 @@ public class Solution {
 
     /**
      * No. 2460 对数组执行操作
+     *
      * @param nums
      * @return
      */
@@ -6874,7 +6998,7 @@ public class Solution {
             }
         }
 
-        while(left < nums.length) {
+        while (left < nums.length) {
             nums[left++] = 0;
         }
 

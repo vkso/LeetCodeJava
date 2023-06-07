@@ -7189,6 +7189,35 @@ public class Solution {
     }
 
     /**
+     * No. 2611 老鼠和奶酪
+     *     贪心法 + 优先队列
+     *     第一只老鼠可以吃K个，第二只老鼠可以吃任意一个。使得得分最高。
+     *     1. 假设，第二只老鼠吃了所有的奶酪
+     *     2. 需要从 所有的奶酪中，找出 K 个 -reward[2] + reward[1] 最大值【即，这k个奶酪，给第一只老鼠吃】
+     *     3. 上述的前 K 个最大值，可以使用 优先队列保存
+     * @param reward1
+     * @param reward2
+     * @param k
+     * @return
+     */
+    public int miceAndCheese(int[] reward1, int[] reward2, int k) {
+        int ans = 0;
+        int n = reward1.length;
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        for (int i = 0; i < n; i++) {
+            ans += reward2[i];
+            pq.offer(reward1[i] - reward2[i]);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+        while (!pq.isEmpty()) {
+            ans += pq.poll();
+        }
+        return ans;
+    }
+
+    /**
      * LCP. 07 传递信息
      * Tips: 深度优先搜索，利用系统栈，不用自己维护栈
      * 广度优先搜索，需要单独维护一个队列，当前队列的 size ，即为一层的宽度（第 k 层，n-1 节点出现的次数即是结果）

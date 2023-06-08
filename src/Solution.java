@@ -5858,6 +5858,32 @@ public class Solution {
     }
 
     /**
+     * No. 2073 买票需要的时间
+     * @param tickets
+     * @param k
+     * @return
+     */
+    public int timeRequiredToBuy(int[] tickets, int k) {
+        int times = 0;
+        // 如果 k 位置的人，需要购买的票的数量大于 0，那么需要重新排队，进行下一次循环
+        while (tickets[k] != 0) {
+            // 从头到尾，遍历数组，相当于按顺序排队
+            for (int i = 0; i < tickets.length; i++) {
+                // 如果当前人，需要购买的票为0，则直接跳过
+                if (tickets[i] != 0) {
+                    tickets[i]--;
+                    times++;
+                    // 如果进行过一次购买行为，发现 k 位置的人，不需要再继续购买了，程序直接返回已经统计过的 times 的结果
+                    if (tickets[k] == 0) {
+                        return times;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    /**
      * No. 2087 网格图中机器人回家的最小代价
      *
      * @param startPos

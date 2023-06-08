@@ -3,6 +3,7 @@ import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
+import java.net.Inet4Address;
 import java.util.*;
 
 import static java.util.Arrays.*;
@@ -3564,6 +3565,41 @@ public class Solution {
             }
         }
         return left;
+    }
+
+    /**
+     * No. 873 最长的斐波那契子序列的长度
+     * @param arr
+     * @return
+     */
+    public int lenLongestFibSubseq(int[] arr) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int i : arr) {
+            set.add(i);
+        }
+        int maxLength = 0;
+        int tempLength = 0;
+        for (int i = 0; i < arr.length - 2; i++) {
+            for (int j = i + 1; j < arr.length - 1; j++) {
+                tempLength = 2;
+                int left = arr[i], right = arr[j];
+                int tempSum = left + right;
+                while (set.contains(tempSum)) {
+                    tempLength++;
+                    left = right;
+                    right = tempSum;
+                    tempSum = left + right;
+                }
+                maxLength = Math.max(maxLength, tempLength);
+            }
+        }
+        return maxLength == 2 ? 0 : maxLength;
+    }
+
+    @Test
+    public void testxxx() {
+        int[] arr = {1, 3, 7, 11, 12, 14, 18};
+        System.out.println(lenLongestFibSubseq(arr));
     }
 
     /**

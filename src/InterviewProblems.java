@@ -1,5 +1,3 @@
-import org.junit.jupiter.api.Test;
-import sun.awt.image.ImageWatched;
 import com.leetcode.tools.TreeNode;
 
 import java.util.*;
@@ -8,7 +6,6 @@ import java.util.*;
  * 面试题 题解
  */
 public class InterviewProblems {
-    @Test
     public void test() {
     }
 
@@ -184,6 +181,8 @@ public class InterviewProblems {
     }
 
 
+    public static class Test {
+    }
 }
 
 

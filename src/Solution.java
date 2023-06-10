@@ -4473,6 +4473,46 @@ public class Solution {
     }
 
     /**
+     * No. 1170 比较字符串最小字母出现次数
+     * @param queries
+     * @param words
+     * @return
+     */
+    public int[] numSmallerByFrequency(String[] queries, String[] words) {
+        int[] ans = new int[queries.length];
+        int[] queriesArray = new int[queries.length];
+        int[] wordsArray = new int[words.length];
+
+        for (int i = 0; i < queries.length; i++) {
+            queriesArray[i] = f_1170(queries[i]);
+        }
+        for (int i = 0; i < words.length; i++) {
+            wordsArray[i] = f_1170(words[i]);
+        }
+        for (int i = 0; i < queriesArray.length; i++) {
+            for (int j = 0; j < wordsArray.length; j++) {
+                if (queriesArray[i] < wordsArray[j]) {
+                    ans[i]++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    public int f_1170(String s) {
+        int[] count = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] != 0) {
+                return count[i];
+            }
+        }
+        return 0;
+    }
+
+    /**
      * No. 1210 穿过迷宫的最少移动次数
      * Tips: 将贪吃蛇的坐标和方向用一个int[] {x, y, s} 三元组表示
      * 1, 0, 0 表示向右移动

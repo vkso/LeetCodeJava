@@ -7,7 +7,7 @@ public class Test {
         ArrayList<Object> arrayList = new ArrayList<>();
         LinkedList<Object> linkedList = new LinkedList<>();
         TreeMap<Object, Object> treeMap = new TreeMap<>();
-
+        Thread thread = new Thread();
 
 
     }

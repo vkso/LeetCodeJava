@@ -4513,6 +4513,28 @@ public class Solution {
     }
 
     /**
+     * No. 1171 从链表中删去总和为零的连续节点
+     * @param head
+     * @return
+     */
+    public ListNode removeZeroSumSublists(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        HashMap<Integer, ListNode> seen = new HashMap<>();
+        int prefix = 0;
+        for (ListNode node = dummy; node != null; node = node.next) {
+            prefix += node.val;
+            seen.put(prefix, node);
+        }
+        prefix = 0;
+        for (ListNode node = dummy; node != null; node = node.next) {
+            prefix += node.val;
+            node.next = seen.get(prefix).next;
+        }
+        return dummy.next;
+    }
+
+    /**
      * No. 1210 穿过迷宫的最少移动次数
      * Tips: 将贪吃蛇的坐标和方向用一个int[] {x, y, s} 三元组表示
      * 1, 0, 0 表示向右移动
@@ -7201,6 +7223,25 @@ public class Solution {
         ans[0] = celsius + 273.15;
         ans[1] = celsius * 1.80 + 32.00;
         return ans;
+    }
+
+    /**
+     * No. 2475 数组中不等三元组的数目
+     * @param nums
+     * @return
+     */
+    public int unequalTriplets(int[] nums) {
+        int count = 0;
+        for (int i = 0; i < nums.length - 2; i++) {
+            for (int j = i + 1; j < nums.length - 1; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
+                    if (nums[i] != nums[j] && nums[i] != nums[k] && nums[k] != nums[j]) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 
     /**

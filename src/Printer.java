@@ -1,5 +1,8 @@
 import java.util.*;
 
+/**
+ * 打印成对的括号，括号类型包括 () 和 {}
+ */
 public class Printer {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

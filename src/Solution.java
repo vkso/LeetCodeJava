@@ -4937,6 +4937,46 @@ public class Solution {
     }
 
     /**
+     * No. 1375 二进制字符串前缀一致的次数
+     * @param flips
+     * @return
+     */
+    public int numTimesAllBlue(int[] flips) {
+        int n = flips.length;
+        int ans = 0, right = 0;
+        for (int i = 0; i < n; ++i) {
+            right = Math.max(right, flips[i]);
+            if (right == i + 1) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+    public int numTimesAllBlue_(int[] flips) {
+        char[] chars = new char[flips.length];
+        Arrays.fill(chars, '0');
+
+        int count = 0;
+        for (int i = 0; i < flips.length; i++) {
+            chars[flips[i] - 1] = '1';
+            if (isSame(chars, i + 1)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public boolean isSame(char[] flips, int times) {
+        for (int i = 0; i < times; i++) {
+            if (flips[i] != '1') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * No. 1445 定长子串中元音的最大数目
      *
      * @param s

@@ -1,4 +1,5 @@
 import com.leetcode.tools.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
@@ -4532,6 +4533,29 @@ public class Solution {
             node.next = seen.get(prefix).next;
         }
         return dummy.next;
+    }
+
+    /**
+     * No. 1177 构建回文串检测
+     * @param s
+     * @param queries
+     * @return
+     */
+    public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+        int n = s.length();
+        int[] sum = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            int bit = 1 << (s.charAt(i) - 'a');
+            sum[i + 1] = sum[i] ^ bit; // 该比特对应字母的奇偶性：奇数变偶数，偶数变奇数
+        }
+
+        List<Boolean> ans = new ArrayList<Boolean>(queries.length); // 预分配空间
+        for (int[] q : queries) {
+            int left = q[0], right = q[1], k = q[2];
+            int m = Integer.bitCount(sum[right + 1] ^ sum[left]);
+            ans.add(m / 2 <= k);
+        }
+        return ans;
     }
 
     /**

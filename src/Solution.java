@@ -4,6 +4,8 @@ import org.junit.Test;
 //import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.util.*;
 
@@ -14,6 +16,8 @@ import static java.util.Arrays.*;
 public class Solution {
     @Test
     public void Test() {
+        int[] nums = {3, 6, 5, 1, 8};
+        System.out.println(maxSumDivThree(nums));
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -827,7 +831,7 @@ public class Solution {
         return res;
     }
 
-    public static void dfs_46(int[] nums, int len, int depth,
+    public void dfs_46(int[] nums, int len, int depth,
                               List<Integer> path, boolean[] used, List<List<Integer>> res) {
         if (depth == len) {
             res.add(new ArrayList<>(path));
@@ -871,6 +875,15 @@ public class Solution {
             }
         }
     }
+
+    /**
+     * No. 51 N皇后
+     * @param n
+     * @return
+     */
+//    public List<List<String>> solveNQueens(int n) {
+//
+//    }
 
     /**
      * No. 66 加一
@@ -2400,13 +2413,6 @@ public class Solution {
             step++;
         }
         return -1;
-    }
-
-    @Test
-    public void testaaa() {
-        String start = "AACCGGTT", end = "AACCGGTA";
-        String[] bank = {"AACCGGTA"};
-        System.out.println(minMutation(start, end, bank));
     }
 
     /**
@@ -4796,6 +4802,43 @@ public class Solution {
 //    }
 
     /**
+     * No. 1254 统计封闭岛屿的数量
+     * @param grid
+     * @return
+     */
+    public int closedIsland(int[][] grid) {
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 0 && visit(grid, i, j)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public boolean visit(int[][] grid, int x, int y) {
+        if (!isValid_1237(grid, x, y)) {
+            return false;
+        }
+        if (grid[x][y] != 0) {
+            return true;
+        }
+        grid[x][y] = 2;
+        boolean b1 = visit(grid, x, y - 1);
+        boolean b2 = visit(grid, x, y + 1);
+        boolean b3 = visit(grid, x - 1, y);
+        boolean b4 = visit(grid, x + 1, y);
+        return b1 && b2 && b3 && b4;
+    }
+
+    public boolean isValid_1237(int[][] grid, int x, int y) {
+        return x >= 0 && x < grid.length && y >= 0 && y < grid[0].length;
+    }
+
+
+    /**
      * No. 1255 得分最高的单词集合
      *
      * @param words
@@ -4813,6 +4856,45 @@ public class Solution {
 
         }
         return 0;
+    }
+
+    /**
+     * No. 1262 可被三整除的最大和
+     * @param nums
+     * @return
+     */
+    public int maxSumDivThree(int[] nums) {
+        // 使用 v[0], v[1], v[2] 分别表示 a, b, c
+        List<Integer>[] v = new List[3];
+        for (int i = 0; i < 3; ++i) {
+            v[i] = new ArrayList<Integer>();
+        }
+        for (int num : nums) {
+            v[num % 3].add(num);
+        }
+        Collections.sort(v[1], (a, b) -> b - a);
+        Collections.sort(v[2], (a, b) -> b - a);
+
+        int ans = 0;
+        int lb = v[1].size(), lc = v[2].size();
+        for (int cntb = lb - 2; cntb <= lb; ++cntb) {
+            if (cntb >= 0) {
+                for (int cntc = lc - 2; cntc <= lc; ++cntc) {
+                    if (cntc >= 0 && (cntb - cntc) % 3 == 0) {
+                        ans = Math.max(ans, getSum(v[1], 0, cntb) + getSum(v[2], 0, cntc));
+                    }
+                }
+            }
+        }
+        return ans + getSum(v[0], 0, v[0].size());
+    }
+
+    public int getSum(List<Integer> list, int start, int end) {
+        int sum = 0;
+        for (int i = start; i < end; ++i) {
+            sum += list.get(i);
+        }
+        return sum;
     }
 
     /**

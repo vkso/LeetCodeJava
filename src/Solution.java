@@ -16,8 +16,18 @@ import static java.util.Arrays.*;
 public class Solution {
     @Test
     public void Test() {
-        int[] nums = {3, 6, 5, 1, 8};
-        System.out.println(maxSumDivThree(nums));
+        int[][] costs = new int[][] {{93, 56, 92}, {53, 44, 18}, {86, 44, 69}, {54, 60, 30}};
+        List<List<Integer>> list = new ArrayList<>();
+        for (int i = 0; i < costs.length; i++) {
+            List<Integer> tempList = new ArrayList<>();
+            for (int j = 0; j < costs[0].length; j++) {
+                tempList.add(costs[i][j]);
+            }
+            list.add(tempList);
+        }
+
+        int i = connectTwoGroups(list);
+        System.out.println(i);
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -5170,6 +5180,28 @@ public class Solution {
     }
 
     /**
+     * No. 1401 圆和举行是否有重叠
+     * @param radius
+     * @param xCenter
+     * @param yCenter
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+    public boolean checkOverlap(int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2) {
+        double dist = 0;
+        if (xCenter < x1 || xCenter > x2) {
+            dist += Math.min(Math.pow(x1 - xCenter, 2), Math.pow(x2 - xCenter, 2));
+        }
+        if (yCenter < y1 || yCenter > y2) {
+            dist += Math.min(Math.pow(y1 - yCenter, 2), Math.pow(y2 - yCenter, 2));
+        }
+        return dist <= radius * radius;
+    }
+
+    /**
      * No. 1445 定长子串中元音的最大数目
      *
      * @param s
@@ -5456,6 +5488,51 @@ public class Solution {
             f[pos][rest] %= MOD;
         }
         return f[pos][rest];
+    }
+
+    /**
+     * No. 1595 连通两组点的最小成本
+     * @param cost
+     * @return
+     */
+    public int connectTwoGroups(List<List<Integer>> cost) {
+        int size1 = cost.size();
+        int size2 = cost.get(0).size();
+        int[][] costs = new int[size1][size2];
+
+        for (int i = 0; i < size1; i++) {
+            for (int j = 0; j < size2; j++) {
+                costs[i][j] = cost.get(i).get(j);
+            }
+        }
+
+        int ret = 0;
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 0; i < size1; i++) {
+            int min = Integer.MAX_VALUE;
+            int cow_index = 0;
+            for (int j = 0; j < size2; j++) {
+                if (costs[i][j] < min) {
+                    min = costs[i][j];
+                    cow_index = j;
+                }
+            }
+            ret += min;
+            set.add(cow_index);
+        }
+
+        for (int j = 0; j < size2; j++) {
+            if (set.contains(j)) {
+                continue;
+            }
+            int min = Integer.MAX_VALUE;
+            for (int i = 0; i < size1; i++) {
+                min = costs[i][j] < min ? costs[i][j] : min;
+            }
+            ret += min;
+        }
+
+        return ret;
     }
 
     /**
@@ -7487,6 +7564,26 @@ public class Solution {
             return 0;
         }
         return n % 2 == 0 ? n / 2 : n;
+    }
+
+    /**
+     * No. 2496 数组中字符串的最大值
+     * @param strs
+     * @return
+     */
+    public int maximumValue(String[] strs) {
+        int maxValue = Integer.MIN_VALUE;
+        int value = 0;
+        for (String str : strs) {
+            try {
+                value = Integer.parseInt(str);
+                maxValue = value > maxValue ? value : maxValue;
+            } catch (NumberFormatException e) {
+                value = str.length();
+                maxValue = value > maxValue ? value : maxValue;
+            }
+        }
+        return maxValue;
     }
 
     /**

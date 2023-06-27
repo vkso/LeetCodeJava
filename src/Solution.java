@@ -7567,6 +7567,20 @@ public class Solution {
     }
 
     /**
+     * No. 2485 找出中枢整数
+     * @param n
+     * @return
+     */
+    public int pivotInteger(int n) {
+        int t = (n * n + n) / 2;
+        int x = (int) Math.sqrt(t);
+        if (x * x == t) {
+            return x;
+        }
+        return -1;
+    }
+
+    /**
      * No. 2496 数组中字符串的最大值
      * @param strs
      * @return

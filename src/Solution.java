@@ -16,7 +16,7 @@ import static java.util.Arrays.*;
 public class Solution {
     @Test
     public void Test() {
-        int[][] costs = new int[][] {{93, 56, 92}, {53, 44, 18}, {86, 44, 69}, {54, 60, 30}};
+        int[][] costs = new int[][]{{93, 56, 92}, {53, 44, 18}, {86, 44, 69}, {54, 60, 30}};
         List<List<Integer>> list = new ArrayList<>();
         for (int i = 0; i < costs.length; i++) {
             List<Integer> tempList = new ArrayList<>();
@@ -842,7 +842,7 @@ public class Solution {
     }
 
     public void dfs_46(int[] nums, int len, int depth,
-                              List<Integer> path, boolean[] used, List<List<Integer>> res) {
+                       List<Integer> path, boolean[] used, List<List<Integer>> res) {
         if (depth == len) {
             res.add(new ArrayList<>(path));
             return;
@@ -2367,6 +2367,7 @@ public class Solution {
 
     /**
      * No. 433 最小基因变化
+     *
      * @param startGene
      * @param endGene
      * @param bank
@@ -3322,6 +3323,7 @@ public class Solution {
 
     /**
      * No. 752 打开转盘锁
+     *
      * @param deadends
      * @param target
      * @return
@@ -3652,6 +3654,7 @@ public class Solution {
 
     /**
      * No. 873 最长的斐波那契子序列的长度
+     *
      * @param arr
      * @return
      */
@@ -4001,6 +4004,7 @@ public class Solution {
 
     /**
      * No. 1035 不相交的线
+     *
      * @param nums1
      * @param nums2
      * @return
@@ -4578,6 +4582,7 @@ public class Solution {
 
     /**
      * No. 1170 比较字符串最小字母出现次数
+     *
      * @param queries
      * @param words
      * @return
@@ -4618,6 +4623,7 @@ public class Solution {
 
     /**
      * No. 1171 从链表中删去总和为零的连续节点
+     *
      * @param head
      * @return
      */
@@ -4640,6 +4646,7 @@ public class Solution {
 
     /**
      * No. 1177 构建回文串检测
+     *
      * @param s
      * @param queries
      * @return
@@ -4813,6 +4820,7 @@ public class Solution {
 
     /**
      * No. 1254 统计封闭岛屿的数量
+     *
      * @param grid
      * @return
      */
@@ -4870,6 +4878,7 @@ public class Solution {
 
     /**
      * No. 1262 可被三整除的最大和
+     *
      * @param nums
      * @return
      */
@@ -5141,6 +5150,7 @@ public class Solution {
 
     /**
      * No. 1375 二进制字符串前缀一致的次数
+     *
      * @param flips
      * @return
      */
@@ -5155,6 +5165,7 @@ public class Solution {
         }
         return ans;
     }
+
     public int numTimesAllBlue_(int[] flips) {
         char[] chars = new char[flips.length];
         Arrays.fill(chars, '0');
@@ -5181,6 +5192,7 @@ public class Solution {
 
     /**
      * No. 1401 圆和举行是否有重叠
+     *
      * @param radius
      * @param xCenter
      * @param yCenter
@@ -5492,6 +5504,7 @@ public class Solution {
 
     /**
      * No. 1595 连通两组点的最小成本
+     *
      * @param cost
      * @return
      */
@@ -6267,6 +6280,7 @@ public class Solution {
 
     /**
      * No. 2073 买票需要的时间
+     *
      * @param tickets
      * @param k
      * @return
@@ -7537,6 +7551,7 @@ public class Solution {
 
     /**
      * No. 2475 数组中不等三元组的数目
+     *
      * @param nums
      * @return
      */
@@ -7556,6 +7571,7 @@ public class Solution {
 
     /**
      * No. 2481 分割圆的最少切割次数
+     *
      * @param n
      * @return
      */
@@ -7568,6 +7584,7 @@ public class Solution {
 
     /**
      * No. 2485 找出中枢整数
+     *
      * @param n
      * @return
      */
@@ -7581,7 +7598,28 @@ public class Solution {
     }
 
     /**
+     * No. 2490 回环句
+     *
+     * @param sentence
+     * @return
+     */
+    public boolean isCircularSentence(String sentence) {
+        String[] words = sentence.split(" ");
+        for (int i = 0; i < words.length; i++) {
+            if (i != words.length - 1) {
+                if (words[i].charAt(words[i].length() - 1) != words[i + 1].charAt(0)) {
+                    return false;
+                }
+            } else if (words[0].charAt(0) != words[i].charAt(words[i].length() - 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * No. 2496 数组中字符串的最大值
+     *
      * @param strs
      * @return
      */
@@ -7689,11 +7727,12 @@ public class Solution {
 
     /**
      * No. 2611 老鼠和奶酪
-     *     贪心法 + 优先队列
-     *     第一只老鼠可以吃K个，第二只老鼠可以吃任意一个。使得得分最高。
-     *     1. 假设，第二只老鼠吃了所有的奶酪
-     *     2. 需要从 所有的奶酪中，找出 K 个 -reward[2] + reward[1] 最大值【即，这k个奶酪，给第一只老鼠吃】
-     *     3. 上述的前 K 个最大值，可以使用 优先队列保存
+     * 贪心法 + 优先队列
+     * 第一只老鼠可以吃K个，第二只老鼠可以吃任意一个。使得得分最高。
+     * 1. 假设，第二只老鼠吃了所有的奶酪
+     * 2. 需要从 所有的奶酪中，找出 K 个 -reward[2] + reward[1] 最大值【即，这k个奶酪，给第一只老鼠吃】
+     * 3. 上述的前 K 个最大值，可以使用 优先队列保存
+     *
      * @param reward1
      * @param reward2
      * @param k

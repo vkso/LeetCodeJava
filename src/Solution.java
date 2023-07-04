@@ -7756,6 +7756,29 @@ public class Solution {
     }
 
     /**
+     * No. 2679 矩阵中的和
+     * @param nums
+     * @return
+     */
+    public int matrixSum(int[][] nums) {
+        for (int[] num : nums) {
+            Arrays.sort(num);
+        }
+
+        int ans = 0;
+
+        for (int col = 0; col < nums[0].length; col++) {
+            int tempMax = 0;
+            for (int row = 0; row < nums.length; row++) {
+                tempMax = Math.max(tempMax, nums[row][col]);
+            }
+            ans += tempMax;
+        }
+
+        return ans;
+    }
+
+    /**
      * LCP. 07 传递信息
      * Tips: 深度优先搜索，利用系统栈，不用自己维护栈
      * 广度优先搜索，需要单独维护一个队列，当前队列的 size ，即为一层的宽度（第 k 层，n-1 节点出现的次数即是结果）

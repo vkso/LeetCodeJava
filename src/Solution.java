@@ -1,14 +1,8 @@
 import com.leetcode.tools.*;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.junit.Test;
-//import org.junit.jupiter.api.Test;
 import com.leetcode.tools.ListNode;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.net.Inet4Address;
 import java.util.*;
-
 import static java.util.Arrays.*;
 
 // https://leetcode.cn/problemset/algorithms/?difficulty=EASY&page=4
@@ -5033,6 +5027,23 @@ public class Solution {
             }
         }
         return true;
+    }
+
+    /**
+     * No. 1281 整数的各位积和之差
+     * @param n
+     * @return
+     */
+    public int subtractProductAndSum(int n) {
+        int time = 1, sum = 0;
+        int rest = 0;
+        while (n != 0) {
+            rest = n % 10;
+            time *= rest;
+            sum += rest;
+            n /= 10;
+        }
+        return time - sum;
     }
 
     /**

@@ -7883,6 +7883,113 @@ public class Solution {
 //    }
 
 
+    /**
+     * 2999. 统计强大整数的数目
+     * @param start
+     * @param finish
+     * @param limit
+     * @param s
+     * @return
+     */
+    public long numberOfPowerfulInt(long start, long finish, int limit, String s) {
+        return 0;
+    }
+
+    // 超时
+    public long numberOfPowerfulIntX(long start, long finish, int limit, String s) {
+        long input = Long.valueOf(s);
+
+        if (input > finish) {
+            return 0;
+        }
+
+        long count = input < start ? 0 : 1;
+
+        int length = s.length();
+
+        long base = 1;
+        long tail = input;
+
+        for (int i = 0; i < length; i++) {
+            base *= 10;
+        }
+
+        for (int i = 1; i < 10000000; i++) {
+            long curVal = base * i + tail;
+            if (curVal > finish) {
+                break;
+            } else if (curVal < start) {
+                continue;
+            } else if (checkValueOfPowerfulInt(curVal, limit)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    boolean checkValueOfPowerfulInt(long number, long limit) {
+        long cur = number;
+        long tail = 0;
+        while (cur > 0) {
+            tail = cur % 10;
+            if (tail > limit) {
+                return false;
+            }
+            cur /= 10;
+        }
+        return true;
+    }
+
+    /**
+     * 2843. 统计对称整数的数目
+     * @param low
+     * @param hight
+     * @return
+     */
+    public int countSymmetricIntegers(int low, int hight) {
+        int count = 0;
+
+        for (int i = low; i <= hight; i++) {
+            if (getNumLong(i) % 2 == 0) {
+                String numStr = String.valueOf(i);
+
+                if (judgeStringNumber(numStr)) {
+                    count++;
+                }
+
+            }
+        }
+        return count;
+    }
+
+    public int getNumLong(int number) {
+        int count = 0;
+        while (number > 0) {
+            count++;
+            number /= 10;
+        }
+        return count;
+    }
+
+    boolean judgeStringNumber(String str) {
+        int length = str.length();
+        int i = 0;
+        int j = length - 1;
+        int leftVal = 0;
+        int rightVal = 0;
+        while (i < j) {
+            leftVal += str.charAt(i) - 48;
+            rightVal += str.charAt(j) - 48;
+            i++;
+            j--;
+        }
+        if (leftVal == rightVal) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 

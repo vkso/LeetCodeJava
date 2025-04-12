@@ -33,4 +33,23 @@ public class Classic150 {
             nums1[tail--] = nums2[curNums2--];
         }
     }
+
+    /**
+     * 27. 移除元素
+     * @param nums
+     * @param val
+     * @return 返回数组的有效位置索引，题目的判断，是根据返回的索引来的，并不需要必须修改数组的数组内容
+     */
+    public int removeElement(int[] nums, int val) {
+        int n = nums.length;
+        int left = 0;
+
+        for (int right = 0; right < n; right++) {
+            if (nums[right] != val) {
+                nums[left] = nums[right];
+                left++;
+            }
+        }
+        return left;
+    }
 }

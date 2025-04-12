@@ -7873,16 +7873,6 @@ public class Solution {
         return ways;
     }
 
-//    /**
-//     * LCP 13. 寻宝
-//     * @param maze
-//     * @return
-//     */
-//    public int minimalSteps(String[] maze) {
-//
-//    }
-
-
     /**
      * 2999. 统计强大整数的数目
      * @param start

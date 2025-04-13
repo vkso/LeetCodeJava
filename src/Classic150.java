@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.HashMap;
+
 public class Classic150 {
 
     /**
@@ -51,5 +54,117 @@ public class Classic150 {
             }
         }
         return left;
+    }
+
+    /**
+     * 26. 删除有序数组中的重复项
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+
+        int fast = 1, slow = 1;
+        while (fast < n) {
+            if (nums[fast] != nums[fast - 1]) {
+                nums[slow] = nums[fast];
+                ++slow;
+            }
+            ++fast;
+        }
+        return slow;
+    }
+
+    /**
+     * 80. 删除有序数组中的重复项II
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates2(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) {
+            return n;
+        }
+
+        int slow = 2, fast = 2;
+
+        while (fast < n) {
+            if (nums[fast] != nums[slow - 2]) {
+                nums[slow] = nums[fast];
+                ++slow;
+            }
+            fast++;
+        }
+        return slow;
+    }
+
+    /**
+     * 169. 多数元素
+     * @param nums
+     * @return
+     */
+    public int majorityElement(int[] nums) {
+        HashMap<Integer, Integer> count = new HashMap<>();
+        for (int num : nums) {
+            if (count.containsKey(num)) {
+                count.put(num, count.get(num) + 1);
+            } else {
+                count.put(num, 1);
+            }
+
+            if (count.get(num) > nums.length / 2) {
+                return num;
+            }
+        }
+        return 0;
+    }
+
+    public int majorityElementX(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums.length / 2];
+    }
+
+    /**
+     * 189. 轮转数组
+     * @param nums
+     * @param k
+     */
+    public void rotate(int[] nums, int k) {
+        k %= nums.length;
+        reverseArray(nums, 0, nums.length - 1);
+        reverseArray(nums, 0, k - 1);
+        reverseArray(nums, k, nums.length - 1);
+    }
+
+    public void reverseArray(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            ++start;
+            --end;
+        }
+    }
+
+    /**
+     * 按照顺序，将原来数组中的 k 位置的值，拷贝到新的数组中
+     * @param nums
+     * @param k
+     */
+    public void rotateX(int[] nums, int k) {
+        int n = nums.length;
+        int[] newArray = new int[n];
+        for (int i = 0; i < n; i++) {
+            newArray[(i + k) % n] = nums[i];
+        }
+        System.arraycopy(newArray, 0, nums, 0, n);
+    }
+
+
+
+    public static void main(String[] args) {
     }
 }

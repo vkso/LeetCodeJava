@@ -881,6 +881,31 @@ public class Solution {
     }
 
     /**
+     * No. 50 Pow(x, n)
+     * @param x
+     * @param n
+     * @return
+     */
+    public double myPow(double x, int n) {
+        long N = n;
+        return N >= 0 ? quickMul(x, N) : 1.0 / quickMul(x, -N);
+    }
+
+    double quickMul(double x, long N) {
+        double ans = 1.0;
+        double x_contribute = x;
+
+        while (N > 0) {
+            if (N % 2 == 1) {
+                ans *= x_contribute;
+            }
+            x_contribute *= x_contribute;
+            N /= 2;
+        }
+        return ans;
+    }
+
+    /**
      * No. 51 N皇后
      * @param n
      * @return
@@ -7978,6 +8003,36 @@ public class Solution {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 1922. 统计好数字的数目
+     * @param n
+     * @return
+     */
+    long mod1922 = 1000000007;
+    public int countGoodNumbers(long n) {
+        return (int) (quickmul(5, (n + 1) / 2) * quickmul(4, n / 2) % mod1922);
+    }
+
+    /**
+     * 快速幂的计算方法
+     * @param x
+     * @param y
+     * @return
+     */
+    public long quickmul(int x, long y) {
+        long ret = 1;
+        long mul = x;
+
+        while (y > 0) {
+            if (y % 2 == 1) {
+                ret = ret * mul % mod1922;
+            }
+            mul = mul * mul % mod1922;
+            y /= 2;
+        }
+        return ret;
     }
 
 }

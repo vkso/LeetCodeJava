@@ -163,7 +163,36 @@ public class Classic150 {
         System.arraycopy(newArray, 0, nums, 0, n);
     }
 
+    /**
+     * 121. 买卖股票的最佳时机
+     * Notes: i 天买卖股票获得的最大收益，是 i 天之前的天数中，最低点那天买入。
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int[] prices) {
+        int minPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if (prices[i] < minPrice) {
+                minPrice = prices[i];
+            } else {
+                if (prices[i] - minPrice > maxProfit) {
+                    maxProfit = prices[i] - minPrice;
+                }
+            }
+        }
+        return maxProfit;
+    }
 
+    /**
+     * 122.  买卖股票的最佳时机II
+     * 在每天都要买卖，可以理解为曲线与坐标轴所围成的面积，只要是正值，就可以向后面累加，如果是负数，就可以直接抛弃，从下一个位置开始累计
+     * @param prices
+     * @return
+     */
+    public int maxProfitX(int[] prices) {
+
+    }
 
     public static void main(String[] args) {
     }

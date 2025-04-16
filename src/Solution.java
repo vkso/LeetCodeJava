@@ -10,18 +10,11 @@ import static java.util.Arrays.*;
 public class Solution {
     @Test
     public void Test() {
-        int[][] costs = new int[][]{{93, 56, 92}, {53, 44, 18}, {86, 44, 69}, {54, 60, 30}};
-        List<List<Integer>> list = new ArrayList<>();
-        for (int i = 0; i < costs.length; i++) {
-            List<Integer> tempList = new ArrayList<>();
-            for (int j = 0; j < costs[0].length; j++) {
-                tempList.add(costs[i][j]);
-            }
-            list.add(tempList);
-        }
+        int[] nums = {1, 1, 1, 1, 1};
+        int k = 10;
 
-        int i = connectTwoGroups(list);
-        System.out.println(i);
+        long l = countGood(nums, k);
+        System.out.println(l);
     }
 
     static int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -7725,6 +7718,38 @@ public class Solution {
             }
         }
         return cnt >= k;
+    }
+
+    /**
+     * No. 2537 统计好子数组的数目
+     * @param nums
+     * @param k
+     * @return
+     */
+    public long countGood(int[] nums, int k) {
+        int n = nums.length;
+        int same = 0, right = -1;
+        HashMap<Integer, Integer> cnt = new HashMap<>();
+
+        long ans = 0;
+        for (int left = 0; left < n; ++left) {
+            // 如下 while 循环是代码的核心解题思路
+            while (same < k && right + 1 < n) {
+                ++right;
+                // 第一次遇见，不累计，置 1
+                // 第二次遇见，+1，置 2
+                // 第三次遇见，+2，置 3
+                // 第四次遇见，+3，置 4
+                same += cnt.getOrDefault(nums[right], 0);
+                cnt.put(nums[right], cnt.getOrDefault(nums[right], 0) + 1);
+            }
+            if (same >= k) {
+                ans += n - right;
+            }
+            cnt.put(nums[left], cnt.get(nums[left]) - 1);
+            same -= cnt.get(nums[left]);
+        }
+        return ans;
     }
 
     /**

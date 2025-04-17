@@ -190,7 +190,7 @@ public class Classic150 {
 
     /**
      * 122.  买卖股票的最佳时机II
-     * 在每天都要买卖，可以理解为曲线与坐标轴所围成的面积，只要是正值，就可以向后面累加，如果是负数，就可以直接抛弃，从下一个位置开始累计
+     * 在每天都要买卖， 贪心法，只要是当天买入，第二天卖出有利润，就可以进行这一个操作
      * @param prices
      * @return
      */
@@ -272,7 +272,27 @@ public class Classic150 {
      * @return
      */
     public boolean isSubsequence(String s, String t) {
+        int sLen = s.length();
+        int tLen = t.length();
 
+        if (sLen == 0) {
+            return true;
+        }
+
+        if (tLen == 0) {
+            return false;
+        }
+
+        int sCur = 0, tCur = 0;
+
+        while (sCur < sLen && tCur < tLen) {
+            if (s.charAt(sCur) == t.charAt(tCur)) {
+                sCur++;
+            }
+            tCur++;
+        }
+
+        return sCur == sLen;
     }
 
 

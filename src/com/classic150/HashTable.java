@@ -66,4 +66,41 @@ public class HashTable {
         return true;
     }
 
+    /**
+     * No. 290 单词规律
+     * @param pattern
+     * @param s
+     * @return
+     */
+    public boolean wordPattern(String pattern, String s) {
+        String[] words = s.split(" ");
+        HashMap<String, Character> map = new HashMap<>();
+        HashSet<Character> set = new HashSet<>();
+
+        if (words.length != pattern.length()) {
+            return false;
+        }
+
+        for (int i = 0; i < words.length; i++) {
+            Character pattern_ch = pattern.charAt(i);
+            String word = words[i];
+
+            Character value = map.getOrDefault(word, null);
+            if (value == null) {
+                if (set.contains(pattern_ch)) {
+                    return false;
+                }
+                map.put(word, pattern_ch);
+                set.add(pattern_ch);
+            } else {
+                if (value != pattern_ch) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
 }

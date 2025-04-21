@@ -3417,6 +3417,24 @@ public class Solution {
     }
 
     /**
+     * No. 781 森林中的兔子
+     * @param answers
+     * @return
+     */
+    public int numRabbits(int[] answers) {
+        HashMap<Integer, Integer> count = new HashMap<>();
+        for (int y : answers) {
+            count.put(y, count.getOrDefault(y, 0) + 1);
+        }
+        int ans = 0;
+        for (Map.Entry<Integer, Integer> entry : count.entrySet()) {
+            int y = entry.getKey(), x = entry.getValue();
+            ans += (x + y) / (y + 1) * (y + 1);
+        }
+        return ans;
+    }
+
+    /**
      * No. 821 字符的最短距离
      * 假定最近字符的索引是 idx
      * 1. 计算当前字符距离 左侧 最近目标字符的距离:  currentIndex - idx

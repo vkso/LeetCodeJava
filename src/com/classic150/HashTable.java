@@ -1,8 +1,6 @@
 package com.classic150;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class HashTable {
 
@@ -183,5 +181,41 @@ public class HashTable {
             }
         }
     }
+
+    /**
+     * No. 219 存在重复元素 II
+     * @param nums
+     * @param k
+     * @return
+     */
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        HashMap<Integer, List<Integer>> integerListHashMap = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (integerListHashMap.containsKey(nums[i])) {
+                List<Integer> integers = integerListHashMap.get(nums[i]);
+                for (Integer integer : integers) {
+                    if (Math.abs(i - integer) <= k) {
+                        return true;
+                    }
+                }
+                integers.add(i);
+            } else {
+                List<Integer> integers = new ArrayList<>();
+                integers.add(i);
+                integerListHashMap.put(nums[i], integers);
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
 
 }

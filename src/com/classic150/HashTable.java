@@ -102,5 +102,35 @@ public class HashTable {
         return true;
     }
 
+    /**
+     * No. 242 有效的字母异位词
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isAnagram(String s, String t) {
+        HashMap<Character, Integer> count = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            count.put(ch, count.getOrDefault(ch, 0) + 1);
+        }
+
+        for (int j = 0; j < t.length(); j++) {
+            char ch = t.charAt(j);
+            Integer value = count.getOrDefault(ch, -1);
+
+            if (value > 0) {
+                if (value - 1 == 0) {
+                    count.remove(ch);
+                } else {
+                    count.put(ch, value - 1);
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return count.isEmpty();
+    }
 
 }

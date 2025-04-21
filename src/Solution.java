@@ -6494,6 +6494,28 @@ public class Solution {
     }
 
     /**
+     * No. 2145 统计隐藏数组数目
+     * 给定的区间范围是 A = [lower, upper]。目标数组中数的区间，可以假设第一个数是 0，遍历 differendces 数组得到
+     * 那么，目标数组中数的区间假设是 B = [min, max]，求长度为 B 的窗口，在 A 区间中步幅为 1 进行滑动，有多少个位置，即是答案
+     * @param differences
+     * @param lower
+     * @param upper
+     * @return
+     */
+    public int numberOfArrays(int[] differences, int lower, int upper) {
+        int x = 0, y = 0, cur = 0;
+        for (int d : differences) {
+            cur += d;
+            x = Math.min(x, cur);
+            y = Math.max(y, cur);
+            if (y - x > upper - lower) {
+                return 0;
+            }
+        }
+        return (upper - lower) - (y - x) + 1;
+    }
+
+    /**
      * No. 2176 统计数组中相等且可以被整除的数对
      * @param nums
      * @param k

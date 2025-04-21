@@ -133,4 +133,26 @@ public class HashTable {
         return count.isEmpty();
     }
 
+    /**
+     * No. 1 两数之和
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] res = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            int value = target - nums[i];
+            Integer orDefault = map.getOrDefault(value, null);
+            if (orDefault == null) {
+                map.put(nums[i], i);
+            } else {
+                res[0] = i;
+                res[1] = orDefault;
+            }
+        }
+        return res;
+    }
+
 }

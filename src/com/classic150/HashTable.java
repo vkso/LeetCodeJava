@@ -155,4 +155,33 @@ public class HashTable {
         return res;
     }
 
+    /**
+     * No. 202 快乐数
+     * @param n
+     * @return
+     */
+    public boolean isHappy(int n) {
+        HashSet<Integer> set = new HashSet<>();
+        int calc = n;
+
+        while (true) {
+            String numStr = Integer.toString(calc);
+            int squareSum = 0;
+            for (int i =0; i < numStr.length(); i++) {
+                char ch = numStr.charAt(i);
+                squareSum += (ch - 48) * (ch - 48);
+            }
+            if (squareSum == 1) {
+                return true;
+            }
+
+            if (set.contains(squareSum)) {
+                return false;
+            } else {
+                set.add(squareSum);
+                calc = squareSum;
+            }
+        }
+    }
+
 }

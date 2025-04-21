@@ -184,6 +184,8 @@ public class HashTable {
 
     /**
      * No. 219 存在重复元素 II
+     * 优化思路：如下方法，会重复计算已经计算过的数据（因为 put 进去的数据，都是计算过的，没有符合要求，没有 return），因此，只需要将最新
+     * 的 index 索引覆盖该数据即可
      * @param nums
      * @param k
      * @return

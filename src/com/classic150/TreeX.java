@@ -54,4 +54,24 @@ public class TreeX {
 
         return root;
     }
+
+    /**
+     * No. 101 对称二叉树
+     * @param root
+     * @return
+     */
+    public boolean isSymmetric(TreeNode root) {
+        return check_101(root.left, root.right);
+    }
+
+    public boolean check_101(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        return p.val == q.val && check_101(p.left, q.right) && check_101(p.right, q.left);
+    }
+
 }

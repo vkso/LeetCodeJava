@@ -5238,6 +5238,44 @@ public class Solution {
     }
 
     /**
+     * No. 1399 统计最大组的数目
+     * @param n
+     * @return
+     */
+    public int countLargestGroup(int n) {
+        int[] count = new int[37];
+        Arrays.fill(count, 0);
+
+        int max = Integer.MIN_VALUE;
+
+        for (int i = 1; i <=n; i++) {
+            int cur = count_1399(i);
+            count[cur]++;
+
+            max = count[cur] > max ? count[cur] : max;
+        }
+
+        int res = 0;
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] == max) {
+                res++;
+            }
+        }
+
+        return res;
+    }
+
+    public int count_1399(int n) {
+        int count = 0;
+        while (n > 0) {
+            int mod = n % 10;
+            count += mod;
+            n /= 10;
+        }
+        return count;
+    }
+
+    /**
      * No. 1401 圆和举行是否有重叠
      *
      * @param radius

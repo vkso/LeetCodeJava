@@ -1,5 +1,8 @@
 package com.classic150;
 
+import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -247,6 +250,42 @@ public class ArrayOrString {
         String trim = s.trim();
         String[] s1 = trim.split(" ");
         return s1[s1.length - 1].length();
+    }
+
+    @Test
+    public void testt() {
+        String[] xxx = {"dog", "racecar", "car"};
+        String s = longestCommonPrefix(xxx);
+    }
+
+    /**
+     * No. 14 最长公共前缀
+     * @param strs
+     * @return
+     */
+    public String longestCommonPrefix(String[] strs) {
+
+        if (strs.length == 0) {
+            return "";
+        }
+
+        String prefix = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            prefix = getCommonPrefixOf2Strs(prefix, strs[i]);
+        }
+
+        return prefix;
+    }
+
+    public String getCommonPrefixOf2Strs(String str1, String str2) {
+        int len = Math.min(str1.length(), str2.length());
+
+        int index = 0;
+        while (index < len && str1.charAt(index) == str2.charAt(index)) {
+            index++;
+        }
+
+        return str1.substring(0, index);
     }
 
 

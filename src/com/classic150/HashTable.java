@@ -132,6 +132,24 @@ public class HashTable {
     }
 
     /**
+     * No. 49 字母异位词分组
+     * @param strs
+     * @return
+     */
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (String str : strs) {
+            char[] array = str.toCharArray();
+            Arrays.sort(array);
+            String key = new String(array);
+            List<String> list = map.getOrDefault(key, new ArrayList<String>());
+            list.add(str);
+            map.put(key, list);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+
+    /**
      * No. 1 两数之和
      * @param nums
      * @param target
@@ -211,7 +229,33 @@ public class HashTable {
         return false;
     }
 
+    /**
+     * No. 128 最长连续序列
+     * @param nums
+     * @return
+     */
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
 
+        int longestStreak = 0;
+        for (int num : set) {
+            if (!set.contains(num - 1)) {
+                int currentNum = num;
+                int currentStreak = 1;
+
+                while (set.contains(currentNum + 1)) {
+                    currentNum += 1;
+                    currentStreak += 1;
+                }
+
+                longestStreak = Math.max(longestStreak, currentStreak);
+            }
+        }
+        return longestStreak;
+    }
 
 
 

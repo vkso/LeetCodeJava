@@ -22,4 +22,37 @@ public class BitCalc {
         return ans.reverse().toString();
     }
 
+    /**
+     *
+     * @param n n 表示一个 32 位无符号整数的二进制位
+     * @return 返回颠倒的二进制位数
+     */
+    public int reverseBits(int n) {
+        int res = 0;
+        for (int i = 0; i < 32; i++) {
+            res |= (n & 1) << (32 - i);
+            n >>>= 1;
+        }
+        return res;
+    }
+
+    /**
+     * No. 191 位 1 的个数
+     * @param n
+     * @return
+     */
+    public int hammingWeight(int n) {
+        int count = 0;
+
+        for (int i = 0; i < 31; i++) {
+
+            if ((1 & n) == 1) {
+                count++;
+            }
+
+           n = n >> 1;
+        }
+        return count;
+    }
+
 }

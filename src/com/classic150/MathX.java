@@ -54,4 +54,24 @@ public class MathX {
 
         return ints;
     }
+
+    /**
+     * No. 69 x 的平方根
+     * 使用二分查找，找到最接近的 a, a * a < x; (a + 1) * (a + 1) > x
+     * @param x
+     * @return
+     */
+    public int mySqrt(int x) {
+        int left = 0, right = x, ans = -1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if ((long) mid * mid <= x) {
+                ans = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return ans;
+    }
 }

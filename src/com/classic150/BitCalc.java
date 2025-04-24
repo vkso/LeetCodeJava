@@ -1,5 +1,9 @@
 package com.classic150;
 
+import org.junit.Test;
+
+import java.util.HashMap;
+
 public class BitCalc {
 
     /**
@@ -67,6 +71,58 @@ public class BitCalc {
             res ^= num;
         }
         return res;
+    }
+
+    /**
+     * No. 137 只出现一次的数字 II
+     * @param nums
+     * @return
+     */
+    public int singleNumberII(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        for (Integer i : map.keySet()) {
+            if (map.get(i) == 1) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public int singleNumberIIX(int[] nums) {
+        int ans = 0;
+        for (int i = 0; i < 32; i++) {
+            int total = 0;
+            for (int num: nums) {
+                total += ((num >> i) & 1);
+            }
+
+            if (total % 3 != 0) {  // 如果当前的位数，不是 0，那么将 1 << i 位，或到 ans 上，即是目标值的 i 位的值
+                ans |= (1 << i);
+            }
+        }
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Test
+    public void tests() {
     }
 
 }

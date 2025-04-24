@@ -4,7 +4,9 @@ import jdk.nashorn.internal.runtime.OptimisticReturnFilters;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class ArrayOrString {
 
@@ -280,6 +282,31 @@ public class ArrayOrString {
         }
 
         return str1.substring(0, index);
+    }
+
+    /**
+     * No. 151 翻转字符串中的单词
+     * @param s
+     * @return
+     */
+    public String reverseWords(String s) {
+        String[] s1 = s.split(" ");
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = s1.length - 1; i >= 0; i--) {
+            if (!s1[i].equals("")) {
+                sb.append(s1[i]);
+                sb.append(" ");
+            }
+        }
+        return sb.deleteCharAt(sb.length() - 1).toString();
+    }
+
+    public String reverseWordsX(String s) {
+        s = s.trim();
+        List<String> wordList = Arrays.asList(s.split("\\s+"));
+        Collections.reverse(wordList);
+        return String.join(" ", wordList);
     }
 
     /**

@@ -107,6 +107,21 @@ public class BitCalc {
         return ans;
     }
 
+    /**
+     * No. 201 数字范围按位与
+     * @param left
+     * @param right
+     * @return
+     */
+    public int rangeBitwiseAnd(int left, int right) {
+        int shift = 0;
+        while (left < right) {
+            left >>= 1;
+            right >>= 1;
+            ++shift;
+        }
+        return left <<= shift;
+    }
 
 
 

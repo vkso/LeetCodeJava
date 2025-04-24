@@ -55,4 +55,18 @@ public class BitCalc {
         return count;
     }
 
+    /**
+     * No. 136 只出现一次的数字
+     * 异或运算符(^)，两个相同的数字异或会相互抵消
+     * @param nums
+     * @return
+     */
+    public int singleNumber(int[] nums) {
+        int res = 0;
+        for (int num : nums) {
+            res ^= num;
+        }
+        return res;
+    }
+
 }

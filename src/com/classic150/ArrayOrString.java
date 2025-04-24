@@ -252,12 +252,6 @@ public class ArrayOrString {
         return s1[s1.length - 1].length();
     }
 
-    @Test
-    public void testt() {
-        String[] xxx = {"dog", "racecar", "car"};
-        String s = longestCommonPrefix(xxx);
-    }
-
     /**
      * No. 14 最长公共前缀
      * @param strs
@@ -286,6 +280,16 @@ public class ArrayOrString {
         }
 
         return str1.substring(0, index);
+    }
+
+    /**
+     * No. 28 找出字符串中第一个匹配项的下标
+     * @param haystack
+     * @param needle
+     * @return
+     */
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
     }
 
 

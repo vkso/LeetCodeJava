@@ -209,4 +209,66 @@ public class ArrayOrString {
         return ans;
     }
 
+    /**
+     * No. 13 罗马数字转整数
+     * 如果存在小的数字，在大的数字的左边，那么，需要减去小的数字
+     * @param s
+     * @return
+     */
+    public int romanToInt(String s) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+
+        int res = 0;
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            int value = map.get(s.charAt(i));
+            if (i < n - 1 && value < map.get(s.charAt(i + 1))) {
+                res -= value;
+            } else {
+                res += value;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * No. 58 最后一个单词的长度
+     * @param s
+     * @return
+     */
+    public int lengthOfLastWord(String s) {
+        String trim = s.trim();
+        String[] s1 = trim.split(" ");
+        return s1[s1.length - 1].length();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

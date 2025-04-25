@@ -1,6 +1,7 @@
 import com.leetcode.tools.*;
 import org.junit.Test;
 import com.leetcode.tools.ListNode;
+import org.omg.IOP.CodecPackage.InvalidTypeForEncoding;
 
 import java.util.*;
 import static java.util.Arrays.*;
@@ -8124,6 +8125,43 @@ public class Solution {
             return true;
         }
         return false;
+    }
+
+    /**
+     * No. 2845 统计趣味子数组的数目
+     * S 表示前缀和数组
+     * 需要统计 (S[r] - S[l]) % modulo = k 的数量，根据 mod 的四则运算规律有：
+     * S[r] % module - S[l] % module = k % module
+     * (S[r] - k) % modulo = S[l] % modulo
+     * 从第一个S[0] 向右遍历，将符合的存储到 map 中，不停的累加结果，即使最终的结果（维护左，枚举右）
+     * 比如：(S[r] - k) % modulo = 6，需要统计 r 左侧有多少个 S[l] % module = 6，
+     *
+     * Note: 这里需要对模运算进行转换，计算过程相对复杂一点
+     * 代码来自：LeetCode 灵茶山艾府
+     *
+     * @param nums
+     * @param modulo
+     * @param k
+     * @return
+     */
+    public long countInterestingSubarrays(List<Integer> nums, int modulo, int k) {
+        int n = nums.size();
+        int[] sum = new int[n + 1];
+
+        // 计算前缀和数组
+        for (int i = 0; i <n; i++) {
+            sum[i + 1] = sum[i] + (nums.get(i) % modulo == k ? 1 : 0);
+        }
+
+        int[] cnt = new int[Math.min(n + 1, modulo)];
+        long ans = 0;
+        for (int s : sum) {
+            if (s >= k) {
+                ans += cnt[(s - k) % modulo];
+            }
+            cnt[s % modulo]++;    // 这里根据上述公式，只需要统计，即可，不需要担心左边是不是符合要求
+        }
+        return ans;
     }
 
     /**

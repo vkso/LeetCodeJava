@@ -7594,6 +7594,32 @@ public class Solution {
     }
 
     /**
+     * No. 2444 统计定界子数组的数目
+     * @param nums
+     * @param minK
+     * @param maxK
+     * @return
+     */
+    public long countSubarrays(int[] nums, int minK, int maxK) {
+        long ans = 0;
+        int minI = -1, maxI = -1, i0 = -1;
+        for (int i = 0; i < nums.length; i++) {
+            int x = nums[i];
+            if (x == minK) {
+                minI = i;
+            }
+            if (x == maxK) {
+                maxI = i;
+            }
+            if (x < minK || x > maxK) {
+                i0 = i;
+            }
+            ans += Math.max(Math.min(minI, maxI) - i0, 0);
+        }
+        return ans;
+    }
+
+    /**
      * No. 判断两个事件是否存在冲突
      *
      * @param event1

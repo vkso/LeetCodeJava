@@ -1,5 +1,7 @@
 package com.classic150;
 
+import java.util.HashMap;
+
 public class TwoPointer {
 
     /**
@@ -79,5 +81,40 @@ public class TwoPointer {
         }
 
         return sCur == sLen;
+    }
+
+    /**
+     * No. 167 两数之和 II - 输入有序数组
+     * @param numbers
+     * @param target
+     * @return
+     */
+    public int[] twoSum(int[] numbers, int target) {
+        for (int i = 0; i < numbers.length - 1; i++) {
+            for (int j = i + 1; j < numbers.length; j++) {
+                int sum = numbers[i] + numbers[j];
+                if (sum == target) {
+                    return new int[]{i + 1, j + 1};
+                } else if (sum > target) {
+                    break;
+                }
+            }
+        }
+        return new int[]{0, 0};
+    }
+
+    public int[] twoSumX(int[] numbers, int target) {
+        int i = 0, j = numbers.length - 1;
+        while (i < j) {
+            int sum = numbers[i] + numbers[j];
+            if (sum < target) {
+                i++;
+            } else if (sum > target) {
+                j--;
+            } else {
+                return new int[]{i + 1, j + 1};
+            }
+        }
+        return new int[]{0, 0};
     }
 }

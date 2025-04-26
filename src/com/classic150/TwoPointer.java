@@ -1,6 +1,6 @@
 package com.classic150;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class TwoPointer {
 
@@ -136,4 +136,45 @@ public class TwoPointer {
         }
         return res;
     }
+
+    /**
+     * No. 15 三数之和
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        List<List<Integer>> ans = new ArrayList<>();
+
+        for (int first = 0; first < n; first++) {
+            if (first > 0 && nums[first] == nums[first - 1]) {
+                continue;
+            }
+
+            int third = n - 1;
+            int target = -nums[first];
+
+            for (int sencond = first + 1; sencond < n; sencond++) {
+                if (sencond > first + 1 && nums[sencond] == nums[sencond - 1]) {
+                    continue;
+                }
+                while (sencond < third && nums[sencond] + nums[third] > target) {
+                    --third;
+                }
+                if (sencond == third) {
+                    break;
+                }
+                if (nums[sencond] + nums[third] == target) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[first]);
+                    list.add(nums[sencond]);
+                    list.add(nums[third]);
+                    ans.add(list);
+                }
+            }
+        }
+        return ans;
+    }
+
 }

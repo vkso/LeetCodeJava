@@ -1473,6 +1473,56 @@ public class Solution {
     }
 
     /**
+     * No. 139 单词拆分
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int maxLen = 0;
+        for (String word : wordDict) {
+            maxLen = Math.max(maxLen, word.length());
+        }
+        Set<String> words = new HashSet<>(wordDict);
+
+        int n = s.length();
+        int[] memo = new int[n + 1];
+        Arrays.fill(memo, -1);
+        return dfs_139(n, maxLen, s, words, memo) == 1;
+    }
+
+    public int dfs_139(int i, int maxLen, String s, Set<String> words, int[] memo) {
+        if (i == 0) {
+            return 1;
+        }
+        if (memo[i] != -1) {
+            return memo[i];
+        }
+        for (int j = i - 1; j >= Math.max(i - maxLen, 0); j--) {
+            if (words.contains(s.substring(j, i)) && dfs_139(j, maxLen, s, words, memo) == 1) {
+                return memo[i] = 1;
+            }
+        }
+        return memo[i] = 0;
+    }
+
+    public boolean wordBreakX(String s, List<String> wordDict) {
+        HashSet<String> wordDictSet = new HashSet<>(wordDict);
+        boolean[] dp = new boolean[s.length() + 1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                // 当前位置 [j, i] 保证，j 之前的单词，全部是存在的，[j, i] 也是存在的，表示 i 之前，全部是符合的，否则当前 i 的位置，不符合
+                if (dp[j] && wordDictSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
+
+    /**
      * No. 141 环形链表
      * Tips: 快慢指针，如果快的能追上慢的，代表一定有环路出现
      *

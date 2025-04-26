@@ -117,4 +117,23 @@ public class TwoPointer {
         }
         return new int[]{0, 0};
     }
+
+    /**
+     * No. 11 盛最多水的容器
+     * @param height
+     * @return
+     */
+    public int maxArea(int[] height) {
+        int left = 0, right = height.length - 1;
+        int res = 0;
+        while (left < right) {
+            res = Math.max((right - left) * Math.min(height[left], height[right]), res);
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return res;
+    }
 }

@@ -118,4 +118,32 @@ public class Matrix {
         boolean validSudoku = isValidSudoku(board);
     }
 
+    /**
+     * No. 73 矩阵置零
+     * @param matrix
+     */
+    public void setZeroes(int[][] matrix) {
+        int m = matrix.length;
+        int n= matrix[0].length;
+        HashSet<Integer> setRow = new HashSet<>();
+        HashSet<Integer> setCow = new HashSet<>();
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    setRow.add(i);
+                    setCow.add(j);
+                }
+            }
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (setRow.contains(i) || setCow.contains(j)) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+    }
+
 }

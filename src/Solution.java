@@ -8270,6 +8270,21 @@ public class Solution {
         return ret;
     }
 
+    /**
+     * No. 3392 统计符合条件长度为 3 的子数组数目
+     * @param nums
+     * @return
+     */
+    public int countSubarrays(int[] nums) {
+        int count = 0;
+        for (int i = 0; i < nums.length - 2; i++) {
+            if ((nums[i] + nums[i + 2]) * 2 == nums[i + 1]) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 }
 
 

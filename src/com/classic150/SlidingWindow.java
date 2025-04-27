@@ -1,5 +1,9 @@
 package com.classic150;
 
+import org.junit.Test;
+
+import java.util.HashSet;
+
 public class SlidingWindow {
 
     /**
@@ -26,5 +30,36 @@ public class SlidingWindow {
             end++;
         }
         return ans == Integer.MAX_VALUE ? 0 : ans;
+    }
+
+    /**
+     * No. 3 无重复字符的最长子串
+     * @param s
+     * @return
+     */
+    public int lengthOfLongestSubstring(String s) {
+        char[] array = s.toCharArray();
+        int n = array.length;
+        if (n == 0) {
+            return 0;
+        }
+
+        int ans = Integer.MIN_VALUE;
+        int start = 0, end = 0;
+        HashSet<Character> set = new HashSet<>();
+        while (end < n) {
+            char ch = array[end];
+            if (!set.contains(ch)) {
+                set.add(ch);
+                ans = Math.max(set.size(), ans);
+                end++;
+            } else {
+                while (set.contains(ch)) {
+                    char chr = array[start++];
+                    set.remove(chr);
+                }
+            }
+        }
+        return ans;
     }
 }

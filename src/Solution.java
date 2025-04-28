@@ -6931,6 +6931,25 @@ public class Solution {
     }
 
     /**
+     * No. 2302 统计得分小于 K 的子数组数目
+     * @param nums
+     * @param k
+     * @return
+     */
+    public long countSubarrays(int[] nums, long k) {
+        long res = 0, sum = 0;
+        for (int i = 0, j = 0; j < nums.length; j++) {
+            sum += nums[j];
+            while (i <= j && sum *(j - i + 1) >= k) {
+                sum -= nums[i];
+                i++;
+            }
+            res += j - i + 1;
+        }
+        return res;
+    }
+
+    /**
      * No. 2309 兼具大小写的最好英文字母
      * Tips: A -> 65, a -> 97     UpCase: < 92; lowCase: > 96
      *

@@ -3,7 +3,11 @@ package com.classic150;
 import org.junit.Test;
 
 import javax.security.auth.callback.CallbackHandler;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class Matrix {
 
@@ -144,6 +148,172 @@ public class Matrix {
                 }
             }
         }
+    }
+
+    /**
+     * No. 54 螺旋矩阵
+     * @param matrix
+     * @return
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        ArrayList<Integer> res = new ArrayList<>();
+        int[][] mark = new int[m][n];
+
+        int i = 0, j = 0;
+        int count = 0;
+        int flg = 0;
+        while (count < m * n) {
+            flg = flg % 4;
+            switch (flg) {
+                case 0: {
+                    // 向右遍历
+                    while (j < n && mark[i][j] == 0) {
+                        res.add(matrix[i][j]);
+                        mark[i][j] = 1;
+                        j++;
+                        count++;
+                    }
+                    j--;
+                    i++;
+                    flg++;
+                    break;
+                }
+                case 1: {
+                    // 向下遍历
+                    while (i < m && mark[i][j] == 0) {
+                        res.add(matrix[i][j]);
+                        mark[i][j] = 1;
+                        i++;
+                        count++;
+                    }
+                    i--;
+                    j--;
+                    flg++;
+                    break;
+                }
+                case 2: {
+                    // 向左遍历
+                    while (j > -1 && mark[i][j] == 0) {
+                        res.add(matrix[i][j]);
+                        mark[i][j] = 1;
+                        j--;
+                        count++;
+                    }
+                    j++;
+                    i--;
+                    flg++;
+                    break;
+                }
+                case 3: {
+                    // 向上遍历
+                    while (i > -1 && mark[i][j] == 0) {
+                        res.add(matrix[i][j]);
+                        mark[i][j] = 1;
+                        i--;
+                        count++;
+                    }
+                    i++;
+                    j++;
+                    flg++;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
+    @Test
+    public void testx() {
+        int[][] matrix = {
+                {0, 1, 0},
+                {0, 0, 1},
+                {1, 1, 1},
+                {0, 0, 0}
+        };
+        gameOfLife(matrix);
+    }
+
+    /**
+     * No. 48 旋转图像
+     * 1. 水平翻转
+     * 2. 主对角线翻转
+     * @param matrix
+     */
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+
+        // 水平翻转
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = 0; j < n; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[n - i - 1][j];
+                matrix[n - i - 1][j] = temp;
+            }
+        }
+
+        // 主对角线翻转
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+    }
+
+    /**
+     * No. 289 生命游戏
+     * count < 2        1 -> 0
+     * 2 <= count <= 3  1 -> 1
+     * count > 3        1 -> 0
+     * count == 3       0 -> 1
+     * @param board
+     */
+    public void gameOfLife(int[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+        int[][] clone = new int[m][];
+
+        for (int i = 0; i < m; i++) {
+            clone[i] = board[i].clone();
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int value = clone[i][j];
+                int count = count(clone, i, j);
+                if (value == 0) {
+                    if (count == 3) {
+                        board[i][j] = 1;
+                    }
+                } else {
+                    if (count < 2) {
+                        board[i][j] = 0;
+                    } else if (count <= 3) {
+                        continue;
+                    } else if (count > 3) {
+                        board[i][j] = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    public int count(int[][] board, int x, int y) {
+        int res = 0;
+        for (int i = x - 1; i < x + 2; i++) {
+            for (int j = y - 1; j < y + 2; j++) {
+                if (i == x && j == y) {
+                    continue;
+                }
+                if (i >= 0 && i < board.length && j >= 0 && j < board[0].length) {
+                    res += board[i][j];
+                }
+            }
+        }
+        return res;
     }
 
 }

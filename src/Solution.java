@@ -8260,6 +8260,40 @@ public class Solution {
     }
 
     /**
+     * No. 2962 统计最大元素出现至少 K 次的子数组
+     * @param nums
+     * @param k
+     * @return
+     */
+    public long countSubarrays(int[] nums, int k) {
+        int left = 0, right = 0, maxNum = 0;
+        int count = 0;
+        long res = 0;
+        int len = nums.length;
+
+        for (int num : nums) {
+            maxNum = Math.max(maxNum, num);
+        }
+
+        while (right < len) {
+            if (nums[right] == maxNum) {
+                count++;
+            }
+
+            while (count == k) {
+                if (nums[left] == maxNum) {
+                    count--;
+                }
+                left++;
+            }
+
+            res += left;
+            right++;
+        }
+        return res;
+    }
+
+    /**
      * 1922. 统计好数字的数目
      * @param n
      * @return

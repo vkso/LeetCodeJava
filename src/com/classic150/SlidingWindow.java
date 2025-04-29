@@ -2,7 +2,7 @@ package com.classic150;
 
 import org.junit.Test;
 
-import java.util.HashSet;
+import java.util.*;
 
 public class SlidingWindow {
 
@@ -61,5 +61,59 @@ public class SlidingWindow {
             }
         }
         return ans;
+    }
+
+    /**
+     * No. 30 串联所有单词的子串
+     * 固定尺寸滑动窗口，一边滑动，一边统计新增、减少的单词，更新 HashMap，如果 HashMap 为空，则该位置的子
+     * 串，符合题目所述的要求。
+     * @param s
+     * @param words
+     * @return
+     */
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> res = new ArrayList<Integer>();
+        int m = words.length, n = words[0].length(), ls = s.length();
+        for (int i = 0; i < n; i++) {
+            if (i + m * n > ls) {
+                break;
+            }
+            Map<String, Integer> differ = new HashMap<String, Integer>();
+            for (int j = 0; j < m; j++) {
+                String word = s.substring(i + j * n, i + (j + 1) * n);
+                differ.put(word, differ.getOrDefault(word, 0) + 1);
+            }
+            for (String word : words) {
+                differ.put(word, differ.getOrDefault(word, 0) - 1);
+                if (differ.get(word) == 0) {
+                    differ.remove(word);
+                }
+            }
+            for (int start = i; start < ls - m * n + 1; start += n) {
+                if (start != i) {
+                    String word = s.substring(start + (m - 1) * n, start + m * n);
+                    differ.put(word, differ.getOrDefault(word, 0) + 1);
+                    if (differ.get(word) == 0) {
+                        differ.remove(word);
+                    }
+                    word = s.substring(start - n, start);
+                    differ.put(word, differ.getOrDefault(word, 0) - 1);
+                    if (differ.get(word) == 0) {
+                        differ.remove(word);
+                    }
+                }
+                if (differ.isEmpty()) {
+                    res.add(start);
+                }
+            }
+        }
+        return res;
+    }
+
+    @Test
+    public void testx() {
+        String s = "lingmindraboofooowingdingbarrwingmonkeypoundcake";
+        String[] words = {"fooo","barr","wing","ding","wing"};
+        List<Integer> substring = findSubstring(s, words);
     }
 }

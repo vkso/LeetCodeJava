@@ -5134,6 +5134,26 @@ public class Solution {
     }
 
     /**
+     * No. 1295 统计位数为偶数的数字
+     * @param nums
+     * @return
+     */
+    public int findNumbers(int[] nums) {
+        int count = 0;
+        for (int num : nums) {
+            int cnt = 0;
+            while (num > 0) {
+                num /= 10;
+                cnt++;
+            }
+            if (cnt % 2 == 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
      * No. 1300 转变数组后最接近目标值的数组和
      *
      * @param var

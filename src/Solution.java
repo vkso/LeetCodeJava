@@ -3312,6 +3312,91 @@ public class Solution {
     }
 
     /**
+     * No. 743 网络延迟时间
+     * @param times
+     * @param n
+     * @param k
+     * @return
+     */
+    public int networkDelayTime(int[][] times, int n, int k) {
+        final int INF = Integer.MAX_VALUE / 2;
+
+        // 构建邻接矩阵
+        int[][] g = new int[n][n];
+        for (int[] row : g) {
+            Arrays.fill(row, INF);
+        }
+
+        for (int[] t : times) {
+            g[t[0] - 1][t[1] - 1] = t[2];
+        }
+
+        int maxDis = 0;
+        int[] dis = new int[n];
+        Arrays.fill(dis, INF);
+        dis[k - 1] = 0;
+        boolean[] done = new boolean[n];
+
+        while (true) {
+            int x = -1;
+            for (int i = 0; i < n; i++) {
+                if (!done[i] && (x < 0 || dis[i] < dis[x])) {
+                    x = i;
+                }
+            }
+            if (x < 0) {
+                return maxDis;
+            }
+            if (dis[x] == INF) {
+                return -1;
+            }
+            maxDis = dis[x];
+            done[x] = true;
+            for (int y = 0; y < n; y++) {
+                dis[y] = Math.min(dis[y], dis[x] + g[x][y]);
+            }
+        }
+    }
+
+    // 使用优先队列的解法（堆）
+    public int networkDelayTimeX(int[][] times, int n, int k) {
+        // 构建邻接表
+        List<int[]>[] g = new ArrayList[n];
+        Arrays.setAll(g, i -> new ArrayList<>());
+
+        for (int[] t : times) {
+            g[t[0] - 1].add(new int[]{t[1] - 1, t[2]});
+        }
+
+        int maxDis = 0;
+        int left = n;  // 剩余未访问的节点数量
+        int[] dis = new int[n];  // 从 k 出发，到不同节点的最短距离
+        Arrays.fill(dis, Integer.MAX_VALUE);
+        dis[k - 1] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> (a[0] - b[0]));    // 长度为 2 的数组，第一个数表示从起点到该点的最短距离，第二个值表示节点编号
+        pq.offer(new int[]{0, k - 1});    // k 节点入优先队列
+        while (!pq.isEmpty()) {
+            int[] p = pq.poll();
+            int dx = p[0];
+            int x = p[1];
+            if (dx > dis[x]) {    // 到达 x 点的距离，已经重新被更新过（已经有新的路径可以到达 x，并且距离更短），x 已经出过一次优先队列了
+                continue;
+            }
+            maxDis = dx;
+            left--;
+            for (int[] e : g[x]) {
+                int y = e[0];
+                int newDis = dx + e[1];
+                if (newDis < dis[y]) {
+                    dis[y] = newDis;
+                    pq.offer(new int[]{newDis, y});
+                }
+            }
+        }
+        return left == 0 ? maxDis : -1;
+    }
+
+    /**
      * No. 744 寻找比目标字母大的最小字母
      * 本题可以直接线性查找，时间复杂度O(n)，也可以使用二分查找，时间复杂度O(log n)
      *
@@ -8482,6 +8567,98 @@ public class Solution {
             }
         }
         return count;
+    }
+
+    /**
+     * No. 3341 到达最后一个房间的最少时间 I
+     * @param moveTime
+     * @return
+     */
+    public int minTimeToReachI(int[][] moveTime) {
+        // 移动方向
+        int[][] DIRS = {{-1, 0},{1, 0},{0, -1},{0, 1}};
+
+        int n = moveTime.length;
+        int m = moveTime[0].length;
+
+        int[][] dis = new int[n][m];
+        for (int[] row : dis) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        dis[0][0] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        pq.add(new int[]{0, 0, 0});
+
+        while (true) {
+            int[] p = pq.poll();
+            int d = p[0], i = p[1], j = p[2];
+            if (i == n - 1 && j == m - 1) {
+                return d;
+            }
+
+            if (d > dis[i][j]) {
+                continue;
+            }
+
+            int time = 1;  // 时间固定为 1
+            for (int[] q : DIRS) {
+                int x = i + q[0], y = j + q[1];
+                if (0 <= x && x < n && 0 <= y && y < m) {
+                    int newDis = Math.max(d, moveTime[x][y]) + time;
+                    if (newDis < dis[x][y]) {
+                        dis[x][y] = newDis;
+                        pq.add(new int[]{newDis, x, y});
+                    }
+                }
+            }
+
+        }
+    }
+
+    /**
+     * No. 3342 到达最后一个房间的最少时间 II
+     * @param moveTime
+     * @return
+     */
+    public int minTimeToReach(int[][] moveTime) {
+        // 移动方向
+        int[][] DIRS = {{-1, 0},{1, 0},{0, -1},{0, 1}};
+
+        int n = moveTime.length;
+        int m = moveTime[0].length;
+
+        int[][] dis = new int[n][m];
+        for (int[] row : dis) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        dis[0][0] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        pq.add(new int[]{0, 0, 0});
+
+        while (true) {
+            int[] p = pq.poll();
+            int d = p[0], i = p[1], j = p[2];
+            if (i == n - 1 && j == m - 1) {
+                return d;
+            }
+
+            if (d > dis[i][j]) {
+                continue;
+            }
+
+            int time = (i + j) % 2 + 1;
+            for (int[] q : DIRS) {
+                int x = i + q[0], y = j + q[1];
+                if (0 <= x && x < n && 0 <= y && y < m) {
+                    int newDis = Math.max(d, moveTime[x][y]) + time;
+                    if (newDis < dis[x][y]) {
+                        dis[x][y] = newDis;
+                        pq.add(new int[]{newDis, x, y});
+                    }
+                }
+            }
+
+        }
     }
 
 }

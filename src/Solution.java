@@ -6433,6 +6433,28 @@ public class Solution {
     }
 
     /**
+     * No. 1920 基于排列构建数组
+     * @param nums
+     * @return
+     */
+    public int[] buildArray(int[] nums) {
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            res.add(nums[nums[i]]);
+        }
+         return res.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public int[] buildArrayX(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            ans[i] = nums[nums[i]];
+        }
+        return ans;
+    }
+
+    /**
      * No. 2022 将一维数组转变成二维数组
      *
      * @param original

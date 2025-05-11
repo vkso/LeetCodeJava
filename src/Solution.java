@@ -8505,6 +8505,62 @@ public class Solution {
     }
 
     /**
+     * No. 2918 数组的最小相等和
+     *  统计两个数组中，非 0 部分的和，和 0 的个数
+     *  1. 两个都不包含 0，且非 0 数字和，不想等，返回 -1
+     *  2. 两个都不包含 0，非 0 数字和相等，返回非 0 数字和
+     *  3. 其中一个包含 0，统计不包含 0 的数字和，a) 不包含 0 的数字和大于包含 0 的数字和，则返回不包含 0 的数字和，否则返回 -1
+     *  4. 两个都包含 0，返回 全部 0 -> 1 的最大值
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public long minSum(int[] nums1, int[] nums2) {
+        long count1 = 0, count2 = 0, zero1 = 0, zero2 = 0;
+
+        for (int i : nums1) {
+            count1 += i;
+            if (i == 0) {
+                zero1++;
+            }
+        }
+
+        for (int i : nums2) {
+            count2 += i;
+            if (i == 0) {
+                zero2++;
+            }
+        }
+
+        long sum1 = zero1 + count1;
+        long sum2 = zero2 + count2;
+
+        if (zero1 == 0 && zero2 == 0) {
+            if (count1 == count2) {
+                return count1;
+            } else {
+                return -1;
+            }
+        } else if (zero1 == 0 || zero2 == 0) {
+            if (zero1 == 0) {
+                if (sum1 >= sum2) {
+                    return sum1;
+                } else {
+                    return -1;
+                }
+            } else {
+                if (sum2 >= sum1) {
+                    return sum2;
+                } else {
+                    return -1;
+                }
+            }
+        } else {
+            return sum1 > sum2 ? sum1 : sum2;
+        }
+    }
+
+    /**
      * No. 2962 统计最大元素出现至少 K 次的子数组
      * @param nums
      * @param k

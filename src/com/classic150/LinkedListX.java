@@ -1,8 +1,11 @@
 package com.classic150;
 
 import com.leetcode.tools.ListNode;
+import com.leetcode.tools.Node;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class LinkedListX {
 
@@ -70,6 +73,57 @@ public class LinkedListX {
     }
 
     /**
+     * No. 2 两数相加
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int push = 0;
+        ListNode res = new ListNode();
+        ListNode cur = res;
+
+        while (l1 != null && l2 != null) {
+            int sum = l1.val + l2.val + push;
+            int value = sum % 10;
+
+            cur.next = new ListNode(value);
+            cur = cur.next;
+
+            push = sum / 10;
+
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+
+        while (l1 != null) {
+            int sum = l1.val + push;
+            int value = sum % 10;
+            cur.next = new ListNode(value);
+            cur = cur.next;
+
+            push = sum / 10;
+            l1 = l1.next;
+        }
+
+        while (l2 != null) {
+            int sum = l2.val + push;
+            int value = sum % 10;
+            cur.next = new ListNode(value);
+            cur = cur.next;
+
+            push = sum / 10;
+            l2 = l2.next;
+        }
+
+        if (push != 0) {
+            cur.next = new ListNode(1);
+        }
+
+        return res.next;
+    }
+
+    /**
      * No. 21 合并两个有序链表
      * @param list1
      * @param list2
@@ -102,6 +156,30 @@ public class LinkedListX {
         return res.next;
     }
 
+    /**
+     * No. 138 随机链表的复制
+     * @param head
+     * @return
+     */
+    public Node copyRandomList(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Map<Node, Node> nodeMap = new HashMap<>();
+        Node current = head;
+        while (current != null) {
+            nodeMap.put(current, new Node(current.val));
+            current = current.next;
+        }
+
+        current = head;
+        while (current != null) {
+            nodeMap.get(current).next = nodeMap.get(current.next);
+            nodeMap.get(current).random = nodeMap.get(current.random);
+            current = current.next;
+        }
+        return nodeMap.get(head);
+    }
 
 }
 

@@ -5691,6 +5691,20 @@ public class Solution {
     }
 
     /**
+     * No. 1550 存在连续三个奇数的数组
+     * @param arr
+     * @return
+     */
+    public boolean threeConsecutiveOdds(int[] arr) {
+        for (int i = 0; i < arr.length - 2; i++) {
+            if (arr[i] % 2 == 1 && arr[i + 1] % 2 == 1 && arr[i + 2] % 2 == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * No. 1574 删除最短的子数组使剩余数组有序
      *
      * @param arr

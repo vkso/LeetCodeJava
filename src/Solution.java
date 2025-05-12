@@ -6746,6 +6746,32 @@ public class Solution {
     }
 
     /**
+     * No. 2094 找出 3 位偶数
+     * @param digits
+     * @return
+     */
+    public int[] findEvenNumbers(int[] digits) {
+        HashSet<Integer> res = new HashSet<>();
+        int n = digits.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    if (i == j || j == k || i == k) {
+                        continue;
+                    }
+                    int num = digits[i] * 100 + digits[j] * 10 + digits[k];
+                    if (num >= 100 && num % 2 == 0) {
+                        res.add(num);
+                    }
+                }
+            }
+        }
+        ArrayList<Integer> ans = new ArrayList<>(res);
+        Collections.sort(ans);
+        return ans.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    /**
      * No. 2096 从二叉树一个节点到另一个节点每一步的方向
      *
      * @param root

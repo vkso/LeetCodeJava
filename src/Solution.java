@@ -8651,18 +8651,31 @@ public class Solution {
     }
 
     /**
-     * No. 3392 统计符合条件长度为 3 的子数组数目
-     * @param nums
+     * No. 3335 字符串转换后的长度 I
+     * @param s
+     * @param t
      * @return
      */
-    public int countSubarrays(int[] nums) {
-        int count = 0;
-        for (int i = 0; i < nums.length - 2; i++) {
-            if ((nums[i] + nums[i + 2]) * 2 == nums[i + 1]) {
-                count++;
-            }
+    public int lengthAfterTransformations(String s, int t) {
+        int ans = s.length();
+        int MOD = 1000000007;
+        int[] map = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map[ch - 97]++;
         }
-        return count;
+
+        for (int i = 0; i < t; i++) {
+            Integer z = map[25];
+            ans = (ans + z) % MOD;
+            for (int j = 25; j > 0; j--) {
+                map[j] = map[j - 1];
+            }
+            map[0] = z;
+            map[1] = (map[1] + z) % MOD;
+        }
+
+        return ans;
     }
 
     /**
@@ -8757,6 +8770,20 @@ public class Solution {
         }
     }
 
+    /**
+     * No. 3392 统计符合条件长度为 3 的子数组数目
+     * @param nums
+     * @return
+     */
+    public int countSubarrays(int[] nums) {
+        int count = 0;
+        for (int i = 0; i < nums.length - 2; i++) {
+            if ((nums[i] + nums[i + 2]) * 2 == nums[i + 1]) {
+                count++;
+            }
+        }
+        return count;
+    }
 }
 
 

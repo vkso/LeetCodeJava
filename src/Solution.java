@@ -935,6 +935,45 @@ public class Solution {
     }
 
     /**
+     * No. 75 颜色分类
+     * @param nums
+     */
+    public void sortColors(int[] nums) {
+        int n = nums.length;
+        int cur = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (nums[i] != 0) {
+                continue;
+            }
+            if (cur == i) {
+                cur++;
+                continue;
+            } else {
+                int temp = nums[cur];
+                nums[cur] = nums[i];
+                nums[i] = temp;
+                cur++;
+            }
+        }
+
+        for (int i = cur; i < n; i++) {
+            if (nums[i] != 1) {
+                continue;
+            }
+            if (cur == i) {
+                cur++;
+                continue;
+            } else {
+                int temp = nums[cur];
+                nums[cur] = nums[i];
+                nums[i] = temp;
+                cur++;
+            }
+        }
+    }
+
+    /**
      * No. 80 删除有序数组中的重复项
      * Tips: 双指针（滑动窗口）slow、fast，slow之前表示已经检查过的项目
      * fast表示当前待检查的项目

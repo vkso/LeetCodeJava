@@ -8690,6 +8690,28 @@ public class Solution {
     }
 
     /**
+     * No. 3024 三角形类型
+     * @param nums
+     * @return
+     */
+    public String triangleType(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        if (nums[0] + nums[1] > nums[2] && nums[1] + nums[2] > nums[0] && nums[0] + nums[2] > nums[1]) {
+            for (int num : nums) {
+                set.add(num);
+            }
+            if (set.size() == 1) {
+                return "equilateral";
+            } else if (set.size() == 2) {
+                return "isosceles";
+            } else {
+                return "scalene";
+            }
+        }
+        return "none";
+    }
+
+    /**
      * No. 3335 字符串转换后的长度 I
      * @param s
      * @param t

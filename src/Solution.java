@@ -8832,6 +8832,54 @@ public class Solution {
     }
 
     /**
+     * No. 3356 零数组变换 II
+     * @param nums
+     * @param queries
+     * @return
+     */
+    public int minZeroArray(int[] nums, int[][] queries) {
+        int n = queries.length;
+
+        int count = 0;
+        for (int num : nums) {
+            count += num;
+        }
+
+        if (count == 0) {
+            return 0;
+        }
+
+        for (int k = 0; k < n; k++) {
+            int[] query = queries[k];
+            for (int i = query[0]; i <= query[1]; i++) {
+                if (nums[i] == 0) {
+                    continue;
+                }
+                int res = nums[i] - query[2];
+                int temp = nums[i];
+                nums[i] = res > 0 ? res : 0;
+                if (res > 0) {
+                    count -= query[2];
+                } else {
+                    count -= temp;
+                }
+            }
+
+            if (count == 0) {
+                return k + 1;
+            }
+        }
+        return -1;
+    }
+
+    @Test
+    public void testA() {
+        int[] nums = {2, 0, 2};
+        int[][] queries = {{0, 2, 1}, {0, 2, 1}, {1, 1, 3}};
+        int i = minZeroArray(nums, queries);
+    }
+
+    /**
      * No. 3392 统计符合条件长度为 3 的子数组数目
      * @param nums
      * @return

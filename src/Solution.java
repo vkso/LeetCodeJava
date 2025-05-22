@@ -8832,6 +8832,30 @@ public class Solution {
     }
 
     /**
+     * No. 3355 零数组变换 I
+     * @param nums
+     * @param queries
+     * @return
+     */
+    public boolean isZeroArray(int[] nums, int[][] queries) {
+        int n = nums.length;
+        int[] diff = new int[n + 1];
+        for (int[] q : queries) {
+            diff[q[0]]++;
+            diff[q[1] + 1]--;
+        }
+
+        int sumD = 0;
+        for (int i = 0; i < n; i++) {
+            sumD += diff[i];
+            if (nums[i] > sumD) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * No. 3356 零数组变换 II
      * @param nums
      * @param queries
@@ -8872,11 +8896,34 @@ public class Solution {
         return -1;
     }
 
-    @Test
-    public void testA() {
-        int[] nums = {2, 0, 2};
-        int[][] queries = {{0, 2, 1}, {0, 2, 1}, {1, 1, 3}};
-        int i = minZeroArray(nums, queries);
+    /**
+     * No. 3362 零数组变换 III
+     * @param nums
+     * @param queries
+     * @return
+     */
+    public int maxRemoval(int[] nums, int[][] queries) {
+        Arrays.sort(queries, (a, b) -> a[0] - b[0]);
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+        int n = nums.length;
+        int[] diff = new int[n + 1];
+        int sumD = 0;
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            sumD += diff[i];
+            while (j < queries.length && queries[j][0] <= i) {
+                pq.add(queries[j][1]);
+                j++;
+            }
+            while (sumD < nums[i] && !pq.isEmpty() && pq.peek() >= i) {
+                sumD++;
+                diff[pq.poll() + 1]--;
+            }
+            if (sumD < nums[i]) {
+                return -1;
+            }
+        }
+        return pq.size();
     }
 
     /**

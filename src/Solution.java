@@ -1818,6 +1818,25 @@ public class Solution {
     }
 
     /**
+     * No. 215 数组中的第 K 个最大元素
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int num : nums) {
+            heap.offer(num);
+        }
+
+        for (int i = 0; i < k - 1; i++) {
+            heap.poll();
+        }
+
+        return heap.peek();
+    }
+
+    /**
      * No. 226 翻转二叉树
      *
      * @param root
@@ -3144,6 +3163,39 @@ public class Solution {
         length_687 = Math.max(length_687, left_len + right_len);
 
         return Math.max(left_len, right_len);
+    }
+
+    /**
+     * No. 692 前 K 个高频单词
+     * @param words
+     * @param k
+     * @return
+     */
+    public List<String> topKFrequent(String[] words, int k) {
+        HashMap<String, Integer> cnt = new HashMap<>();
+        for (String word : words) {
+            cnt.put(word, cnt.getOrDefault(word, 0) + 1);
+        }
+
+        PriorityQueue<Map.Entry<String, Integer>> pq = new PriorityQueue<>(new Comparator<Map.Entry<String, Integer>>() {
+            public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
+                return entry1.getValue() == entry2.getValue() ? entry2.getKey().compareTo(entry1.getKey()) : entry1.getValue() - entry2.getValue();
+            }
+        });
+
+        for (Map.Entry<String, Integer> entry : cnt.entrySet()) {
+            pq.offer(entry);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+
+        ArrayList<String> ret = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            ret.add(pq.poll().getKey());
+        }
+        Collections.reverse(ret);
+        return ret;
     }
 
     /**

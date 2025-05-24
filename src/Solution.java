@@ -8678,6 +8678,23 @@ public class Solution {
     }
 
     /**
+     * No. 2942 查找包含给定字符的单词
+     * @param words
+     * @param x
+     * @return
+     */
+    public List<Integer> findWordsContaining(String[] words, char x) {
+        ArrayList<Integer> ret = new ArrayList<>();
+        int n = words.length;
+        for (int i = 0; i < n; i++) {
+            if (words[i].indexOf(x) > -1) {
+                ret.add(i);
+            }
+        }
+        return ret;
+    }
+
+    /**
      * No. 2962 统计最大元素出现至少 K 次的子数组
      * @param nums
      * @param k

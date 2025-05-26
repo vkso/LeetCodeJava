@@ -6945,6 +6945,47 @@ public class Solution {
     }
 
     /**
+     * No. 2131 连接两字母单词得到的最长回文串
+     * @param words
+     * @return
+     */
+    public int longestPalindrome(String[] words) {
+        int ret = 0;
+        HashMap<String, Integer> map = new HashMap<>();
+        for (String word : words) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+
+        boolean hasOddSelfPalindrom = false;
+        ArrayList<String> keys = new ArrayList<>(map.keySet());
+        for (String s : keys) {
+            if (map.get(s) == 0) {
+                continue;
+            }
+
+            String reversed = new StringBuilder(s).reverse().toString();
+            if (s.equals(reversed)) {
+                int count = map.get(s);
+                ret += (count / 2) * 4;
+                if (count % 2 == 1) {
+                    hasOddSelfPalindrom = true;
+                }
+                map.put(s, 0);
+            } else if (map.containsKey(reversed)) {
+                int pairCount = Math.min(map.get(s), map.get(reversed));
+                ret += pairCount * 4;
+                map.put(s, map.get(s) - pairCount);
+                map.put(reversed, map.get(reversed) - pairCount);
+            }
+        }
+
+        if (hasOddSelfPalindrom) {
+            ret += 2;
+        }
+        return ret;
+    }
+
+    /**
      * No. 2145 统计隐藏数组数目
      * 给定的区间范围是 A = [lower, upper]。目标数组中数的区间，可以假设第一个数是 0，遍历 differendces 数组得到
      * 那么，目标数组中数的区间假设是 B = [min, max]，求长度为 B 的窗口，在 A 区间中步幅为 1 进行滑动，有多少个位置，即是答案

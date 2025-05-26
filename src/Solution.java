@@ -6605,6 +6605,66 @@ public class Solution {
     }
 
     /**
+     * No. 1857 有向图中最大颜色值
+     * @param colors
+     * @param edges
+     * @return
+     */
+    public int largestPathValue(String colors, int[][] edges) {
+        int n = colors.length();
+
+        // 构建邻接表
+        List<List<Integer>> g = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            g.add(new ArrayList<>());
+        }
+
+        // 节点的入度统计，用于找出拓扑排序中最开始的节点
+        int[] inDeg = new int[n];
+        for (int[] edge : edges) {
+            ++inDeg[edge[1]];
+            g.get(edge[0]).add(edge[1]);  // 填充邻接表中的数据
+        }
+
+        // 记录拓扑排序过程中遇到的节点个数
+        // 如果最终 found 的值不为 n，则说明图中存在环
+        int found = 0;
+        int[][] f = new int[n][26];
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (inDeg[i] == 0) {
+                queue.offer(i);
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            ++found;
+            int u = queue.poll();
+            // 将节点 u 对应的颜色增加 1
+            ++f[u][colors.charAt(u) - 'a'];
+            // 枚举 u 的后继节点 v
+            for (int v : g.get(u)) {
+                --inDeg[v];
+                for (int c = 0; c < 26; ++c) {
+                    f[v][c] = Math.max(f[v][c], f[u][c]);
+                }
+                if (inDeg[v] == 0) {
+                    queue.offer(v);
+                }
+            }
+        }
+
+        if (found != n) {
+            return -1;
+        }
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            ans = Math.max(ans, Arrays.stream(f[i]).max().getAsInt());
+        }
+        return ans;
+    }
+
+    /**
      * No. 1877 数组中最大数对和的最小值
      *
      * @param nums

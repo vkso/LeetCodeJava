@@ -8723,6 +8723,24 @@ public class Solution {
     }
 
     /**
+     * No. 2894 分类求和并作差
+     * @param n
+     * @param m
+     * @return
+     */
+    public int differenceOfSums(int n, int m) {
+        int num1 = 0, num2 = 0;
+        for (int i = 1; i <= n; i++) {
+            if (i % m != 0) {
+                num1 += i;
+            } else {
+                num2 += i;
+            }
+        }
+        return num1 - num2;
+    }
+
+    /**
      * No. 2918 数组的最小相等和
      *  统计两个数组中，非 0 部分的和，和 0 的个数
      *  1. 两个都不包含 0，且非 0 数字和，不想等，返回 -1

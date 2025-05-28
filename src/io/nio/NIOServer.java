@@ -1,4 +1,4 @@
-package io;
+package io.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -46,6 +46,5 @@ public class NIOServer {
                 }
             }
         }
-
     }
 }

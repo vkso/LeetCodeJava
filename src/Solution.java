@@ -9150,6 +9150,16 @@ public class Solution {
         return g;
     }
 
+    /**
+     *
+     * @param x
+     * @param fa 树的父节点，用于跳过父亲节点，防止重复访问（对于树和图来说，通用做法是创建一个 vis 数组，标记访问过的位置，对于树（没有环）
+     *           ，可以额外传入父节点，代码中控制 dfs 不去递归父亲节点，从而省去一个 vis 数组）
+     * @param d
+     * @param g
+     * @param k
+     * @return
+     */
     public int dfs_3372(int x, int fa, int d, List<Integer>[] g, int k) {
         if (d > k) {
             return 0;

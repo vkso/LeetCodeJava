@@ -7728,6 +7728,46 @@ public class Solution {
     }
 
     /**
+     * No. 2359 找到离给定两个节点最近的节点
+     * @param edges
+     * @param node1
+     * @param node2
+     * @return
+     */
+    public int closestMeetingNode(int[] edges, int node1, int node2) {
+        int[] dis1 = calDis_2359(edges, node1);
+        int[] dis2 = calDis_2359(edges, node2);
+
+        int n = edges.length;
+        int minDis = n;
+        int ans = -1;
+        for (int i = 0; i < n; i++) {
+            int d = Math.max(dis1[i], dis2[i]);
+            if (d < minDis) {
+                minDis = d;
+                ans = i;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 计算从 x 点出发，到每个节点的距离，存储到数组中并返回
+     * @param edges 每个节点的下一个节点
+     * @param x 起始节点索引
+     * @return
+     */
+    public int[] calDis_2359(int[] edges, int x) {
+        int n = edges.length;
+        int[] dis = new int[n];
+        Arrays.fill(dis, n);  // n 表示无法到达或者尚未访问的节点
+        for (int d = 0; x >= 0 && dis[x] == n; x = edges[x]) {
+            dis[x] = d++;
+        }
+        return dis;
+    }
+
+    /**
      * No. 2363 合并相似的物品
      *
      * @param items

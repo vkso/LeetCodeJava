@@ -8837,6 +8837,22 @@ public class Solution {
     }
 
     /**
+     * No. 2929 给小朋友们分糖果 II
+     * @param n
+     * @param limit
+     * @return
+     */
+    public long distributeCandies(int n, int limit) {
+        long ans = 0;
+        for (int i = 0; i <= Math.min(limit, n); i++) {
+            if (n - i <= 2 * limit) {
+                ans += Math.min(n - i, limit) - Math.max(0, n - i - limit) + 1;
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 2942 查找包含给定字符的单词
      * @param words
      * @param x

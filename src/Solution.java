@@ -8123,6 +8123,40 @@ public class Solution {
     }
 
     /**
+     * No. 2434 使用机器人打印字典序最小的字符串
+     * @param s
+     * @return
+     */
+    public String robotWithString(String s) {
+        int[] cnt = new int[26];
+        for (char ch : s.toCharArray()) {
+            cnt[ch - 'a']++;
+        }
+
+        ArrayDeque<Character> stack = new ArrayDeque<>();
+        StringBuilder res = new StringBuilder();
+
+        char minCharacter = 'a';
+        for (char c : s.toCharArray()) {
+            stack.push(c);
+            cnt[c - 'a']--;
+            while (minCharacter != 'z' && cnt[minCharacter - 'a'] == 0) {
+                minCharacter++;
+            }
+
+            while (!stack.isEmpty() && stack.peek() <= minCharacter) {
+                res.append(stack.pop());
+            }
+        }
+        return res.toString();
+    }
+
+    @Test
+    public void testxyz() {
+        System.out.println(robotWithString("bdda"));
+    }
+
+    /**
      * No. 2441 与对应负数同时存在的最大正整数
      *
      * @param nums

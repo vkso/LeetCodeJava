@@ -2417,6 +2417,43 @@ public class Solution {
 //    }
 
     /**
+     * No. 386 字典序排数
+     *  使用优先队列，不能满足时间、空间上的要求，但是是一种比较方便的方法。还有一种方法是生成 list，直接对 list 进行排序
+     * @param n
+     * @return
+     */
+    public List<Integer> lexicalOrderX(int n) {
+        PriorityQueue<Integer> integers = new PriorityQueue<>((a, b) -> String.valueOf(a).compareTo(String.valueOf(b)));
+        ArrayList<Integer> res = new ArrayList<>();
+
+        for (int i = 1; i <= n; i++) {
+            integers.offer(i);
+        }
+
+        while (!integers.isEmpty()) {
+            res.add(integers.poll());
+        }
+
+        return res;
+    }
+
+    public List<Integer> lexicalOrder(int n) {
+        ArrayList<Integer> ret = new ArrayList<>();
+        int number = 1;
+        for (int i = 0; i < n; i++) {
+            ret.add(number);
+            if (number * 10 <= n) {
+                number *= 10;
+            } else {
+                while (number % 10 == 9 || number + 1 > n) {
+                    number /= 10;
+                }
+                number++;
+            }
+        }
+        return ret;
+    }
+    /**
      * No. 387 字符串中的第一个唯一字符
      *
      * @param s

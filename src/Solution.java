@@ -9019,6 +9019,41 @@ public class Solution {
     }
 
     /**
+     * No. 3170 删除星号以后字典序最小的字符串
+     * @param s
+     * @return
+     */
+    public String clearStars(String s) {
+        char[] array = s.toCharArray();
+        ArrayDeque<Integer>[] cnt = new ArrayDeque[26];
+        for (int i = 0; i < 26; i++) {
+            cnt[i] = new ArrayDeque<>();
+        }
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != '*') {
+                cnt[array[i] - 'a'].push(i);
+            } else {
+                for (ArrayDeque<Integer> integers : cnt) {
+                    if (!integers.isEmpty()) {
+                        array[integers.pop()] = '*';
+                        break;
+                    }
+                }
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        for (char ch : array) {
+            if (ch != '*') {
+                res.append(ch);
+            }
+        }
+
+        return res.toString();
+    }
+
+    /**
      * No. 3335 字符串转换后的长度 I
      * @param s
      * @param t

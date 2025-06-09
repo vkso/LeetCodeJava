@@ -2652,6 +2652,29 @@ public class Solution {
     }
 
     /**
+     * No. 440 字典序的第 K 小数字
+     * @param n
+     * @param k
+     * @return
+     */
+    public int findKthNumber(int n, int k) {
+        ArrayList<Integer> ret = new ArrayList<>();
+        int number = 1;
+        for (int i = 1; i <= k; i++) {
+            ret.add(number);
+            if (number * 10 <= n) {
+                number *= 10;
+            } else {
+                while (number % 10 == 9 || number + 1 > n) {
+                    number /= 10;
+                }
+                number++;
+            }
+        }
+        return ret.get(k - 1);
+    }
+
+    /**
      * No. 445 两数相加II
      *
      * @param l1

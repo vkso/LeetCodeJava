@@ -9424,6 +9424,33 @@ public class Solution {
         }
         return res;
     }
+
+    /**
+     * No. 3442 奇偶频次间的最大差值 I
+     * 最大奇数个字符 - 最小偶数个字符
+     * @param s
+     * @return
+     */
+    public int maxDifference(String s) {
+        HashMap<Character, Integer> count = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            count.put(ch, count.getOrDefault(ch, 0) + 1);
+        }
+
+        Collection<Integer> values = count.values();
+
+        int maxA1 = 0, maxA2 = 0;
+        for (Integer value : values) {
+            if (value % 2 != 0) {
+                maxA1 = value > maxA1 ? value : maxA1;
+            } else {
+                maxA2 = value > maxA2 ? value : maxA2;
+            }
+        }
+
+        return maxA1 - maxA2;
+    }
 }
 
 

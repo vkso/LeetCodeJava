@@ -9438,14 +9438,17 @@ public class Solution {
             count.put(ch, count.getOrDefault(ch, 0) + 1);
         }
 
-        Collection<Integer> values = count.values();
+        int maxA1 = 0, maxA2 = Integer.MAX_VALUE;
 
-        int maxA1 = 0, maxA2 = 0;
-        for (Integer value : values) {
+        Iterator<Map.Entry<Character, Integer>> iterator = count.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Character, Integer> next = iterator.next();
+            Integer value = next.getValue();
+
             if (value % 2 != 0) {
                 maxA1 = value > maxA1 ? value : maxA1;
             } else {
-                maxA2 = value > maxA2 ? value : maxA2;
+                maxA2 = value < maxA2 ? value : maxA2;
             }
         }
 

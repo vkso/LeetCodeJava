@@ -9426,6 +9426,23 @@ public class Solution {
     }
 
     /**
+     * No. 3423 循环数组中相邻元素的最大差值
+     * @param nums
+     * @return
+     */
+    public int maxAdjacentDistance(int[] nums) {
+        int res = 0;
+        for (int i = 1; i < nums.length; i++) {
+            int abs = Math.abs(nums[i] - nums[i - 1]);
+            res = abs > res ? abs : res;
+        }
+
+        int first = Math.abs(nums[0] - nums[nums.length - 1]);
+        res = first > res ? first : res;
+        return res;
+    }
+
+    /**
      * No. 3442 奇偶频次间的最大差值 I
      * 最大奇数个字符 - 最小偶数个字符
      * @param s

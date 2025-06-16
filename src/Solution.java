@@ -6794,6 +6794,23 @@ public class Solution {
     }
 
     /**
+     * No. 2016 增量元素之间的最大差值
+     * @param nums
+     * @return
+     */
+    public int maximumDifference(int[] nums) {
+        int n = nums.length;
+        int res = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int space = nums[j] - nums[i];
+                res = space > 0 && space > res ? space : res;
+            }
+        }
+        return res != 0 ? res : -1;
+    }
+
+    /**
      * No. 2022 将一维数组转变成二维数组
      *
      * @param original

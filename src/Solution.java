@@ -5682,6 +5682,63 @@ public class Solution {
     }
 
     /**
+     * No. 1432 改变一个整数能得到的最大差值
+     * @param num
+     * @return
+     */
+    public int maxDiff(int num) {
+        StringBuilder sb = new StringBuilder(String.valueOf(num));
+
+        // 将第一个不是 9 的字符修改成 9
+        char cur = 'x';
+        for (int i = 0; i < sb.length(); i++) {
+            if (sb.charAt(i) != '9') {
+                cur = sb.charAt(i);
+                break;
+            }
+        }
+
+        if (cur != 'x') {
+            for (int i = 0; i < sb.length(); i++) {
+                if (sb.charAt(i) == cur) {
+                    sb.setCharAt(i, '9');
+                }
+            }
+        }
+
+        // 如果第一个数不是 1，将其修改为 1
+        cur = 'x';
+        StringBuilder sb1 = new StringBuilder(String.valueOf(num));
+        boolean isFirst = false;
+        if (sb1.charAt(0) != '1') {
+            cur = sb1.charAt(0);
+            isFirst = true;
+        } else {
+            // 否则，把第一个不是 1 也不是 0 的数换成 0
+            for (int i = 1; i < sb1.length(); i++) {
+                if (sb1.charAt(i) != '1' && sb1.charAt(i) != '0') {
+                    cur = sb1.charAt(i);
+                    break;
+                }
+            }
+        }
+
+        if (cur != 'x') {
+            for (int i = 0; i < sb1.length(); i++) {
+                if (sb1.charAt(i) == cur) {
+                    if (isFirst) {
+                        sb1.setCharAt(i, '1');
+                    } else {
+                        sb1.setCharAt(i, '0');
+                    }
+                }
+            }
+        }
+
+        return Integer.valueOf(sb.toString()) - Integer.valueOf(sb1.toString());
+    }
+
+    /**
      * No. 1445 定长子串中元音的最大数目
      *
      * @param s

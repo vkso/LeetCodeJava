@@ -8679,6 +8679,25 @@ public class Solution {
     }
 
     /**
+     * No. 2566 替换一个数字后的最大差值
+     * @param num
+     * @return
+     */
+    public int minMaxDifference(int num) {
+        String s = Integer.toString(num);
+        String t = s;
+        int pos = 0;
+        while (pos < s.length() && s.charAt(pos) == '9') {
+            pos++;
+        }
+        if (pos < s.length()) {
+            s = s.replace(s.charAt(pos), '9');
+        }
+        t = t.replace(t.charAt(0), '0');
+        return Integer.parseInt(s) - Integer.parseInt(t);
+    }
+
+    /**
      * No. 2611 老鼠和奶酪
      * 贪心法 + 优先队列
      * 第一只老鼠可以吃K个，第二只老鼠可以吃任意一个。使得得分最高。

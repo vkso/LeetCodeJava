@@ -9224,6 +9224,47 @@ public class Solution {
     }
 
     /**
+     * No. 3083 字符串及其反转中是否存在同一子字符串
+     * @param s
+     * @return
+     */
+    public boolean isSubstringPresent(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        String strRev = sb.reverse().toString();
+
+        for (int i = 0; i < s.length() - 1; i++) {
+            String substring = s.substring(i, i + 2);
+            if (strRev.indexOf(substring) != -1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * No. 3084 统计以给定字符开头和结尾的子字符串总数
+     * @param s
+     * @param c
+     * @return
+     */
+    public long countSubstrings(String s, char c) {
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == c) {
+                count++;
+            }
+        }
+
+        long res = 0;
+        for (long i = 1; i <= count; i++) {
+            res += i;
+        }
+
+        return res;
+    }
+
+    /**
      * No. 3170 删除星号以后字典序最小的字符串
      * @param s
      * @return

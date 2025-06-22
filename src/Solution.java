@@ -7209,6 +7209,38 @@ public class Solution {
     }
 
     /**
+     * No. 2138 将字符串拆分为若干长度为 K 的组
+     * @param s
+     * @param k
+     * @param fill
+     * @return
+     */
+    public String[] divideString(String s, int k, char fill) {
+        ArrayList<String> res = new ArrayList<>();
+        int n = s.length();
+
+        int index;
+
+        for (index = 0; index + k <= n; index += k) {
+            res.add(s.substring(index, index + k));
+        }
+
+        if (index < n) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < k; i++) {
+                if (index + i < n) {
+                    stringBuilder.append(s.charAt(index + i));
+                } else {
+                    stringBuilder.append(fill);
+                }
+            }
+            res.add(stringBuilder.toString());
+        }
+
+        return res.toArray(new String[0]);
+    }
+
+    /**
      * No. 2145 统计隐藏数组数目
      * 给定的区间范围是 A = [lower, upper]。目标数组中数的区间，可以假设第一个数是 0，遍历 differendces 数组得到
      * 那么，目标数组中数的区间假设是 B = [min, max]，求长度为 B 的窗口，在 A 区间中步幅为 1 进行滑动，有多少个位置，即是答案

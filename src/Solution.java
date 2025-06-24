@@ -7328,6 +7328,41 @@ public class Solution {
     }
 
     /**
+     * No. 2200 找出数组中的所有 K 临近下标
+     * @param nums
+     * @param key
+     * @param k
+     * @return
+     */
+    public List<Integer> findKDistantIndices(int[] nums, int key, int k) {
+        ArrayList<Integer> keyIndex = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == key) {
+                keyIndex.add(i);
+            }
+        }
+
+        ArrayList<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            for (Integer index : keyIndex) {
+                if (Math.abs(i - index) <= k) {
+                    res.add(i);
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
+    @Test
+    public void test2200() {
+        int[] nums = {3, 4, 9, 1, 3, 9, 5};
+        int key = 9;
+        int k = 1;
+        System.out.println(findKDistantIndices(nums, key, k));
+    }
+
+    /**
      * No. 2235 两整数相加
      *
      * @param num1

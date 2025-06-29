@@ -7146,6 +7146,33 @@ public class Solution {
     }
 
     /**
+     * No. 2099 找到和最大的长度为 K 的子序列
+     * @param nums
+     * @param k
+     * @return
+     */
+    public int[] maxSubsequence(int[] nums, int k) {
+        LinkedList<Integer> res = new LinkedList<>();
+        for (int i = 0; i < nums.length; i++) {
+            res.add(nums[i]);
+        }
+
+        while (res.size() > k) {
+            int min = Integer.MAX_VALUE;
+            int index = -1;
+            for (int i = 0; i < res.size(); i++) {
+                if (res.get(i) < min) {
+                    min = res.get(i);
+                    index = i;
+                }
+            }
+            res.remove(index);
+        }
+
+        return res.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    /**
      * No. 2115 从给定原材料中找到所有可以做出的菜
      *     Tips: 拓扑排序，广度优先搜索，不断添加入度为0的节点(入度为0表示，这个菜品可以直接获得)
      * @param recipes

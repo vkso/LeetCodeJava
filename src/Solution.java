@@ -9391,6 +9391,21 @@ public class Solution {
     }
 
     /**
+     * No. 3330 找到初始输入字符串
+     * @param word
+     * @return
+     */
+    public int possibleStringCount(String word) {
+        int ans = 1;
+        for (int i = 1; i < word.length(); i++) {
+            if (word.charAt(i - 1) == word.charAt(i)) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
      * No. 3335 字符串转换后的长度 I
      * @param s
      * @param t

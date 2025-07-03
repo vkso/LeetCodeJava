@@ -9391,6 +9391,27 @@ public class Solution {
     }
 
     /**
+     * No. 3304 找出第 K 个字符 I
+     * @param k
+     * @return
+     */
+    public char kthCharacter(int k) {
+        StringBuilder word = new StringBuilder("a");
+        while (word.length() < k) {
+            StringBuilder append = new StringBuilder(word);
+            for (int i = 0; i < append.length(); i++) {
+                if (append.charAt(i) != 'z') {
+                    append.setCharAt(i, (char) (append.charAt(i) + 1));
+                } else {
+                    append.setCharAt(i, 'a');
+                }
+            }
+            word.append(append);
+        }
+        return word.charAt(k - 1);
+    }
+
+    /**
      * No. 3330 找到初始输入字符串
      * @param word
      * @return

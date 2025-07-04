@@ -9412,6 +9412,28 @@ public class Solution {
     }
 
     /**
+     * No. 3307 找出第 K 个字符 II
+     * @param k
+     * @param operations
+     * @return
+     */
+    public char kthCharacter(long k, int[] operations) {
+        int ans = 0;
+        int t;
+        while (k != 1) {
+            t = 63 - Long.numberOfLeadingZeros(k);
+            if ((1L << t) == k) {
+                t--;
+            }
+            k = k - (1L << t);
+            if (operations[t] != 0) {
+                ans++;
+            }
+        }
+        return (char) ('a' + (ans % 26));
+    }
+
+    /**
      * No. 3330 找到初始输入字符串
      * @param word
      * @return

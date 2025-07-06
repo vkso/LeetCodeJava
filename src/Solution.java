@@ -6811,6 +6811,23 @@ public class Solution {
     }
 
     /**
+     * No. 1865 找出和为指定的下标对
+     */
+    @Test
+    public void No1865() {
+        int[] nums1 = {1, 1, 2, 2, 2, 3};
+        int[] nums2 = {1, 4, 5, 2, 5, 4};
+        FindSumPairs obj = new FindSumPairs(nums1, nums2);
+        System.out.println(obj.count(7));
+        obj.add(3, 2);
+        System.out.println(obj.count(8));
+        System.out.println(obj.count(4));
+        obj.add(0, 1);
+        obj.add(1, 1);
+        System.out.println(obj.count(7));
+    }
+
+    /**
      * No. 1877 数组中最大数对和的最小值
      *
      * @param nums

@@ -2,7 +2,7 @@ package HWOD.niuke;
 
 import java.util.Scanner;
 
-public class Problem31 {
+public class hj31 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String line = sc.nextLine();
